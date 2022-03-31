@@ -1,116 +1,142 @@
-*{
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-  }
-  
-  $border-radius: 1vmin;
-  $duration: 2s;
-  $face-size: 25vmin;
-  $point-size: 5vmin;
-  $point-position: 2.5vmin;
-  $face-length: 25vmin;
-  
-  body{
+}
+
+:root {
+    --border-radius: 1vmin;
+    --face-size: 15vmin;
+    --duration: 2s;
+    --point-size: 2.5vmin;
+    --point-position: 2.5vmin;
+}
+
+body {
     min-height: 100vh;
     background: #222;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-  }
-  
-  .dice-container{  
-    width: $face-size;
+}
+
+.dice-container {
+    position: relative;
+    width: var(--face-size);
     aspect-ratio: 1;
     cursor: pointer;
-  }
-  
-  .dice{
-    position: relative;
-    width: $face-size;
+}
+
+.padlock {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--face-size);
     aspect-ratio: 1;
-    border-radius: $border-radius;
-    transform-style: preserve-3d; 
-    transform-origin: 50% 50% ($face-size*-.5);
+    opacity: 0;
+    border-radius: var(--border-radius);
+    background: hsl(0deg, 0%, 0%, .15);
+    transition: opacity .25s ease-in-out;
+
+    &::after{
+        content: '🔒';
+        position: absolute;
+        top: .5vmin;
+        left: .5vmin;
+        font-size: 1.5vmin;
+        transform: rotate(-15deg);
+    }
+}
+
+.locked ~ .padlock {
+    opacity: 1;
+}
+
+.dice {
+    position: relative;
+    width: var(--face-size);
+    aspect-ratio: 1;
+    border-radius: var(--border-radius);
+    transform-style: preserve-3d;
+    transform-origin: 50% 50% calc(var(--face-size) * -0.5);
     transform: rotateX(180deg) rotateY(180deg);
-    transition: transform $duration ease-in-out;
-  }
-  
-  .face{
+    transition: transform var(--duration) ease-in-out;
+}
+
+.face {
     position: absolute;
     background: radial-gradient(circle at center, #eee, #ccc);
-    width: $face-size;
+    width: var(--face-size);
     aspect-ratio: 1;
-    border-radius: $border-radius; 
+    border-radius: var(--border-radius);
     transform: rotateX(0deg) rotateY(180deg);
-    transform-origin: 50% 50% ($face-size*-.5);
+    transform-origin: 50% 50% calc(var(--face-size) * -0.5);
     /*backface-visibility: hidden;*/
-  }
-  
-  .face:nth-child(1){
+}
+
+.face:nth-child(1) {
     transform: rotateY(0deg);
-  }
-  
-  .face:nth-child(2){
+}
+
+.face:nth-child(2) {
     transform: rotateY(90deg);
-  }
-  
-  .face:nth-child(3){
+}
+
+.face:nth-child(3) {
     transform: rotateY(180deg);
-  }
-  
-  .face:nth-child(4){
+}
+
+.face:nth-child(4) {
     transform: rotateY(270deg);
-  }
-  
-  .face:nth-child(5){
+}
+
+.face:nth-child(5) {
     transform: rotateX(90deg);
-  }
-  
-  .face:nth-child(6){
+}
+
+.face:nth-child(6) {
     transform: rotateX(270deg);
-  }
-  
-  .point{
+}
+
+.point {
     position: absolute;
-    width: $point-size;
+    width: var(--point-size);
     aspect-ratio: 1;
     border-radius: 100%;
     align-self: center;
     justify-self: center;
-    background:#444;
-    box-shadow:inset 5px 0 10px #222;
-  }
-  
-  .point-top{
-    top: $point-position;
-  }
-  
-  .point-middle{
-    top: ($face-size - $point-size)/2;
-  }
-  
-  .point-bottom{
-    bottom: $point-position;
-  }
-  
-  .point-left{
-    left: $point-position;
-  }
-  
-  .point-center{
-    left: ($face-size - $point-size)/2;
-  }
-  
-  .point-right{
-    right: $point-position;
-  }
-  
-  
-  .roll-btn{
+    background: #444;
+    box-shadow: inset 5px 0 10px #222;
+}
+
+.point-top {
+    top: var(--point-position);
+}
+
+.point-middle {
+    top: calc(calc(var(--face-size) - var(--point-size)) / 2);
+}
+
+.point-bottom {
+    bottom: var(--point-position);
+}
+
+.point-left {
+    left: var(--point-position);
+}
+
+.point-center {
+    left: calc(calc(var(--face-size) - var(--point-size)) / 2);
+}
+
+.point-right {
+    right: var(--point-position);
+}
+
+.roll-btn {
     padding: 1vmin;
     border: none;
     border-radius: 1vmin;
     cursor: pointer;
-  }
+}

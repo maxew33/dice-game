@@ -1,7 +1,16 @@
+@charset "UTF-8";
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+:root {
+  --border-radius: 1vmin;
+  --face-size: 15vmin;
+  --duration: 2s;
+  --point-size: 2.5vmin;
+  --point-position: 2.5vmin;
 }
 
 body {
@@ -14,30 +23,55 @@ body {
 }
 
 .dice-container {
-  width: 25vmin;
+  position: relative;
+  width: var(--face-size);
   aspect-ratio: 1;
   cursor: pointer;
 }
 
+.padlock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--face-size);
+  aspect-ratio: 1;
+  opacity: 0;
+  border-radius: var(--border-radius);
+  background: rgba(0, 0, 0, 0.15);
+  transition: opacity 0.25s ease-in-out;
+}
+.padlock::after {
+  content: "🔒";
+  position: absolute;
+  top: 0.5vmin;
+  left: 0.5vmin;
+  font-size: 1.5vmin;
+  transform: rotate(-15deg);
+}
+
+.locked ~ .padlock {
+  opacity: 1;
+}
+
 .dice {
   position: relative;
-  width: 25vmin;
+  width: var(--face-size);
   aspect-ratio: 1;
-  border-radius: 1vmin;
+  border-radius: var(--border-radius);
   transform-style: preserve-3d;
-  transform-origin: 50% 50% -12.5vmin;
+  transform-origin: 50% 50% calc(var(--face-size) * -0.5);
   transform: rotateX(180deg) rotateY(180deg);
-  transition: transform 2s ease-in-out;
+  transition: transform var(--duration) ease-in-out;
 }
 
 .face {
   position: absolute;
   background: radial-gradient(circle at center, #eee, #ccc);
-  width: 25vmin;
+  width: var(--face-size);
   aspect-ratio: 1;
-  border-radius: 1vmin;
+  border-radius: var(--border-radius);
   transform: rotateX(0deg) rotateY(180deg);
-  transform-origin: 50% 50% -12.5vmin;
+  transform-origin: 50% 50% calc(var(--face-size) * -0.5);
   /*backface-visibility: hidden;*/
 }
 
@@ -67,7 +101,7 @@ body {
 
 .point {
   position: absolute;
-  width: 5vmin;
+  width: var(--point-size);
   aspect-ratio: 1;
   border-radius: 100%;
   align-self: center;
@@ -77,27 +111,27 @@ body {
 }
 
 .point-top {
-  top: 2.5vmin;
+  top: var(--point-position);
 }
 
 .point-middle {
-  top: 10vmin;
+  top: calc((var(--face-size) - var(--point-size)) / 2);
 }
 
 .point-bottom {
-  bottom: 2.5vmin;
+  bottom: var(--point-position);
 }
 
 .point-left {
-  left: 2.5vmin;
+  left: var(--point-position);
 }
 
 .point-center {
-  left: 10vmin;
+  left: calc((var(--face-size) - var(--point-size)) / 2);
 }
 
 .point-right {
-  right: 2.5vmin;
+  right: var(--point-position);
 }
 
 .roll-btn {
