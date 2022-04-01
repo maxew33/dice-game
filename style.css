@@ -7,15 +7,35 @@
 
 :root {
   --border-radius: 1vmin;
-  --face-size: 15vmin;
+  --face-size: 12.5vmin;
   --duration: 2s;
-  --point-size: 2.5vmin;
-  --point-position: 2.5vmin;
+  --point-size: 2.25vmin;
+  --point-position: 1.75vmin;
+  --locked-color: hsl(90deg, 100%, 80%, 0.5);
 }
 
 body {
   min-height: 100vh;
   background: #222;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+}
+
+.set-game {
+  position: absolute;
+  height: 100vh;
+  width: 100vw;
+  background: #97acee;
+  z-index: 10;
+}
+
+.players-name {
+  display: none;
+}
+
+.board-container {
+  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,7 +57,7 @@ body {
   aspect-ratio: 1;
   opacity: 0;
   border-radius: var(--border-radius);
-  background: rgba(0, 0, 0, 0.15);
+  background: var(--locked-color);
   transition: opacity 0.25s ease-in-out;
 }
 .padlock::after {
@@ -139,4 +159,50 @@ body {
   border: none;
   border-radius: 1vmin;
   cursor: pointer;
+}
+
+.score {
+  width: 20vmin;
+  aspect-ratio: 2/1;
+  background: #ddd;
+  font-size: 4vmin;
+  font-family: Arial, Helvetica, sans-serif;
+  display: grid;
+  justify-content: center;
+}
+
+.player-container {
+  height: 80vh;
+  width: 25vw;
+  display: grid;
+  grid-template-areas: "avatar avatar" "avatar avatar" "avatar avatar" "name score" "total total" "total total";
+  color: #ddd;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.5rem;
+}
+.player-container.player-1 {
+  color: hsl(90deg, 100%, 80%);
+}
+.player-container.player-2 {
+  color: hsl(270deg, 100%, 80%);
+}
+.player-container .player-avatar {
+  grid-area: avatar;
+  justify-self: center;
+  font-size: 15rem;
+}
+.player-container .player-name {
+  grid-area: name;
+  place-self: center;
+  width: 50%;
+}
+.player-container .player-score {
+  grid-area: score;
+  justify-self: center;
+  min-width: 100%;
+  border: 1px solid whitesmoke;
+}
+.player-container .player-total {
+  grid-area: total;
+  justify-self: center;
 }/*# sourceMappingURL=style.css.map */
