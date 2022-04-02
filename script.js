@@ -6,7 +6,8 @@ const playersQty = [...document.querySelectorAll('.choose-players-number')],
     playerTotal = [...document.querySelectorAll('.player-total')],
     dices = [...document.querySelectorAll('.dice')],
     score = document.querySelector('.score'),
-    rollMax = 8
+    rollMax = 8,
+    playerColor = ['hsl(90deg, 100%, 80%, .5)', 'hsl(270deg, 100%, 80%, .5)']
 
 let playerQty = 0,
     playerTurn = 0,
@@ -70,10 +71,9 @@ function initGame() {
 
     console.log(players)
 
-    players.forEach((player, index) => {
-        console.log(player, index+1, document.querySelector('[data-player="1"]'))
-        playerContainer[index].querySelector('.player-name').textContent = player.name
-    })
+    cleanBoard()
+
+
 
     console.log('game init')
     dices.forEach(dice => setOfDices.push(new MyDice(dice)))
@@ -89,7 +89,7 @@ function launchGame() {
         return Math.floor(Math.random() * max);
     }
     
-    const replay = (myScore) => {
+    const endOfTurn = (myScore) => {
         canRoll = true
         turn = 0
         dicesLocked = 0 
@@ -105,24 +105,42 @@ function launchGame() {
             dice.id.classList.remove('locked')
             console.log(setOfDices)
         })
+
+        // FAIRE APPARAITRE UN MODAL !!!!
         alert('Bravo joueur' + playerTurn + ', vous avez eu ' + myScore + 'pts')
     
         players[playerTurn].score = myScore
         playerScore[playerTurn].textContent = myScore
     
         if (playerTurn === 0) {
-            playerTurn = 1
-            document.documentElement.style.setProperty('--locked-color', 'hsl(270deg, 100%, 80%, .5)')
+            newPlayerTurn(1, 4)
+            playerQty === 1 && console.log('cpu')
         }
         else {
-            let w
-            players[0].score > players[1].score ? w = 0 : w = 1
-            players[w].total -= players[w].score
-            playerTotal[w].textContent = players[w].total
-            players[w].total <= 0 && endOfGame(w)
-            playerTurn = 0
-            document.documentElement.style.setProperty('--locked-color', 'hsl(90deg, 100%, 80%, .5)')
+            players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 2)
         }
+    }
+
+    const turnWinner = (winner) => {
+        players[winner].total -= players[winner].score
+        playerTotal[winner].textContent = players[winner].total
+        players[winner].total <= 0 && endOfGame(winner)        
+        newPlayerTurn(0, winner)
+    }
+
+    const newPlayerTurn = (player, message) => {
+        switch (message) {
+            case 0: console.log('joueur 1 gagne')
+            break
+            case 1: console.log('joueur 2 gagne')
+            break
+            case 2: console.log('égalité')
+            break
+            default: console.log('joueur 2 joue')
+        }
+        playerTurn = player
+        document.documentElement.style.setProperty('--locked-color', playerColor[player])
+
     }
     
     const roll = () => {
@@ -195,7 +213,7 @@ function launchGame() {
     
         score.textContent = myScore + 'pts'
     
-        setTimeout(() => turn < 3 ? canRoll = true : replay(myScore), delay)
+        setTimeout(() => turn < 3 ? canRoll = true : endOfTurn(myScore), delay)
     }
     
     btn.addEventListener('click', () => canRoll && roll())
@@ -211,10 +229,28 @@ function launchGame() {
     
 }
 
+//clean board
+function cleanBoard(){
+
+    players.forEach((player, index) => {
+        player.total = 250
+        player.score = 0
+        playerContainer[index].querySelector('.player-name').textContent = player.name
+        playerContainer[index].querySelector('.player-score').textContent = player.score
+        playerContainer[index].querySelector('.player-total').textContent = player.total
+    })
+    setOfDices.forEach((dice) => {
+        dice.angleX = 0
+        dice.angleY = 0
+        dice.id.style.transform = "rotateX(" + dice.angleX + "deg) rotateY(" + dice.angleY + "deg)"
+    })
+}
+
 //end of game
 
 function endOfGame(winner) {
     console.log('joueur ' + players[winner].name + ' a gagné !!!')
+    cleanBoard()
 }
 
 // initGame()
