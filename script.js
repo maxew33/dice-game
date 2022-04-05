@@ -1,4 +1,5 @@
-const playersQty = [...document.querySelectorAll('.choose-players-number')],
+const setGame = document.querySelector('.set-game'),
+    playersQty = [...document.querySelectorAll('.choose-players-number')],
     btn = document.querySelector('.roll-btn'),
     diceContainer = [...document.querySelectorAll('.dice-container')],
     playerContainer = [...document.querySelectorAll('.player-container')],
@@ -39,12 +40,16 @@ function Player(id, name) {
 playersQty.forEach(btn => btn.addEventListener('click', () => {
     console.log('click', btn.dataset.qty)
     playerQty = parseInt(btn.dataset.qty)
-    playersName(1)
+    playersSettings(1)
 }))
 
-const playersName = id => {
-    document.querySelector('.players-qty').style.display = "none"
-    document.querySelector('.player-' + id + '-name').style.display = "block"
+const playersSettings = id => {
+    setGame.style.transform = 'translateX(' + id*-100 + 'vw)'
+
+    const myColors = [...document.querySelectorAll('.my-color')][id-1]
+    myColors.addEventListener('click', () => {
+        document.querySelector('.color-container').style.transform = "scale(1)"
+       })
 
     document.querySelector('.player-' + id + '-name').addEventListener('submit', e => {
         e.preventDefault()
@@ -52,13 +57,13 @@ const playersName = id => {
 
         console.log(new Player(playerScore[id - 1], document.querySelector('.player-' + id + '-name input').value))
 
-        document.querySelector('.player-' + id + '-name').style.display = "none"
-
         if (id === 1 && playerQty === 2) {
-            playersName(2)
+            playersSettings(2)
         }
         else {
             playerQty === 1 && players.push(new Player(playerScore[1], "Max"))
+    
+            setGame.style.transform = 'translate(' + id*-100 + 'vw, 100vh)'
 
             initGame()
         }
@@ -68,16 +73,11 @@ const playersName = id => {
 //initialize the game
 
 function initGame() {
-
-    document.querySelector('.set-game').style.display = "none"
-
-    console.log(players)
-
+    
     cleanBoard()
 
-    console.log('game init')
     dices.forEach(dice => setOfDices.push(new MyDice(dice)))
-    console.log(setOfDices)
+    
     launchGame()
 }
 
@@ -140,10 +140,11 @@ function launchGame() {
                 //If there is a good double or a triple, i keep the dices. If not, I keep the 5 and/or 6 dice(s)
                 setOfDices.forEach((dice, idx) => {
                     if (valueToLock > 0) {
-                        dice.value === valueToLock ? setOfDices[idx].locked = true : setOfDices[idx].locked = false
+                        dice.value === valueToLock ? (setOfDices[idx].locked = true, setOfDices[idx].id.classList.add('locked')) : (setOfDices[idx].locked = false, setOfDices[idx].id.classList.remove('locked'))
+                        dice.value === valueToLock ? lockingDice(true, idx) : lockingDice(false, idx)
                     }
                     else {
-                        dice.value > 4 ? setOfDices[idx].locked = true : setOfDices[idx].locked = false
+                        dice.value > 4 ? lockingDice(true, idx) : lockingDice(false, idx)
                     }
                 })
             }
@@ -156,7 +157,7 @@ function launchGame() {
 
     const turnWinner = (winner) => {
         players[winner].total -= players[winner].score
-        playerTotal[winner].textContent = players[winner].total
+        playerTotal[winner].innerHTML += `<br/>` + players[winner].total
         players[winner].total <= 0 && endOfGame(winner)
         newPlayerTurn(0, winner)
     }
@@ -248,16 +249,22 @@ function launchGame() {
         setTimeout(() => turn < 3 ? (canRoll = true, playerQty === 1 && playerTurn === 1 && cpuTurn()) : endOfTurn(myScore), delay)
     }
 
-    btn.addEventListener('click', () => (canRoll && playerQty === 2 || playerTurn === 0) && roll())
+    btn.addEventListener('click', () => {
+        canRoll && (playerQty === 2 || playerTurn === 0) && roll()
+    })
 
     diceContainer.forEach((container, idx) => container.addEventListener('click', () => {
         if (turn > 0 && canRoll) {
-            setOfDices[idx].locked = !setOfDices[idx].locked
-            setOfDices[idx].id.classList.toggle('locked')
-            setOfDices[idx].locked ? dicesLocked += 1 : dicesLocked -= 1
+            setOfDices[idx].locked ? lockingDice(false, idx) : lockingDice(true, idx)
             btn.textContent = dicesLocked === 3 ? "TAKE" : "ROLL"
         }
     }))
+
+    const lockingDice = (action, dice) => {
+        setOfDices[dice].locked = action ? true : false
+        action ? setOfDices[dice].id.classList.add('locked') : setOfDices[dice].id.classList.remove('locked')
+        dicesLocked += action ? 1 : -1
+    }
 }
 
 //clean board
@@ -283,5 +290,3 @@ function endOfGame(winner) {
     console.log('joueur ' + players[winner].name + ' a gagné !!!')
     cleanBoard()
 }
-
-// initGame()
