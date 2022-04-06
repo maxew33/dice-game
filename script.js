@@ -1,5 +1,6 @@
 const setGame = document.querySelector('.set-game'),
     playersQty = [...document.querySelectorAll('.choose-players-number')],
+    colors = document.querySelectorAll('.color-list .color'),
     btn = document.querySelector('.roll-btn'),
     diceContainer = [...document.querySelectorAll('.dice-container')],
     playerContainer = [...document.querySelectorAll('.player-container')],
@@ -12,6 +13,7 @@ const setGame = document.querySelector('.set-game'),
     goal = 500
 
 let playerQty = 0,
+    playerSet = 1,
     playerTurn = 0,
     delay = 0,
     canRoll = true,
@@ -38,32 +40,49 @@ function Player(id, name) {
 }
 
 playersQty.forEach(btn => btn.addEventListener('click', () => {
-    console.log('click', btn.dataset.qty)
     playerQty = parseInt(btn.dataset.qty)
-    playersSettings(1)
+    playersSettings(playerSet)
 }))
 
 const playersSettings = id => {
-    setGame.style.transform = 'translateX(' + id*-100 + 'vw)'
+    setGame.style.transform = 'translateX(' + id * -100 + 'vw)'
 
-    const myColors = [...document.querySelectorAll('.my-color')][id-1]
+    const myColors = [...document.querySelectorAll('.my-color')][id - 1]
+
     myColors.addEventListener('click', () => {
         document.querySelector('.color-container').style.transform = "scale(1)"
-       })
+    })
+
+    colors.forEach(color => {
+        color.addEventListener('click', e => colorChosen(e.target))
+    })
+
+    function colorChosen(colorClicked) {
+        playerColor[playerSet - 1] = colorClicked.dataset.color + ', .5)'
+
+        colors.forEach(col => col.classList.remove('selected'))
+
+        colorClicked.classList.add('selected')
+
+        document.documentElement.style.setProperty('--player' + playerSet + '-color', colorClicked.dataset.color + ')')
+        playerSet === 1 && document.documentElement.style.setProperty('--locked-color', colorClicked.dataset.color + ', .5)')
+
+        document.querySelector('.color-container').style.transform = "scale(0)"
+    }
 
     document.querySelector('.player-' + id + '-name').addEventListener('submit', e => {
         e.preventDefault()
+
         players.push(new Player(playerScore[id - 1], document.querySelector('.player-' + id + '-name input').value))
 
-        console.log(new Player(playerScore[id - 1], document.querySelector('.player-' + id + '-name input').value))
-
         if (id === 1 && playerQty === 2) {
-            playersSettings(2)
+            playerSet++
+            playersSettings(playerSet)
         }
         else {
             playerQty === 1 && players.push(new Player(playerScore[1], "Max"))
-    
-            setGame.style.transform = 'translate(' + id*-100 + 'vw, 100vh)'
+
+            setGame.style.transform = 'translate(' + id * -100 + 'vw, 100vh)'
 
             initGame()
         }
@@ -73,11 +92,11 @@ const playersSettings = id => {
 //initialize the game
 
 function initGame() {
-    
+
     cleanBoard()
 
     dices.forEach(dice => setOfDices.push(new MyDice(dice)))
-    
+
     launchGame()
 }
 
@@ -95,11 +114,8 @@ function launchGame() {
         dicesLocked = 0
         btn.textContent = "ROLL"
         score.textContent = '0 pt'
-        console.log(results)
         results = []
-        console.log(results)
 
-        console.log('--------------------------')
         setOfDices.forEach(dice => {
             dice.locked = false
             dice.id.classList.remove('locked')
@@ -122,7 +138,6 @@ function launchGame() {
 
     const cpuTurn = () => {
         let valueToLock = 0
-        console.log('cpu play')
 
         setTimeout(() => {
             if (turn > 0) {
@@ -150,7 +165,6 @@ function launchGame() {
             }
 
             roll()
-            console.log(setOfDices)
 
         }, 250)
     }
@@ -187,8 +201,6 @@ function launchGame() {
         delay = 0
 
         let myScore = 0
-
-        console.log('let\'s roll')
 
         setOfDices.forEach((dice, idx) => {
 

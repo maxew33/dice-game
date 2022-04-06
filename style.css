@@ -11,9 +11,9 @@
   --duration: 2s;
   --point-size: 2.25vmin;
   --point-position: 1.75vmin;
-  --locked-color: hsl(90deg, 100%, 80%, 0.5);
-  --player1-color: hsl(120deg, 100%, 80%);
-  --player2-color: hsl(240deg, 100%, 80%);
+  --locked-color: hsl(120deg, 80%, 60%, 0.5);
+  --player1-color: hsl(120deg, 80%, 60%);
+  --player2-color: hsl(270deg, 80%, 60%);
 }
 
 body {
@@ -48,6 +48,8 @@ body {
   transform: scale(0);
   transition: 0.25s ease-in-out;
   z-index: 20;
+  -webkit-backdrop-filter: blur(2.5px);
+          backdrop-filter: blur(2.5px);
 }
 
 .color-list {
@@ -61,45 +63,47 @@ body {
 .color-list .color {
   height: 25vmin;
   width: 25vmin;
-  transform: scale(0.9);
+  transform: scale(0.85);
   cursor: pointer;
+  border: 2px solid #999;
+  border-radius: 2.5px;
+  transition: transform 0.5s ease-in-out, border-radius 0.5s ease-in-out;
 }
 .color-list .color:hover {
   transform: scale(1);
-  border: 2px solid #999;
-  border-radius: 2.5px;
+  border-radius: 25px;
 }
 .color-list .selected {
   transform: scale(0.95);
-  border: 2px solid #aaa;
-  border-radius: 2.5px;
+  border-width: 4px;
+  border-radius: 25px;
 }
 .color-list .color1 {
-  background: hsl(0deg, 100%, 80%);
+  background: hsl(0deg, 80%, 60%);
 }
 .color-list .color2 {
-  background: hsl(40deg, 100%, 80%);
+  background: hsl(40deg, 80%, 60%);
 }
 .color-list .color3 {
-  background: hsl(80deg, 100%, 80%);
+  background: hsl(80deg, 80%, 60%);
 }
 .color-list .color4 {
-  background: hsl(120deg, 100%, 80%);
+  background: hsl(120deg, 80%, 60%);
 }
 .color-list .color5 {
-  background: hsl(160deg, 100%, 80%);
+  background: hsl(160deg, 80%, 60%);
 }
 .color-list .color6 {
-  background: hsl(200deg, 100%, 80%);
+  background: hsl(200deg, 80%, 60%);
 }
 .color-list .color7 {
-  background: hsl(240deg, 100%, 80%);
+  background: hsl(240deg, 80%, 60%);
 }
 .color-list .color8 {
-  background: hsl(280deg, 100%, 80%);
+  background: hsl(280deg, 80%, 60%);
 }
 .color-list .color9 {
-  background: hsl(320deg, 100%, 80%);
+  background: hsl(320deg, 80%, 60%);
 }
 
 h1 {
@@ -127,6 +131,9 @@ h1 {
 }
 .players-name.player-1-name > .my-color {
   background: var(--player1-color);
+}
+.players-name.player-2-name > .my-color {
+  background: var(--player2-color);
 }
 
 .board-container {
@@ -276,10 +283,10 @@ h1 {
   font-size: 1.5rem;
 }
 .player-container.player-1 {
-  color: hsl(90deg, 100%, 80%);
+  color: var(--player1-color);
 }
 .player-container.player-2 {
-  color: hsl(270deg, 100%, 80%);
+  color: var(--player2-color);
 }
 .player-container .player-avatar {
   grid-area: avatar;
