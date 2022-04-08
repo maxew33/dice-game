@@ -26,13 +26,16 @@ body {
 h1,
 h2 {
   position: absolute;
-  top: 5vh;
+  background: hsl(147deg, 50%, 23%);
+  top: 2.5vh;
   left: 50vw;
   font-size: 2.5rem;
   font-family: "Courgette", cursive;
   color: whitesmoke;
-  text-shadow: 1px 1px 0 grey, 1px -1px 0 grey, -1px 1px 0 grey, -1px -1px 0 grey, 1px 0px 0 grey, 0px 1px 0 grey, -1px 0px 0 grey, 0px -1px 0 white;
   transform: translateX(-50%);
+  z-index: 10;
+  padding: 0 25px;
+  border-radius: 50%;
 }
 
 .set-game {
@@ -55,17 +58,44 @@ h2 {
   font-family: arial;
   color: whitesmoke;
   font-size: 1.5rem;
+  overflow: hidden;
 }
 .slide .slide-content {
-  width: 75vw;
-  height: 75vh;
+  position: relative;
+  width: 90vw;
+  height: 90vh;
   border: 1vmin solid whitesmoke;
   padding: 5vmin;
-  border-radius: 2.5vmin;
+  border-radius: 5vmin;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
+}
+.slide .slide-content::after, .slide .slide-content::before {
+  position: absolute;
+  height: 15vmin;
+  width: 15vmin;
+  border: 1vmin solid hsl(147deg, 50%, 23%);
+  background: hsl(147deg, 50%, 23%);
+  border-radius: 100%;
+  display: grid;
+  place-content: center;
+  font-size: 5rem;
+}
+.slide .slide-content::after {
+  content: "♥";
+  top: 0;
+  left: 0;
+  border-bottom: 1vmin solid whitesmoke;
+  transform: translate(-9.5vmin, -9.5vmin) rotate(-45deg);
+}
+.slide .slide-content::before {
+  content: "♣";
+  bottom: 0;
+  right: 0;
+  border-top: 1vmin solid whitesmoke;
+  transform: translate(9.5vmin, 9.5vmin) rotate(-45deg);
 }
 
 .players-qty .choose-players-number {
@@ -77,6 +107,7 @@ h2 {
   font-size: 1.5rem;
   transition: transform 0.25s ease-in-out;
   line-height: 1.75;
+  color: hsl(147deg, 50%, 23%);
 }
 .players-qty .choose-players-number .fas {
   font-size: 2.5rem;

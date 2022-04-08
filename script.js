@@ -1,7 +1,10 @@
 const setGame = document.querySelector('.set-game'),
     playersQty = [...document.querySelectorAll('.choose-players-number')],
+    playerForm = [...document.querySelectorAll('.slide-content')],
     avatars = [...document.querySelectorAll('.avatar-container .item-list .item')],
+    myAvatar = [...document.querySelectorAll('.my-avatar')],
     colors = [...document.querySelectorAll('.color-container .item-list .item')],
+    myColor = [...document.querySelectorAll('.my-color')],
     rollBtn = document.querySelector('.roll-btn'),
     diceContainer = [...document.querySelectorAll('.dice-container')],
     playerContainer = [...document.querySelectorAll('.player-container')],
@@ -15,14 +18,12 @@ const setGame = document.querySelector('.set-game'),
     playerColor = ['hsl(120deg, 100%, 80%, .5)', 'hsl(270deg, 100%, 80%, .5)'],
     goal = 500
 
-
-//REMPLACER PLAYERSET PAR PLAYERTURN
 let playerQty = 0,
     playerTurn = 0,
     delay = 0,
     canRoll = true,
     dicesLocked = 0,
-    turn = 0,
+    rollOfTheDices = 0,
     setOfDices = [],
     results = [],
     players = []
@@ -45,57 +46,44 @@ function Player(id, name) {
 
 playersQty.forEach(btn => btn.addEventListener('click', () => {
     playerQty = parseInt(btn.dataset.qty)
-    playersSettings(playerTurn)
+    setGame.style.transform = 'translateX(-100vw)'
 }))
 
+myColor.forEach(color => color.addEventListener('click', () => {
+    document.querySelector('.color-container').style.transform = "scale(1)"
+})
+)
 
-//SUPPRIMER LA FONCTION PLAYER SETTINGS ET REMPLACER L'APPEL à CETTE FONCTION PAR UNE TRANSLATION AVEC COMME VARIABLE PLAYER TURN
-const playersSettings = id => {
+myAvatar.forEach(avatar => avatar.addEventListener('click', () => {
+    document.querySelector('.avatar-container').style.transform = "scale(1)"
+})
+)
 
-    console.log(id)
+playerForm.shift
 
-    setGame.style.transform = 'translateX(' + (id + 1) * -100 + 'vw)'
+playerForm.forEach(form => form.addEventListener('submit', e => {
+    e.preventDefault()
 
+    players.push(new Player(playerScore[playerTurn], document.querySelector('.player-' + (playerTurn + 1) + '-name input').value))
 
-    // SORTIR TOUT CA DE LA FONCTION
-    const myColor = [...document.querySelectorAll('.my-color')][id]
+    if (playerTurn === 0 && playerQty === 2) {
+        playerTurn++
+        setGame.style.transform = 'translateX(-200vw)'
+    }
+    else {
+        playerQty === 1 && (
+            players.push(new Player(playerScore[1], "Max")),
+            changeAvatar('fa-desktop', [document.querySelector('.player-2 .player-avatar')])
+        )
 
-    myColor.addEventListener('click', () => {
-        document.querySelector('.color-container').style.transform = "scale(1)"
-    })
+        setGame.style.transform = 'translate(' + (playerTurn + 1) * -100 + 'vw, 100vh)'
 
-    const myAvatar = [...document.querySelectorAll('.my-avatar')][id]
+        playerTurn = 0
 
-    myAvatar.addEventListener('click', () => {
-        document.querySelector('.avatar-container').style.transform = "scale(1)"
-    })
+        launchGame()
+    }
+}))
 
-    const playerForm = [...document.querySelectorAll('.slide-content')][id + 1]
-
-    playerForm.addEventListener('submit', e => {
-        e.preventDefault()
-
-        players.push(new Player(playerScore[id], document.querySelector('.player-' + (id + 1) + '-name input').value))
-
-        if (id === 0 && playerQty === 2) {
-            playerTurn++
-            playersSettings(playerTurn)
-        }
-        else {
-            playerTurn = 0
-            playerQty === 1 && (
-                players.push(new Player(playerScore[1], "Max")),
-                changeAvatar('fa-desktop', [document.querySelector('.player-2 .player-avatar')])
-            )
-
-            setGame.style.transform = 'translate(' + (id + 1) * -100 + 'vw, 100vh)'
-
-            launchGame()
-        }
-    })
-
-    //jusque là !!!!!
-}
 
 // choose the avatar
 avatars.forEach(avatar => {
@@ -105,6 +93,9 @@ avatars.forEach(avatar => {
 const avatarChosen = (avatarClicked) => {
     console.log('click', playerTurn, avatarClicked)
     const places = [document.querySelector('.player-' + (playerTurn + 1) + '-name .my-avatar'), document.querySelector('.player-' + (playerTurn + 1) + ' .player-avatar')]
+    avatars.forEach(col => col.classList.remove('selected'))
+
+    avatarClicked.classList.add('selected')
     changeAvatar(avatarClicked.dataset.avatar, places)
 
     document.querySelector('.avatar-container').style.transform = "scale(0)"
@@ -140,6 +131,7 @@ function colorChosen(colorClicked) {
 
 //new Game
 
+
 function launchGame() {
 
     cleanBoard()
@@ -152,7 +144,7 @@ function launchGame() {
 
     const endOfTurn = (myScore) => {
         canRoll = true
-        turn = 0
+        rollOfTheDices = 0
         dicesLocked = 0
         rollBtn.textContent = "ROLL"
         score.textContent = '0 pt'
@@ -166,30 +158,33 @@ function launchGame() {
         setTimeout(() => {
             messageModal.style.transform = 'translateY(0)'
             messageDisplayed.textContent = 'Bravo ' + players[playerTurn].name + ', vous avez eu ' + myScore + 'pts'
-            messageModal.addEventListener('submit', (e) => {
-                e.preventDefault()
-                messageModal.style.transform = 'translateY(100vh)'
 
-                players[playerTurn].score = myScore
-                playerScore[playerTurn].textContent = myScore
+            players[playerTurn].score = myScore
+            playerScore[playerTurn].textContent = myScore
 
-                if (playerTurn === 0) {
-                    newPlayerTurn(1, 4)
-                    playerQty === 1 && cpuTurn()
-                }
-                else {
-                    players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 2)
-                }
-            })
-        }, 250)
+            
+        }, 1000)
 
+
+
+        // FAIRE APPARAITRE UN MODAL !!!!
+        // alert('Bravo joueur' + playerTurn + ', vous avez eu ' + myScore + 'pts')
+        // players[playerTurn].score = myScore
+        // playerScore[playerTurn].textContent = myScore
+        // if (playerTurn === 0) {
+        //     newPlayerTurn(1, 4)
+        //     playerQty === 1 && cpuTurn()
+        // }
+        // else {
+        //     players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 2)
+        // }
     }
 
     const cpuTurn = () => {
         let valueToLock = 0
 
         setTimeout(() => {
-            if (turn > 0) {
+            if (rollOfTheDices > 0) {
                 for (let diceValue = 1; diceValue <= 6; diceValue++) {
 
                     //I check if there is a double >= 4
@@ -239,15 +234,15 @@ function launchGame() {
         document.documentElement.style.setProperty('--locked-color', playerColor[player])
     }
 
-
     // roll the dices and get the result
     const roll = () => {
 
         canRoll = false
 
-        turn++
+        
+rollOfTheDices++
 
-        dicesLocked === 3 && (turn = 3)
+        dicesLocked === 3 && (rollOfTheDices = 3)
 
         delay = 0
 
@@ -309,15 +304,29 @@ function launchGame() {
 
         score.textContent = myScore + 'pts'
 
-        setTimeout(() => turn < 3 ? (canRoll = true, playerQty === 1 && playerTurn === 1 && cpuTurn()) : endOfTurn(myScore), delay)
+        setTimeout(() => rollOfTheDices < 3 ? (canRoll = true, playerQty === 1 && playerTurn === 1 && cpuTurn()) : endOfTurn(myScore), delay)
     }
+
+    messageModal.addEventListener('submit', (e) => {
+        e.preventDefault()
+        messageModal.style.transform = 'translateY(100vh)'
+        console.log(playerTurn)
+    
+        if (playerTurn === 0) {
+            newPlayerTurn(1, 4)
+            playerQty === 1 && cpuTurn()
+        }
+        else {
+            players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 2)
+        }
+    })
 
     rollBtn.addEventListener('click', () => {
         canRoll && (playerQty === 2 || playerTurn === 0) && roll()
     })
 
     diceContainer.forEach((container, idx) => container.addEventListener('click', () => {
-        if (turn > 0 && canRoll) {
+        if (rollOfTheDices > 0 && canRoll) {
             setOfDices[idx].locked ? lockingDice(false, idx) : lockingDice(true, idx)
             rollBtn.textContent = dicesLocked === 3 ? "TAKE" : "ROLL"
         }
