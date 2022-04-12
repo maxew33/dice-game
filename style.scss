@@ -18,7 +18,7 @@ $carpet-color: hsl(147deg, 50%, 23%);
     --duration: 2s;
     --point-size: 2.25vmin;
     --point-position: 1.75vmin;
-    --locked-color: hsl(120deg, 80%, 60%, 0.5);
+    --current-player-color: hsl(120deg, 80%, 60%);
     --player1-color: hsl(120deg, 80%, 60%);
     --player2-color: hsl(270deg, 80%, 60%);
 }
@@ -34,30 +34,80 @@ h2 {
     position: absolute;
     background: $carpet-color;
     top: 2.5vh;
-    left: 50vw;
-    font-size: 2.5rem;
+    left: 50%;
     font-family: $fontfam-1;
     color: $text-color;
     transform: translateX(-50%);
     z-index: 10;
-    padding:0 25px;
+    padding: 0 25px;
     border-radius: 50%;
 }
 
-.set-game {
+h1 {
+    font-size: 2.5rem;
+}
+
+h2 {
+    font-size: 2.15rem;
+}
+
+.game-board {
     position: absolute;
     height: 100vh;
-    width: 300vw;
+    width: 100vw;
     background: hsl(147deg, 50%, 23%);
     z-index: 10;
-    display: flex;
     transition: transform 0.5s ease-out;
+    display: grid;
+    place-content: center;
+}
+
+.slide-content {
+    position: relative;
+    width: 90vw;
+    height: 90vh;
+    border: 1vmin solid whitesmoke;
+    padding: 5vmin;
+    border-radius: 5vmin;
+    color: whitesmoke;
+
+    &::after,
+    &::before {
+        position: absolute;
+        height: 15vmin;
+        width: 15vmin;
+        border: 1vmin solid $carpet-color;
+        background: $carpet-color;
+        border-radius: 100%;
+        display: grid;
+        place-content: center;
+        font-size: 5rem;
+    }
+
+    &::after {
+        content: "♥";
+        top: 0;
+        left: 0;
+        border-bottom: 1vmin solid whitesmoke;
+        transform: translate(-9.5vmin, -9.5vmin) rotate(-45deg);
+        //translate 50% + pseudo-element border-width + element border-width
+    }
+
+    &::before {
+        content: "♣";
+        bottom: 0;
+        right: 0;
+        border-top: 1vmin solid whitesmoke;
+        transform: translate(9.5vmin, 9.5vmin) rotate(-45deg);
+    }
 }
 
 .slide {
-    position: relative;
-    width: 100vw;
-    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: inherit;
+    height: inherit;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -65,75 +115,42 @@ h2 {
     color: $text-color;
     font-size: 1.5rem;
     overflow: hidden;
+    transition: opacity 0.25s ease-in-out;
 
-    .slide-content {
-        position: relative;
-        width: 90vw;
-        height: 90vh;
-        border: 1vmin solid whitesmoke;
-        padding: 5vmin;
-        border-radius: 5vmin;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
-        align-items: center;
-
-        &::after,
-        &::before {
-            position: absolute;
-            height: 15vmin;
-            width: 15vmin;
-            border: 1vmin solid $carpet-color;
-            background: $carpet-color;
-            border-radius: 100%;
-            display: grid;
-            place-content: center;
-            font-size: 5rem;
-        }
-
-        &::after {
-            content: "♥";
-            top: 0;
-            left: 0;
-            border-bottom: 1vmin solid whitesmoke;
-            transform: translate(-9.5vmin, -9.5vmin) rotate(-45deg);
-            //translate 50% + pseudo-element border-width + element border-width
-        }
-
-        &::before {
-            content: '♣';
-            bottom: 0;
-            right: 0;
-            border-top: 1vmin solid whitesmoke;
-            transform: translate(9.5vmin, 9.5vmin) rotate(-45deg);
-        }
+    &:not(:first-child) {
+        opacity: 0;
+        display: none;
     }
 }
 
-.players-qty {
-    .choose-players-number {
-        width: 45%;
-        cursor: pointer;
-        padding: 2vmin;
-        border: none;
-        border-radius: 1.5vmin;
-        font-size: 1.5rem;
-        transition: transform 0.25s ease-in-out;
-        line-height: 1.75;
-        color: $carpet-color;
+.choose-players-number {
+    width: 40%;
+    cursor: pointer;
+    padding: 2vmin;
+    border: none;
+    border-radius: 1.5vmin;
+    font-size: 1.5rem;
+    transition: transform 0.25s ease-in-out;
+    line-height: 1.75;
+    color: $carpet-color;
 
-        .fas {
-            font-size: 2.5rem;
-        }
+    .fas {
+        font-size: 2.5rem;
+    }
 
-        &:hover {
-            transform: scale(1.05);
-        }
+    &:hover {
+        transform: scale(1.05);
     }
 }
 
 .players-identity {
+    display: grid;
+    grid-template: repeat(4, 1fr) / repeat(2, 1fr);
+    gap: 25px;
+    width: 90%;
+
     div {
+        width: 90%;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -270,18 +287,18 @@ h2 {
     }
 }
 
-.game-board {
-    position: absolute;
-    height: 100vh;
-    width: 100vw;
-    background: #000;
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-}
+// .game-board {
+//     position: absolute;
+//     height: 100vh;
+//     width: 100vw;
+//     background: #000;
+//     display: flex;
+//     align-items: center;
+//     justify-content: space-evenly;
+// }
 
 .board-container {
-    height: 100vh;
+    height: inherit;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -303,8 +320,12 @@ h2 {
     aspect-ratio: 1;
     opacity: 0;
     border-radius: var(--border-radius);
-    background: var(--locked-color);
+    background: var(--current-player-color);
     transition: opacity 0.25s ease-in-out;
+}
+
+.locked ~ .padlock {
+    opacity: 0.6;
 
     &::after {
         content: "🔒";
@@ -314,10 +335,6 @@ h2 {
         font-size: 1.5vmin;
         transform: rotate(-15deg);
     }
-}
-
-.locked ~ .padlock {
-    opacity: 1;
 }
 
 .dice {
@@ -408,27 +425,20 @@ h2 {
     cursor: pointer;
 }
 
-.score {
-    width: 20vmin;
-    aspect-ratio: 2/1;
-    background: #ddd;
+.score-container {
     font-size: 4vmin;
-    font-family: Arial, Helvetica, sans-serif;
-    display: grid;
-    justify-content: center;
+    font-family: $fontfam-2;
+
+    .score {
+        color: var(--current-player-color);
+    }
 }
 
 .player-container {
     height: 80vh;
     width: 25vw;
-    display: grid;
-    grid-template-areas:
-        "avatar avatar"
-        "avatar avatar"
-        "avatar avatar"
-        "name score"
-        "total total"
-        "total total";
+    display: flex;
+    flex-direction: column;
     color: #ddd;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.5rem;
@@ -443,8 +453,15 @@ h2 {
 
     .player-avatar {
         grid-area: avatar;
+        width: 17.5vw;
+        height: 15vw;
+        border: 1vmin solid whitesmoke;
+        border-radius: 25px;
+        background: hsl(0, 0, 100, 0.1);
         justify-self: center;
-        font-size: 15rem;
+        display: grid;
+        place-content: center;
+        font-size: 10vw;
     }
 
     .player-name {
@@ -468,9 +485,21 @@ h2 {
 
 .message-modal {
     position: absolute;
-    height: 100vh;
-    width: 100vw;
-    background: $carpet-color;
+    top: 25vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    font-size: 3.5rem;
+    font-family: $fontfam-2;
+    background: hsl(0, 0, 0, 0.5);
+    backdrop-filter: blur(2.5px);
+    border: 2.5vmin solid whitesmoke;
+    border-radius: 5vmin;
+    height: 50vh;
+    margin: 0 10vmin;
+    width: calc(100vw - 20vmin);
     transform: translateY(100vh);
     transition: transform 0.5s ease-in-out;
 }
