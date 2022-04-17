@@ -44,6 +44,7 @@
     <div class="game-board">
         <h1 class="title">My great dices game</h1>
         <div class="slide-content">
+
             <div class="slide slide-1">
                 <!--player quantity-->
                 <button class="choose-players-number" data-qty="1">
@@ -57,23 +58,30 @@
                     2 players
                 </button>
             </div>
+
+
+                <!--player's settings-->
             <div class="slide slide-2">
                 <h2 class="player-settings">Player 1</h2>
 
                 <form class="players-identity player-1-name">
-                    <label for="player-1">Your name : </label>
-                    <input type="text" class="name_field" id="player-1" value="player-1">
 
                     <div class="player-avatar">
                         Your avatar :
                     </div>
+
+                    <label for="player-1">Your name : </label>
+                    
+                    <div class="player-color">
+                        Your color :
+                    </div>
+
                     <div class="my-avatar choose-box">
                         <i class="fas fa-user"></i>
                     </div>
 
-                    <div class="player-color">
-                        Your color :
-                    </div>
+                    <input type="text" class="name-field" id="player-1" value="player-1">
+
                     <div class="my-color choose-box">
                     </div>
 
@@ -85,22 +93,26 @@
             </div>
             <div class="slide slide-3">
                 <h2 class="player-settings">Player 2</h2>
+
                 <form class="players-identity player-2-name">
 
-                    <label for="player-2">Your name : </label>
-                    <input type="text" class="name_field" id="player-2" value="player-2">
-
                     <div class="player-avatar">
-                        choose your avatar :
-                        <div class="my-avatar choose-box">
-                            <i class="fas fa-user"></i>
-                        </div>
+                        Your avatar :
                     </div>
 
+                    <label for="player-2">Your name : </label>
+                    
                     <div class="player-color">
-                        choose your color :
-                        <div class="my-color choose-box">
-                        </div>
+                        Your color :
+                    </div>
+
+                    <div class="my-avatar choose-box">
+                        <i class="fas fa-user"></i>
+                    </div>
+
+                    <input type="text" class="name-field" id="player-2" value="player-2">
+
+                    <div class="my-color choose-box">
                     </div>
 
                     <button type="submit" class="submit-button">
@@ -109,6 +121,8 @@
 
                 </form>
             </div>
+
+                <!--game board-->           
             <div class="slide slide-4">
 
                 <div class="player-container player-1">
@@ -306,7 +320,7 @@
 
                     <button class="roll-btn">ROLL</button>
 
-                    <div class="score-container"> Total : 
+                    <div class="score-container"> Total : <br />
                         <span class="score">0</span>
                     </div>
 

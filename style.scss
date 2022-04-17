@@ -11,6 +11,7 @@ $fontfam-2: arial;
 $text-color: whitesmoke;
 $text-shadow: grey;
 $carpet-color: hsl(147deg, 50%, 23%);
+$border-color: whitesmoke;
 
 :root {
     --border-radius: 1vmin;
@@ -66,10 +67,10 @@ h2 {
     position: relative;
     width: 90vw;
     height: 90vh;
-    border: 1vmin solid whitesmoke;
+    border: 1vmin solid $border-color;
     padding: 5vmin;
     border-radius: 5vmin;
-    color: whitesmoke;
+    color: $text-color;
 
     &::after,
     &::before {
@@ -88,7 +89,7 @@ h2 {
         content: "♥";
         top: 0;
         left: 0;
-        border-bottom: 1vmin solid whitesmoke;
+        border-bottom: 1vmin solid $border-color;
         transform: translate(-9.5vmin, -9.5vmin) rotate(-45deg);
         //translate 50% + pseudo-element border-width + element border-width
     }
@@ -97,7 +98,7 @@ h2 {
         content: "♣";
         bottom: 0;
         right: 0;
-        border-top: 1vmin solid whitesmoke;
+        border-top: 1vmin solid $border-color;
         transform: translate(9.5vmin, 9.5vmin) rotate(-45deg);
     }
 }
@@ -145,23 +146,19 @@ h2 {
 
 .players-identity {
     display: grid;
-    grid-template: repeat(4, 1fr) / repeat(2, 1fr);
+    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
     gap: 25px;
     width: 90%;
 
-    div {
-        width: 90%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 25px;
+    >*{
+        place-self: center;
     }
 
     .choose-box {
         height: 10vmin;
         width: 10vmin;
         font-size: 8vmin;
-        color: whitesmoke;
+        color: $text-color;
         border-radius: 2.5vmin;
         cursor: pointer;
     }
@@ -170,6 +167,28 @@ h2 {
     }
     &.player-2-name .my-color {
         background: var(--player2-color);
+    }
+
+    .name-field{
+        border-radius: 2vmin;
+        border: .5vmin solid $border-color;
+        background: hsl(0deg, 0%, 90%, 0.5);
+        font-family: $fontfam-2;
+        color: $text-color;
+        text-align: center;
+        font-size: 2rem;
+        height: 5rem;
+    }
+
+    .name-field:focus{
+        background: hsl(0deg, 0%, 50%, 0.75);
+
+    }
+    
+    .submit-button {
+        grid-column: 1/4;
+        justify-self: center;
+        margin-top: 5vmin;
     }
 }
 
@@ -439,7 +458,7 @@ h2 {
     width: 25vw;
     display: flex;
     flex-direction: column;
-    color: #ddd;
+    color: $text-color;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.5rem;
 
@@ -455,7 +474,7 @@ h2 {
         grid-area: avatar;
         width: 17.5vw;
         height: 15vw;
-        border: 1vmin solid whitesmoke;
+        border: 1vmin solid $border-color;
         border-radius: 25px;
         background: hsl(0, 0, 100, 0.1);
         justify-self: center;
@@ -474,7 +493,7 @@ h2 {
         grid-area: score;
         justify-self: center;
         min-width: 100%;
-        border: 1px solid whitesmoke;
+        border: 1px solid $border-color;
     }
 
     .player-total {
@@ -495,7 +514,7 @@ h2 {
     font-family: $fontfam-2;
     background: hsl(0, 0, 0, 0.5);
     backdrop-filter: blur(2.5px);
-    border: 2.5vmin solid whitesmoke;
+    border: 2.5vmin solid $border-color;
     border-radius: 5vmin;
     height: 50vh;
     margin: 0 10vmin;

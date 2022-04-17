@@ -60,17 +60,41 @@ playersQty.forEach(btn => btn.addEventListener('click', () => {
     changeSlide()
 }))
 
+
+// choose the color
+
 myColor.forEach(color => color.addEventListener('click', () => {
     document.querySelector('.color-container').style.transform = "scale(1)"
 })
 )
+
+colors.forEach(color => {
+    color.addEventListener('click', ({ target }) => colorChosen(target))
+})
+
+const colorChosen = (colorClicked) => {
+    console.log('click', playerTurn)
+
+    playerColor[playerTurn] = colorClicked.dataset.color
+
+    colors.forEach(col => col.classList.remove('selected'))
+
+    colorClicked.classList.add('selected')
+
+    document.documentElement.style.setProperty('--player' + (playerTurn + 1) + '-color', colorClicked.dataset.color)
+
+    playerTurn === 0 && document.documentElement.style.setProperty('--current-player-color', colorClicked.dataset.color)
+
+    document.querySelector('.color-container').style.transform = "scale(0)"
+}
+
+// choose the avatar
 
 myAvatar.forEach(avatar => avatar.addEventListener('click', () => {
     document.querySelector('.avatar-container').style.transform = "scale(1)"
 })
 )
 
-// choose the avatar
 avatars.forEach(avatar => {
     avatar.addEventListener('click', ({ target }) => avatarChosen(target))
 })
@@ -94,37 +118,16 @@ const changeAvatar = (avatar, places) => {
     })
 }
 
-// choose the color
-colors.forEach(color => {
-    color.addEventListener('click', ({ target }) => colorChosen(target))
-})
-
-const colorChosen = (colorClicked) => {
-    console.log('click', playerTurn)
-
-    playerColor[playerTurn] = colorClicked.dataset.color
-
-    colors.forEach(col => col.classList.remove('selected'))
-
-    colorClicked.classList.add('selected')
-
-    document.documentElement.style.setProperty('--player' + (playerTurn + 1) + '-color', colorClicked.dataset.color)
-
-    playerTurn === 0 && document.documentElement.style.setProperty('--current-player-color', colorClicked.dataset.color)
-
-    document.querySelector('.color-container').style.transform = "scale(0)"
-}
 
 playerForm.shift
 
 playerForm.forEach(form => form.addEventListener('submit', e => {
     e.preventDefault()
 
-    console.log(playerQty, form, `call from ${form}`)
-
     players.push(new Player(playerScore[playerTurn], document.querySelector('.player-' + (playerTurn + 1) + '-name input').value))
 
     if (playerTurn === 0 && playerQty === 2) {
+        playerTurn++
         changeSlide()
     }
     else {

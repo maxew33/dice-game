@@ -131,16 +131,12 @@ h2 {
 
 .players-identity {
   display: grid;
-  grid-template: repeat(4, 1fr)/repeat(2, 1fr);
+  grid-template: repeat(3, 1fr)/repeat(3, 1fr);
   gap: 25px;
   width: 90%;
 }
-.players-identity div {
-  width: 90%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 25px;
+.players-identity > * {
+  place-self: center;
 }
 .players-identity .choose-box {
   height: 10vmin;
@@ -155,6 +151,24 @@ h2 {
 }
 .players-identity.player-2-name .my-color {
   background: var(--player2-color);
+}
+.players-identity .name-field {
+  border-radius: 2vmin;
+  border: 0.5vmin solid whitesmoke;
+  background: hsla(0deg, 0%, 90%, 0.5);
+  font-family: arial;
+  color: whitesmoke;
+  text-align: center;
+  font-size: 2rem;
+  height: 5rem;
+}
+.players-identity .name-field:focus {
+  background: hsla(0deg, 0%, 50%, 0.75);
+}
+.players-identity .submit-button {
+  grid-column: 1/4;
+  justify-self: center;
+  margin-top: 5vmin;
 }
 
 .submit-button {
@@ -393,7 +407,7 @@ h2 {
   width: 25vw;
   display: flex;
   flex-direction: column;
-  color: #ddd;
+  color: whitesmoke;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 1.5rem;
 }
