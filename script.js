@@ -1,9 +1,9 @@
 const setGame = document.querySelector('.set-game'),
     gameSlides = [...document.querySelectorAll('.slide')],
     playersQty = [...document.querySelectorAll('.choose-players-number')],
-    playerForm = [...document.querySelectorAll('.slide-content')],
+    playerForm = document.querySelector('.players-identity'),
     avatars = [...document.querySelectorAll('.avatar-container .item-list .item')],
-    myAvatar = [...document.querySelectorAll('.my-avatar')],
+    myAvatar = document.querySelector('.my-avatar'),
     colors = [...document.querySelectorAll('.color-container .item-list .item')],
     myColor = [...document.querySelectorAll('.my-color')],
     rollBtn = document.querySelector('.roll-btn'),
@@ -52,7 +52,7 @@ const changeSlide = () => {
     gameSlides[currentSlide].style.opacity = 0
     currentSlide++
     gameSlides[currentSlide].style.opacity = 1
-    gameSlides[currentSlide].style.display = "flex"
+    gameSlides[currentSlide].style.display = "grid"
 }
 
 playersQty.forEach(btn => btn.addEventListener('click', () => {
@@ -90,10 +90,9 @@ const colorChosen = (colorClicked) => {
 
 // choose the avatar
 
-myAvatar.forEach(avatar => avatar.addEventListener('click', () => {
+myAvatar.addEventListener('click', () => {
     document.querySelector('.avatar-container').style.transform = "scale(1)"
 })
-)
 
 avatars.forEach(avatar => {
     avatar.addEventListener('click', ({ target }) => avatarChosen(target))
@@ -101,42 +100,36 @@ avatars.forEach(avatar => {
 
 const avatarChosen = (avatarClicked) => {
     console.log('click', playerTurn, avatarClicked)
-    const places = [document.querySelector('.player-' + (playerTurn + 1) + '-name .my-avatar'), document.querySelector('.player-' + (playerTurn + 1) + ' .player-avatar')]
     avatars.forEach(col => col.classList.remove('selected'))
 
     avatarClicked.classList.add('selected')
-    changeAvatar(avatarClicked.dataset.avatar, places)
+
+    document.querySelector('.my-avatar').innerHTML = `<i class="fas ${avatarClicked.dataset.avatar}"></i>`
+    document.querySelector(`.player-${playerTurn + 1} .player-avatar`).innerHTML = `<i class="fas ${avatarClicked.dataset.avatar}"></i>`
 
     document.querySelector('.avatar-container').style.transform = "scale(0)"
 }
 
-const changeAvatar = (avatar, places) => {
-    const myNewAvatar = `<i class="fas ${avatar}"></i>`
-    places.forEach(place => {
-        place.innerHTML = myNewAvatar
-        console.log(place)
-    })
-}
+// validation of the player settings
 
-
-playerForm.shift
-
-playerForm.forEach(form => form.addEventListener('submit', e => {
+playerForm.addEventListener('submit', e => {
     e.preventDefault()
 
-    players.push(new Player(playerScore[playerTurn], document.querySelector('.player-' + (playerTurn + 1) + '-name input').value))
+    players.push(new Player(playerScore[playerTurn], document.querySelector('.players-identity input').value))
 
     if (playerTurn === 0 && playerQty === 2) {
+        // reset of the values
+        document.querySelector('.player-settings').innerText = 'Player 2'
+        document.querySelector('.name-field').value = 'Bar'
+        document.querySelector('.my-color').style.background = 'var(--player2-color)'
+        colors.forEach(col => col.classList.remove('selected'))
         playerTurn++
-        changeSlide()
     }
     else {
         playerQty === 1 && (
             players.push(new Player(playerScore[1], "Max")),
-            changeAvatar('fa-desktop', [document.querySelector('.player-2 .player-avatar')]),
-            changeSlide()
+            document.querySelector(`.player-2 .player-avatar`).innerHTML = `<i class="fas fa-desktop"></i>`
         )
-        console.log(currentSlide)
 
         changeSlide()
 
@@ -144,13 +137,10 @@ playerForm.forEach(form => form.addEventListener('submit', e => {
 
         launchGame()
     }
-}))
+})
 
 
-
-
-//new Game
-
+//Let's play this awesome dices game :)
 
 function launchGame() {
 
@@ -165,27 +155,28 @@ function launchGame() {
     }
 
     const endOfTurn = (myScore) => {
-        console.log('turn ended', playerTurn)
-        canRoll = true
-        rollOfTheDices = 0
-        dicesLocked = 0
-        rollBtn.textContent = "ROLL"
-        score.textContent = '0 pt'
-        results = []
 
-        setOfDices.forEach(dice => {
-            dice.locked = false
-            dice.id.classList.remove('locked')
-        })
+        console.log('turn ended', playerTurn)
 
         setTimeout(() => {
             const myTxt = myScore < 80 ? 'Don\'t cry' : myScore < 110 ? 'OK' : myScore < 130 ? 'Well done' : myScore < 150 ? 'Great' : myScore === 250 ? 'Awesome' : 'Fantastic'
             message(`${myTxt} ${players[playerTurn].name},\r\n you had got ${myScore} pts !`)
 
+            rollOfTheDices = 0
+            dicesLocked = 0
+            rollBtn.textContent = "ROLL"
+            score.textContent = '0 pt'
+            results = []
+
+            setOfDices.forEach(dice => {
+                dice.locked = false
+                dice.id.classList.remove('locked')
+            })
+
             players[playerTurn].score = myScore
             playerScore[playerTurn].textContent = myScore
 
-        }, 1000)
+        }, 500)
 
     }
 
@@ -224,29 +215,30 @@ function launchGame() {
 
     const turnWinner = (winner) => {
         players[winner].total -= players[winner].score
-        playerTotal[winner].innerHTML += `<br/>` + players[winner].total
+
+        playerTotal[winner].innerHTML += `<span class="crossed"></span><br/><span>${players[winner].total}</span>`
+
+        // playerTotal[winner].innerHTML += ` (${players[winner].score})<span class="crossed"> </span><span>${players[winner].total}<span>`
+
         players[winner].total <= 0 && endOfGame(winner)
-        newPlayerTurn(0, winner)
+        newPlayerTurn(0, winner + 1)
     }
 
     const newPlayerTurn = (player, txt) => {
 
-        // switch (txt) {
-        //     case 0: turnOver = true
-        //         message('joueur 1 gagne')
-        //         break
-        //     case 1: turnOver = true
-        //         message('joueur 2 gagne')
-        //         break
-        //     case 2: turnOver = true
-        //         message('égalité')
-        //         break
-        //     default: console.log('joueur 2 joue')
-        // }
+        console.log('newTurn ' + txt)
 
-        console.log('newTurn' + txt)
+        if(txt){
+            turnOver = true
 
-        txt && (turnOver = true, txt === 2 ? message('Draw game') : message(`${players[txt].name} has won with ${players[txt].score} pts !`))
+            txt === 3 ? message('Draw game') : message(`${players[txt-1].name} has won with ${players[txt-1].score} pts !`)
+
+            players.forEach((player, index) => {
+                player.score = 0
+                playerContainer[index].querySelector('.player-score').textContent = player.score
+            })
+
+        } 
 
         playerTurn = player
         document.documentElement.style.setProperty('--current-player-color', playerColor[player])
@@ -319,9 +311,14 @@ function launchGame() {
 
         results.every(res => res === results[0]) ? myScore = 250 : myScore = results.reduce((prev, curr) => prev + curr, 0) * 10
 
-        score.textContent = myScore + ' pts'
 
-        setTimeout(() => rollOfTheDices < 3 ? (canRoll = true, playerQty === 1 && playerTurn === 1 && cpuTurn()) : endOfTurn(myScore), delay)
+        setTimeout(() => {
+            score.textContent = myScore + ' pts'
+            rollOfTheDices < 3 ? (
+                canRoll = true,
+                playerQty === 1 && playerTurn === 1 && cpuTurn())
+                : endOfTurn(myScore)
+        }, delay)
     }
 
     const message = (message) => {
@@ -331,6 +328,9 @@ function launchGame() {
 
     messageModal.addEventListener('submit', (e) => {
         e.preventDefault()
+
+        canRoll = true
+
         messageModal.style.transform = 'translateY(100vh)'
 
         if (playerTurn === 0 && !turnOver) {
@@ -338,7 +338,7 @@ function launchGame() {
             playerQty === 1 && cpuTurn()
         }
         else if (!turnOver) {
-            players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 2)
+            players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 3)
         }
         else { turnOver = !turnOver }
     })

@@ -34,7 +34,7 @@ h2 {
   transform: translateX(-50%);
   z-index: 10;
   padding: 0 25px;
-  border-radius: 50%;
+  border-radius: 50vw;
 }
 
 h1 {
@@ -97,12 +97,11 @@ h2 {
   left: 0;
   width: inherit;
   height: inherit;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
   font-family: arial;
   color: whitesmoke;
   font-size: 1.5rem;
+  align-items: center;
+  justify-content: space-evenly;
   overflow: hidden;
   transition: opacity 0.25s ease-in-out;
 }
@@ -111,6 +110,11 @@ h2 {
   display: none;
 }
 
+.slide-1 {
+  display: flex;
+}
+
+/* ====== slide 1 ====== */
 .choose-players-number {
   width: 40%;
   cursor: pointer;
@@ -129,7 +133,9 @@ h2 {
   transform: scale(1.05);
 }
 
+/* ====== slide 2 ====== */
 .players-identity {
+  justify-self: center;
   display: grid;
   grid-template: repeat(3, 1fr)/repeat(3, 1fr);
   gap: 25px;
@@ -146,11 +152,8 @@ h2 {
   border-radius: 2.5vmin;
   cursor: pointer;
 }
-.players-identity.player-1-name .my-color {
+.players-identity .my-color {
   background: var(--player1-color);
-}
-.players-identity.player-2-name .my-color {
-  background: var(--player2-color);
 }
 .players-identity .name-field {
   border-radius: 2vmin;
@@ -267,6 +270,78 @@ h2 {
   background: hsl(320deg, 80%, 60%);
 }
 
+/* ====== slide 3 ====== */
+.slide-3 {
+  grid-template: 1fr/2fr 1fr 2fr;
+}
+
+/* === players === */
+.player-container {
+  height: 80vh;
+  width: 25vw;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  color: whitesmoke;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.5rem;
+}
+.player-container.player-1 {
+  color: var(--player1-color);
+}
+.player-container.player-2 {
+  color: var(--player2-color);
+}
+.player-container .player-avatar {
+  grid-area: avatar;
+  width: 17.5vw;
+  height: 15vw;
+  border: 1vmin solid whitesmoke;
+  border-radius: 25px;
+  background: hsla(0deg, 0%, 100%, 0.1);
+  align-self: center;
+  display: grid;
+  place-content: center;
+  font-size: 10vw;
+}
+.player-container .player-informations {
+  height: calc(90vh - 15vw);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-family: "Courgette", cursive;
+  color: whitesmoke;
+}
+.player-container .player-informations .player-name {
+  font-size: 2rem;
+  align-self: center;
+  line-height: 1.5;
+}
+.player-container .player-informations .player-score-wrapper {
+  line-height: 2;
+}
+.player-container .player-informations .player-total {
+  height: 80%;
+  margin: 5%;
+  padding: 5%;
+  line-height: 1.5;
+  border: 2px solid green;
+  border: 0.5vmin solid whitesmoke;
+  border-radius: 25px;
+  background: hsla(0deg, 0%, 100%, 0.1);
+}
+.player-container .player-informations .player-total span {
+  width: 3rem;
+  height: 1.5rem;
+}
+.player-container .player-informations .player-total .crossed {
+  transform: translate(-90%, 60%) rotate(-10deg);
+  position: relative;
+  border-top: 3px solid white;
+  display: inline-block;
+}
+
+/* === dices === */
 .board-container {
   height: inherit;
   display: flex;
@@ -400,49 +475,6 @@ h2 {
 }
 .score-container .score {
   color: var(--current-player-color);
-}
-
-.player-container {
-  height: 80vh;
-  width: 25vw;
-  display: flex;
-  flex-direction: column;
-  color: whitesmoke;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.5rem;
-}
-.player-container.player-1 {
-  color: var(--player1-color);
-}
-.player-container.player-2 {
-  color: var(--player2-color);
-}
-.player-container .player-avatar {
-  grid-area: avatar;
-  width: 17.5vw;
-  height: 15vw;
-  border: 1vmin solid whitesmoke;
-  border-radius: 25px;
-  background: hsla(0deg, 0%, 100%, 0.1);
-  justify-self: center;
-  display: grid;
-  place-content: center;
-  font-size: 10vw;
-}
-.player-container .player-name {
-  grid-area: name;
-  place-self: center;
-  width: 50%;
-}
-.player-container .player-score {
-  grid-area: score;
-  justify-self: center;
-  min-width: 100%;
-  border: 1px solid whitesmoke;
-}
-.player-container .player-total {
-  grid-area: total;
-  justify-self: center;
 }
 
 .message-modal {

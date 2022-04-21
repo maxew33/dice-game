@@ -46,7 +46,8 @@
         <div class="slide-content">
 
             <div class="slide slide-1">
-                <!--player quantity-->
+
+                <!-- ====== player quantity ====== -->
                 <button class="choose-players-number" data-qty="1">
                     <i class="fas fa-user"></i>
                     <br />
@@ -60,18 +61,18 @@
             </div>
 
 
-                <!--player's settings-->
+            <!-- ====== player's settings ====== -->
             <div class="slide slide-2">
                 <h2 class="player-settings">Player 1</h2>
 
-                <form class="players-identity player-1-name">
+                <form class="players-identity">
 
                     <div class="player-avatar">
                         Your avatar :
                     </div>
 
-                    <label for="player-1">Your name : </label>
-                    
+                    <label for="player-name">Your name : </label>
+
                     <div class="player-color">
                         Your color :
                     </div>
@@ -80,7 +81,7 @@
                         <i class="fas fa-user"></i>
                     </div>
 
-                    <input type="text" class="name-field" id="player-1" value="player-1">
+                    <input type="text" class="name-field" id="player-name" value="Foo">
 
                     <div class="my-color choose-box">
                     </div>
@@ -91,50 +92,23 @@
 
                 </form>
             </div>
+
+            <!-- ====== game board ====== -->
             <div class="slide slide-3">
-                <h2 class="player-settings">Player 2</h2>
-
-                <form class="players-identity player-2-name">
-
-                    <div class="player-avatar">
-                        Your avatar :
-                    </div>
-
-                    <label for="player-2">Your name : </label>
-                    
-                    <div class="player-color">
-                        Your color :
-                    </div>
-
-                    <div class="my-avatar choose-box">
-                        <i class="fas fa-user"></i>
-                    </div>
-
-                    <input type="text" class="name-field" id="player-2" value="player-2">
-
-                    <div class="my-color choose-box">
-                    </div>
-
-                    <button type="submit" class="submit-button">
-                        OK
-                    </button>
-
-                </form>
-            </div>
-
-                <!--game board-->           
-            <div class="slide slide-4">
 
                 <div class="player-container player-1">
                     <div class="player-avatar"><i class="fas fa-user"></i></div>
                     <div class="player-informations">
                         <div class="player-name"></div>
-                        <div class="player-score"></div>
+                        <div class="player-score-wrapper">
+                            My score : <span class="player-score"></span>
+                        </div>
                         <div class="player-total"></div>
                     </div>
                 </div>
 
                 <div class="board-container">
+
                     <div class='dice-container'>
                         <div class='dice'>
                             <div class='face' data-id='1'>
@@ -328,9 +302,13 @@
 
                 <div class="player-container player-2">
                     <div class="player-avatar"><i class="fas fa-user"></i></div>
-                    <div class="player-name"></div>
-                    <div class="player-score"></div>
-                    <div class="player-total"></div>
+                    <div class="player-informations">
+                        <div class="player-name"></div>
+                        <div class="player-score-wrapper">
+                            My score : <span class="player-score"></span>
+                        </div>
+                        <div class="player-total"></div>
+                    </div>
                 </div>
             </div>
 
