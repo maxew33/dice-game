@@ -30,8 +30,7 @@ body {
     overflow: hidden;
 }
 
-h1,
-h2 {
+.title {
     position: absolute;
     background: $carpet-color;
     top: 2.5vh;
@@ -39,13 +38,13 @@ h2 {
     font-family: $fontfam-1;
     color: $text-color;
     transform: translateX(-50%);
-    z-index: 10;
     padding: 0 25px;
     border-radius: 50vw;
 }
 
 h1 {
     font-size: 2.5rem;
+    z-index: 50;
 }
 
 h2 {
@@ -57,7 +56,7 @@ h2 {
     height: 100vh;
     width: 100vw;
     background: hsl(147deg, 50%, 23%);
-    z-index: 10;
+    // z-index: 10;
     transition: transform 0.5s ease-out;
     display: grid;
     place-content: center;
@@ -105,9 +104,7 @@ h2 {
 
 .slide {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: inherit;
+    inset: 0;
     height: inherit;
     font-family: $fontfam-2;
     color: $text-color;
@@ -123,11 +120,106 @@ h2 {
     }
 }
 
-.slide-1 {
+/* ====== options ====== */
+
+.option-container {
+    position: absolute;
+    top: 7.5vh;
+    right: 7.5vw;
+    z-index: 20;
+}
+
+.option-wrapper {
+    position: fixed;
+    top: 5vh;
+    left: 5vw;
+    clip-path: circle(0 at 87.5vw 2.5vh);
+    transition: clip-path .75s ease-out;
+    background: $text-color;
+    border-radius: 5vmin;
+
+    .title {
+        color: $carpet-color;
+        background: $text-color;
+    }
+}
+
+#option-checkbox {
+    display: none;
+}
+
+.toggle-option {
+    position: absolute;
+    color: $text-color;
+    transform: translate(-50%, -50%);
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: color 0.75s ease-out;
+}
+
+#option-checkbox:checked {
+    ~ .option-wrapper {
+        clip-path: circle(150% at 92.5vw 7.5vh);
+    }
+
+    ~ .toggle-option {
+        color: $carpet-color;
+    }
+}
+
+.options {
+    position: absolute;
+    inset: 0;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    color: $carpet-color;
+}
+
+.sliders-container {
+
+    height: 25%;
+    width: 90%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    
+    .slider {
+        -webkit-appearance: none;
+        width: 25%;
+        height: 15px;
+        border-radius: 999px;
+        background: #d3d3d3;
+        outline: none;
+        -webkit-transition: 0.2s;
+        transition: opacity 0.2s;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: $carpet-color;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: $carpet-color;
+        cursor: pointer;
+    }
 }
 
 /* ====== slide 1 ====== */
+
+.slide-1 {
+    display: flex;
+}
 
 .choose-players-number {
     width: 40%;
@@ -379,7 +471,10 @@ h2 {
         }
 
         .player-total {
-            height: 80%;
+            height: 40vh;
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
             margin: 5%;
             padding: 5%;
             line-height: 1.5;
@@ -388,22 +483,32 @@ h2 {
             border-radius: 25px;
             background: hsla(0deg, 0%, 100%, 0.1);
 
-            span{
-                width: 3rem;
-                height: 1.5rem;
+            .prev-score,
+            .crossed {
+                position: relative;
+                width: fit-content;
+
+                .tiny-score {
+                    font-size: 0.75rem;
+                }
             }
 
             .crossed {
-                transform: translate(-90%, 60%) rotate(-10deg);
-                position: relative;
-                border-top: 3px solid white;
-                display: inline-block;
+                &::after {
+                    content: "";
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 3rem;
+                    transform: translate(-50%, -50%) rotate(-10deg);
+                    border-top: 3px solid white;
+                }
             }
         }
     }
 }
 
-/* === dices === */
+/* === dice === */
 
 .board-container {
     height: inherit;
@@ -543,8 +648,11 @@ h2 {
 }
 
 .message-modal {
+    width: 95vw;
+    height: 95vh;
     position: absolute;
-    top: 25vh;
+    top: 2.5vh;
+    left: 2.5vw;
     color: white;
     display: flex;
     flex-direction: column;
@@ -554,11 +662,9 @@ h2 {
     font-family: $fontfam-2;
     background: hsl(0, 0, 0, 0.5);
     backdrop-filter: blur(2.5px);
-    border: 2.5vmin solid $border-color;
+    border: 1vmin solid $border-color;
     border-radius: 5vmin;
-    height: 50vh;
-    margin: 0 10vmin;
-    width: calc(100vw - 20vmin);
     transform: translateY(100vh);
     transition: transform 0.5s ease-in-out;
+    z-index: 20;
 }

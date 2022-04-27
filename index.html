@@ -41,11 +41,14 @@
         </div>
     </div>
 
+    <h1 class="title">My great dices game</h1>
+
     <div class="game-board">
-        <h1 class="title">My great dices game</h1>
         <div class="slide-content">
 
             <div class="slide slide-1">
+
+                BUG QUAND ON VEROUILLE LES 3 DES ET QU ON TAKE AVANT LE DERNIER LANCE !!!!!
 
                 <!-- ====== player quantity ====== -->
                 <button class="choose-players-number" data-qty="1">
@@ -63,7 +66,7 @@
 
             <!-- ====== player's settings ====== -->
             <div class="slide slide-2">
-                <h2 class="player-settings">Player 1</h2>
+                <h2 class="title player-settings">Player 1</h2>
 
                 <form class="players-identity">
 
@@ -317,6 +320,29 @@
             <div class="message"></div>
             <button type="submit" class="submit-button">ok</button>
         </form>
+    </div>
+
+    <div class="option-container">
+        <input id="option-checkbox" type="checkbox">
+        <div class="option-wrapper slide-content">
+
+            <h2 class="title">Options</h2>
+
+            <div class="options">
+                <div class="sliders-container">
+                    🎜 <input type="range" min="1" max="100" value="100" class="slider" id="music">
+
+                    🕪 <input type="range" min="1" max="100" value="100" class="slider" id="sound">
+                </div>
+                <div class="rules">
+                    rules
+                </div>
+            </div>
+
+        </div>
+        <label for="option-checkbox" class="toggle-option">
+            <i class="fas fa-gear"></i>⚙
+        </label>
     </div>
 </body>
 

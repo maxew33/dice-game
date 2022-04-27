@@ -17,12 +17,14 @@ const setGame = document.querySelector('.set-game'),
     score = document.querySelector('.score'),
     rollMax = 8,
     playerColor = ['hsl(120deg, 100%, 80%)', 'hsl(270deg, 100%, 80%)'],
-    goal = 500
+    goal = 2000,
+    rollinDiceSound = new Audio('https://maxime-malfilatre.com/sandbox/sound/rollinDice.wav'),
+    music = new Audio('https://maxime-malfilatre.com/sandbox/sound/music-dicegame.wav')
 
 let currentSlide = 0,
     playerQty = 0,
     playerTurn = 0,
-    turnOver = false,
+    roundOver = false,
     gameOver = false,
     delay = 0,
     canRoll = true,
@@ -30,7 +32,8 @@ let currentSlide = 0,
     rollOfTheDices = 0,
     setOfDices = [],
     results = [],
-    players = []
+    players = [],
+    customRate = 0 // ratio sound duration, dice delay
 
 function MyDice(id) {
     this.id = id
@@ -46,6 +49,7 @@ function Player(id, name) {
     this.name = name
     this.score = 0
     this.total = goal
+    this.gameWon = 0
 }
 
 const changeSlide = () => {
@@ -144,6 +148,9 @@ playerForm.addEventListener('submit', e => {
 
 function launchGame() {
 
+    music.loop = true
+    music.play()
+
     cleanBoard()
 
     console.log('game launched')
@@ -152,32 +159,6 @@ function launchGame() {
 
     const getRandomInt = (max) => {
         return Math.floor(Math.random() * max);
-    }
-
-    const endOfTurn = (myScore) => {
-
-        console.log('turn ended', playerTurn)
-
-        setTimeout(() => {
-            const myTxt = myScore < 80 ? 'Don\'t cry' : myScore < 110 ? 'OK' : myScore < 130 ? 'Well done' : myScore < 150 ? 'Great' : myScore === 250 ? 'Awesome' : 'Fantastic'
-            message(`${myTxt} ${players[playerTurn].name},\r\n you had got ${myScore} pts !`)
-
-            rollOfTheDices = 0
-            dicesLocked = 0
-            rollBtn.textContent = "ROLL"
-            score.textContent = '0 pt'
-            results = []
-
-            setOfDices.forEach(dice => {
-                dice.locked = false
-                dice.id.classList.remove('locked')
-            })
-
-            players[playerTurn].score = myScore
-            playerScore[playerTurn].textContent = myScore
-
-        }, 500)
-
     }
 
     const cpuTurn = () => {
@@ -213,32 +194,25 @@ function launchGame() {
         }, 250)
     }
 
-    const turnWinner = (winner) => {
-        players[winner].total -= players[winner].score
 
-        playerTotal[winner].innerHTML += `<span class="crossed"></span><br/><span>${players[winner].total}</span>`
-
-        // playerTotal[winner].innerHTML += ` (${players[winner].score})<span class="crossed"> </span><span>${players[winner].total}<span>`
-
-        players[winner].total <= 0 && endOfGame(winner)
-        newPlayerTurn(0, winner + 1)
-    }
 
     const newPlayerTurn = (player, txt) => {
 
         console.log('newTurn ' + txt)
 
-        if(txt){
-            turnOver = true
+        if (txt) {
+            roundOver = true
 
-            txt === 3 ? message('Draw game') : message(`${players[txt-1].name} has won with ${players[txt-1].score} pts !`)
+            txt === 3 ? message('Draw game') : message(`${players[txt - 1].name} has won with ${players[txt - 1].score} pts !`)
 
             players.forEach((player, index) => {
                 player.score = 0
                 playerContainer[index].querySelector('.player-score').textContent = player.score
             })
+        }
 
-        } 
+        // if there is 1 player and it is the 2nd player turn then launch the cpu turn
+        player === 1 && playerQty === 1 && cpuTurn()
 
         playerTurn = player
         document.documentElement.style.setProperty('--current-player-color', playerColor[player])
@@ -312,6 +286,13 @@ function launchGame() {
         results.every(res => res === results[0]) ? myScore = 250 : myScore = results.reduce((prev, curr) => prev + curr, 0) * 10
 
 
+        // sound of the dice rollin
+        customRate = (rollinDiceSound.duration * 1000) / delay
+        rollinDiceSound.playbackRate = customRate
+        rollinDiceSound.volume = .5
+        rollinDiceSound.play()
+
+
         setTimeout(() => {
             score.textContent = myScore + ' pts'
             rollOfTheDices < 3 ? (
@@ -320,28 +301,6 @@ function launchGame() {
                 : endOfTurn(myScore)
         }, delay)
     }
-
-    const message = (message) => {
-        messageModal.style.transform = 'translateY(0)'
-        messageText.textContent = message
-    }
-
-    messageModal.addEventListener('submit', (e) => {
-        e.preventDefault()
-
-        canRoll = true
-
-        messageModal.style.transform = 'translateY(100vh)'
-
-        if (playerTurn === 0 && !turnOver) {
-            newPlayerTurn(1)
-            playerQty === 1 && cpuTurn()
-        }
-        else if (!turnOver) {
-            players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 3)
-        }
-        else { turnOver = !turnOver }
-    })
 
     rollBtn.addEventListener('click', () => {
         canRoll && (playerQty === 2 || playerTurn === 0) && roll()
@@ -359,28 +318,114 @@ function launchGame() {
         action ? setOfDices[dice].id.classList.add('locked') : setOfDices[dice].id.classList.remove('locked')
         dicesLocked += action ? 1 : -1
     }
-}
 
-//clean board
-function cleanBoard() {
+    // display the message at the end of turn / round / game
+    const message = (message) => {
+        messageModal.style.transform = 'translateY(0)'
+        messageText.textContent = message
+    }
 
-    players.forEach((player, index) => {
-        player.total = goal
-        player.score = 0
-        playerContainer[index].querySelector('.player-name').textContent = player.name
-        playerContainer[index].querySelector('.player-score').textContent = player.score
-        playerContainer[index].querySelector('.player-total').textContent = player.total
+    messageModal.addEventListener('submit', (e) => {
+        e.preventDefault()
+
+        canRoll = true
+
+        messageModal.style.transform = 'translateY(100vh)'
+
+        if (gameOver) {
+            cleanBoard()
+            gameOver = !gameOver
+        }
+        else if (!roundOver) {
+            // if it is the end of the first player turn then launch the second player turn / if it is the end of the second player turn, chek the winner
+            playerTurn === 0 ? newPlayerTurn(1) : players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 3)
+        }
+        // if (playerTurn === 0 && !roundOver) {
+        //     newPlayerTurn(1)
+        //     playerQty === 1 && cpuTurn()
+        // }
+        // else if (!roundOver) {
+        //     players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 3)
+        // }
+        else { roundOver = !roundOver }
     })
-    setOfDices.forEach((dice) => {
-        dice.angleX = 0
-        dice.angleY = 0
-        dice.id.style.transform = "rotateX(" + dice.angleX + "deg) rotateY(" + dice.angleY + "deg)"
-    })
+
+    //clean board
+    function cleanBoard() {
+
+        players.forEach((player, index) => {
+            player.total = goal
+            player.score = 0
+            playerContainer[index].querySelector('.player-name').textContent = player.name + '(' + player.gameWon + ')'
+            playerContainer[index].querySelector('.player-score').textContent = player.score
+            console.log('toto')
+            playerContainer[index].querySelector('.player-total').innerHTML = `<div class="prev-score">${player.total}<span class="tiny-score"></span></div>`
+        })
+        setOfDices.forEach((dice) => {
+            dice.angleX = 0
+            dice.angleY = 0
+            dice.id.style.transform = "rotateX(" + dice.angleX + "deg) rotateY(" + dice.angleY + "deg)"
+        })
+    }
+
+    //end of the turn
+    function endOfTurn (myScore)  {
+
+        console.log('turn ended', playerTurn)
+
+        setTimeout(() => {
+            const myTxt = myScore < 80 ? 'Don\'t cry' : myScore < 110 ? 'OK' : myScore < 130 ? 'Well done' : myScore < 150 ? 'Great' : myScore === 250 ? 'Awesome' : 'Fantastic'
+            message(`${myTxt} ${players[playerTurn].name},\r\n you had ${myScore} pts !`)
+
+            rollOfTheDices = 0
+            dicesLocked = 0
+            rollBtn.textContent = "ROLL"
+            score.textContent = '0 pt'
+            results = []
+
+            setOfDices.forEach(dice => {
+                dice.locked = false
+                dice.id.classList.remove('locked')
+            })
+
+            players[playerTurn].score = myScore
+            playerScore[playerTurn].textContent = myScore
+
+        }, 500)
+
+    }
+
+
+    //winner of the turn
+
+    function turnWinner (winner) {
+        players[winner].total -= players[winner].score
+
+        const prevScore = playerTotal[winner].querySelector('.prev-score')
+
+        prevScore.querySelector('.tiny-score').textContent = `(${players[winner].score})`
+        
+        prevScore.className='crossed'
+
+        console.log(playerTotal[winner])
+
+        playerTotal[winner].innerHTML += `<div class="prev-score">${players[winner].total}<span class="tiny-score"></span></div>`
+
+        // playerTotal[winner].innerHTML += ` (${players[winner].score})<span class="crossed"> </span><span>${players[winner].total}<span>`
+
+        players[winner].total <= 0 ? endOfGame(winner) : newPlayerTurn(0, winner + 1)
+    }
+
+    //end of game
+
+    function endOfGame(winner) {
+        players[winner].gameWon += 1
+        message(`${players[winner].name} won the game`)
+        console.log('joueur ' + players[winner].name + ' a gagné !!!')
+        gameOver = true
+    }
+
 }
 
-//end of game
 
-function endOfGame(winner) {
-    console.log('joueur ' + players[winner].name + ' a gagné !!!')
-    cleanBoard()
-}
+// sound : https://maxime-malfilatre.com/sandbox/sound/rollinDice.wav
