@@ -108,9 +108,6 @@ h2 {
 
 /* ====== options ====== */
 .option-container {
-  position: absolute;
-  top: 7.5vh;
-  right: 7.5vw;
   z-index: 20;
 }
 
@@ -118,17 +115,16 @@ h2 {
   position: fixed;
   top: 5vh;
   left: 5vw;
-  -webkit-clip-path: circle(0 at 87.5vw 2.5vh);
-          clip-path: circle(0 at 87.5vw 2.5vh);
+  -webkit-clip-path: circle(0 at calc(90vw - 5vmin) 5vmin);
+          clip-path: circle(0 at calc(90vw - 5vmin) 5vmin);
   transition: -webkit-clip-path 0.75s ease-out;
   transition: clip-path 0.75s ease-out;
   transition: clip-path 0.75s ease-out, -webkit-clip-path 0.75s ease-out;
-  background: whitesmoke;
+  background: hsl(147deg, 50%, 13%);
   border-radius: 5vmin;
 }
 .option-wrapper .title {
-  color: hsl(147deg, 50%, 23%);
-  background: whitesmoke;
+  background: hsl(147deg, 50%, 13%);
 }
 
 #option-checkbox {
@@ -138,18 +134,17 @@ h2 {
 .toggle-option {
   position: absolute;
   color: whitesmoke;
-  transform: translate(-50%, -50%);
   font-size: 2.5rem;
+  right: calc(5vw + 5vmin);
+  top: calc(5vh + 5vmin);
   cursor: pointer;
-  transition: color 0.75s ease-out;
+  display: grid;
+  place-content: center;
 }
 
 #option-checkbox:checked ~ .option-wrapper {
-  -webkit-clip-path: circle(150% at 92.5vw 7.5vh);
-          clip-path: circle(150% at 92.5vw 7.5vh);
-}
-#option-checkbox:checked ~ .toggle-option {
-  color: hsl(147deg, 50%, 23%);
+  -webkit-clip-path: circle(150% at calc(90vw - 5vmin) 5vmin);
+          clip-path: circle(150% at calc(90vw - 5vmin) 5vmin);
 }
 
 .options {
@@ -159,7 +154,16 @@ h2 {
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  color: hsl(147deg, 50%, 23%);
+  font-family: arial;
+}
+.options .options-title {
+  text-align: center;
+  height: 5vh;
+  width: 50%;
+  font-family: "Courgette", cursive;
+  font-size: 2rem;
+  border: 0.5vmin solid whitesmoke;
+  border-radius: 5vmin;
 }
 
 .sliders-container {
@@ -167,6 +171,23 @@ h2 {
   width: 90%;
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
+  font-size: 2.5rem;
+}
+.sliders-container .music-container,
+.sliders-container .sound-container {
+  height: 80%;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+}
+.sliders-container .slider-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
   align-items: center;
 }
 .sliders-container .slider {
@@ -193,6 +214,56 @@ h2 {
   border-radius: 50%;
   background: hsl(147deg, 50%, 23%);
   cursor: pointer;
+}
+
+.rules {
+  position: relative;
+  overflow: hidden;
+  height: 40vh;
+  width: 85vw;
+}
+.rules #rules-checkbox {
+  display: none;
+}
+.rules .toggle-rules {
+  position: absolute;
+  cursor: pointer;
+  height: 5vh;
+  left: 12.5%;
+  width: 75%;
+  background: hsl(147deg, 50%, 13%);
+  font-family: "Courgette", cursive;
+  font-size: 2rem;
+  text-align: center;
+  border: 0.5vmin solid whitesmoke;
+  border-radius: 5vmin;
+}
+.rules .toggle-rules::after, .rules .toggle-rules::before {
+  content: "+";
+}
+.rules #rules-checkbox:checked ~ .rules-wrapper {
+  transform: translateY(0%);
+}
+.rules #rules-checkbox:checked ~ .toggle-rules::after,
+.rules #rules-checkbox:checked ~ .toggle-rules::before {
+  content: "-";
+}
+.rules .rules-wrapper {
+  position: absolute;
+  transform: translateY(-100%);
+  left: 12.5%;
+  width: 75%;
+  padding: 5.5vh 0.75vw 0 0.75vw;
+  transition: transform 1s ease-out;
+  line-height: 1.15;
+}
+.rules .rules-wrapper h3 {
+  padding: 1rem 0 0.25rem 0;
+}
+
+.reset {
+  cursor: pointer;
+  width: 50%;
 }
 
 /* ====== slide 1 ====== */
@@ -260,12 +331,12 @@ h2 {
 }
 
 .submit-button {
-  padding: 0.5vmin;
+  padding: 0.25rem;
   font-size: 1.5rem;
-  border-radius: 2.5vmin;
+  border-radius: 2.5rem;
   border: none;
-  width: 10vmin;
-  height: 5vmin;
+  width: 5rem;
+  height: 2.5rem;
   cursor: pointer;
   font-family: arial;
   background: whitesmoke;
@@ -433,9 +504,9 @@ h2 {
   content: "";
   position: absolute;
   top: 50%;
-  left: 50%;
-  width: 3rem;
-  transform: translate(-50%, -50%) rotate(-10deg);
+  left: 0;
+  width: 3.5rem;
+  transform: translateY(10%) rotate(-10deg);
   border-top: 3px solid white;
 }
 
@@ -576,24 +647,53 @@ h2 {
 }
 
 .message-modal {
-  width: 95vw;
-  height: 95vh;
+  width: 100vw;
+  height: 100vh;
   position: absolute;
-  top: 2.5vh;
-  left: 2.5vw;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-evenly;
+  color: whitesmoke;
   font-size: 3.5rem;
   font-family: arial;
-  background: hsla(0deg, 0%, 0%, 0.5);
-  -webkit-backdrop-filter: blur(2.5px);
-          backdrop-filter: blur(2.5px);
-  border: 1vmin solid whitesmoke;
-  border-radius: 5vmin;
-  transform: translateY(100vh);
-  transition: transform 0.5s ease-in-out;
-  z-index: 20;
+  background: hsla(0deg, 0%, 0%, 0.125);
+  -webkit-backdrop-filter: blur(12.5px);
+          backdrop-filter: blur(12.5px);
+  transform: translateX(100vw);
+  opacity: 0;
+  transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  z-index: 50;
+}
+.message-modal .presenter {
+  width: min(50vh, 75vw);
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  font-size: 15rem;
+}
+.message-modal .bubble {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  height: max(50vh, 100vh - 75vw);
+  background: whitesmoke;
+  color: hsl(147deg, 50%, 23%);
+  border-radius: 25px;
+  margin: 5vmin;
+  padding: 2.5vmin;
+}
+.message-modal .bubble::after {
+  content: "";
+  position: absolute;
+  left: 3vmax;
+  bottom: -3vmax;
+  border-top: 3vmax solid whitesmoke;
+  border-left: 2vmax solid transparent;
+}
+.message-modal .bubble .submit-button {
+  background: hsl(147deg, 50%, 23%);
+  color: whitesmoke;
 }/*# sourceMappingURL=style.css.map */

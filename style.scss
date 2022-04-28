@@ -9,7 +9,7 @@
 $fontfam-1: "Courgette", cursive;
 $fontfam-2: arial;
 $text-color: whitesmoke;
-$text-shadow: grey;
+$option-bg-color: hsl(147deg, 50%, 13%);
 $carpet-color: hsl(147deg, 50%, 23%);
 $border-color: whitesmoke;
 
@@ -123,9 +123,9 @@ h2 {
 /* ====== options ====== */
 
 .option-container {
-    position: absolute;
-    top: 7.5vh;
-    right: 7.5vw;
+    // position: absolute;
+    // top: 7.5vh;
+    // right: 7.5vw;
     z-index: 20;
 }
 
@@ -133,14 +133,13 @@ h2 {
     position: fixed;
     top: 5vh;
     left: 5vw;
-    clip-path: circle(0 at 87.5vw 2.5vh);
+    clip-path: circle(0 at calc(90vw - 5vmin) 5vmin);
     transition: clip-path .75s ease-out;
-    background: $text-color;
+    background: $option-bg-color;
     border-radius: 5vmin;
 
     .title {
-        color: $carpet-color;
-        background: $text-color;
+        background: $option-bg-color;
     }
 }
 
@@ -151,19 +150,17 @@ h2 {
 .toggle-option {
     position: absolute;
     color: $text-color;
-    transform: translate(-50%, -50%);
     font-size: 2.5rem;
+    right: calc(5vw + 5vmin);
+    top: calc(5vh + 5vmin);
     cursor: pointer;
-    transition: color 0.75s ease-out;
+    display: grid;
+    place-content: center;
 }
 
 #option-checkbox:checked {
     ~ .option-wrapper {
-        clip-path: circle(150% at 92.5vw 7.5vh);
-    }
-
-    ~ .toggle-option {
-        color: $carpet-color;
+        clip-path: circle(150% at calc(90vw - 5vmin) 5vmin);
     }
 }
 
@@ -174,17 +171,45 @@ h2 {
     flex-direction: column;
     align-items: center;
     justify-content: space-evenly;
-    color: $carpet-color;
+    font-family: $fontfam-2;
+
+    .options-title {
+        text-align: center;
+        height: 5vh;
+        width: 50%;
+        font-family: $fontfam-1;
+        font-size: 2rem;
+        border: 0.5vmin solid $border-color;
+        border-radius: 5vmin;
+    }
 }
 
 .sliders-container {
-
     height: 25%;
     width: 90%;
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    
+    font-size: 2.5rem;
+
+    .music-container,
+    .sound-container {
+        height: 80%;
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+    }
+
+    .slider-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        align-items: center;
+    }
+
     .slider {
         -webkit-appearance: none;
         width: 25%;
@@ -213,6 +238,66 @@ h2 {
         background: $carpet-color;
         cursor: pointer;
     }
+}
+
+.rules {
+    position: relative;
+    overflow: hidden;
+    height: 40vh;
+    width: 85vw;
+
+    #rules-checkbox {
+        display: none;
+    }
+
+    .toggle-rules {
+        position: absolute;
+        cursor: pointer;
+        height: 5vh;
+        left: 12.5%;
+        width: 75%;
+        background: $option-bg-color;
+        font-family: $fontfam-1;
+        font-size: 2rem;
+        text-align: center;
+        border: 0.5vmin solid $border-color;
+        border-radius: 5vmin;
+
+        &::after,
+        &::before {
+            content: "+";
+        }
+    }
+
+    #rules-checkbox:checked {
+        ~ .rules-wrapper {
+            transform: translateY(0%);
+        }
+
+        ~ .toggle-rules::after,
+        ~ .toggle-rules::before {
+            content: "-";
+        }
+    }
+
+    .rules-wrapper {
+        position: absolute;
+        transform: translateY(-100%);
+        left: 12.5%;
+        width: 75%;
+        padding: 5.5vh 0.75vw 0 0.75vw;
+        transition: transform 1s ease-out;
+        line-height: 1.15;
+
+        h3 {
+            padding: 1rem 0 0.25rem 0;
+        }
+    }
+}
+
+.reset{
+    cursor: pointer;
+    width: 50%;
 }
 
 /* ====== slide 1 ====== */
@@ -290,12 +375,12 @@ h2 {
 }
 
 .submit-button {
-    padding: 0.5vmin;
+    padding: 0.25rem;
     font-size: 1.5rem;
-    border-radius: 2.5vmin;
+    border-radius: 2.5rem;
     border: none;
-    width: 10vmin;
-    height: 5vmin;
+    width: 5rem;
+    height: 2.5rem;
     cursor: pointer;
     font-family: $fontfam-2;
     background: whitesmoke;
@@ -498,9 +583,9 @@ h2 {
                     content: "";
                     position: absolute;
                     top: 50%;
-                    left: 50%;
-                    width: 3rem;
-                    transform: translate(-50%, -50%) rotate(-10deg);
+                    left: 0;
+                    width: 3.5rem;
+                    transform: translateY(10%) rotate(-10deg);
                     border-top: 3px solid white;
                 }
             }
@@ -648,23 +733,56 @@ h2 {
 }
 
 .message-modal {
-    width: 95vw;
-    height: 95vh;
+    width: 100vw;
+    height: 100vh;
     position: absolute;
-    top: 2.5vh;
-    left: 2.5vw;
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;
+    color: $text-color;
     font-size: 3.5rem;
     font-family: $fontfam-2;
-    background: hsl(0, 0, 0, 0.5);
-    backdrop-filter: blur(2.5px);
-    border: 1vmin solid $border-color;
-    border-radius: 5vmin;
-    transform: translateY(100vh);
-    transition: transform 0.5s ease-in-out;
-    z-index: 20;
+    background: hsl(0, 0, 0, 0.125);
+    backdrop-filter: blur(12.5px);
+    transform: translateX(100vw);
+    opacity: 0;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    z-index: 50;
+
+    .presenter {
+        width: min(50vh, 75vw);
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        font-size: 15rem;
+    }
+
+    .bubble{
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-wrap: wrap;
+        height: max(50vh, calc(100vh - 75vw));
+        background: $text-color;
+        color: $carpet-color;
+        border-radius: 25px;
+        margin: 5vmin;
+        padding: 2.5vmin;
+
+        &::after{
+            content:'';
+            position: absolute;
+            left: 3vmax;
+            bottom: -3vmax;
+            border-top: 3vmax solid $text-color;
+            border-left: 2vmax solid transparent;
+        }
+
+        .submit-button{
+            background: $carpet-color;
+            color: $text-color;
+        }
+    }
 }

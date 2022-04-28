@@ -1,25 +1,35 @@
-const setGame = document.querySelector('.set-game'),
-    gameSlides = [...document.querySelectorAll('.slide')],
-    playersQty = [...document.querySelectorAll('.choose-players-number')],
-    playerForm = document.querySelector('.players-identity'),
-    avatars = [...document.querySelectorAll('.avatar-container .item-list .item')],
-    myAvatar = document.querySelector('.my-avatar'),
-    colors = [...document.querySelectorAll('.color-container .item-list .item')],
-    myColor = [...document.querySelectorAll('.my-color')],
-    rollBtn = document.querySelector('.roll-btn'),
-    diceContainer = [...document.querySelectorAll('.dice-container')],
-    playerContainer = [...document.querySelectorAll('.player-container')],
-    playerScore = [...document.querySelectorAll('.player-score')],
-    playerTotal = [...document.querySelectorAll('.player-total')],
-    dices = [...document.querySelectorAll('.dice')],
-    messageModal = document.querySelector('.message-modal'),
-    messageText = document.querySelector('.message'),
-    score = document.querySelector('.score'),
+const qsall = document.querySelectorAll.bind(document), //shortcut for document.querySelectorAll
+    qs = document.querySelector.bind(document), //shortcut for document.querySelector,
+    setGame = qs('.set-game'),
+    gameSlides = [...qsall('.slide')],
+    playersQty = [...qsall('.choose-players-number')],
+    playerForm = qs('.players-identity'),
+    avatars = [...qsall('.avatar-container .item-list .item')],
+    myAvatar = qs('.my-avatar'),
+    colors = [...qsall('.color-container .item-list .item')],
+    myColor = [...qsall('.my-color')],
+    rollBtn = qs('.roll-btn'),
+    diceContainer = [...qsall('.dice-container')],
+    playerContainer = [...qsall('.player-container')],
+    playerScore = [...qsall('.player-score')],
+    playerTotal = [...qsall('.player-total')],
+    dice = [...qsall('.dice')],
+    messageModal = qs('.message-modal'),
+    messageText = qs('.message'),
+    presenter = qs('.presenter'),
+    score = qs('.score'),
     rollMax = 8,
     playerColor = ['hsl(120deg, 100%, 80%)', 'hsl(270deg, 100%, 80%)'],
-    goal = 2000,
-    rollinDiceSound = new Audio('https://maxime-malfilatre.com/sandbox/sound/rollinDice.wav'),
-    music = new Audio('https://maxime-malfilatre.com/sandbox/sound/music-dicegame.wav')
+    goal = 1000,
+    rollindiceSound = new Audio('https://maxime-malfilatre.com/sandbox/sound/rollinDice.wav'),
+    music = new Audio('https://maxime-malfilatre.com/sandbox/sound/music-dicegame.wav'),
+    optionCheckbox = document.getElementById('option-checkbox'),
+    musicSlider = document.getElementById('music'),
+    soundSlider = document.getElementById('sound'),
+    resetBtn = qs('.reset')
+
+    rollindiceSound.volume = .5
+    music.volume = .5
 
 let currentSlide = 0,
     playerQty = 0,
@@ -28,12 +38,13 @@ let currentSlide = 0,
     gameOver = false,
     delay = 0,
     canRoll = true,
-    dicesLocked = 0,
-    rollOfTheDices = 0,
-    setOfDices = [],
+    diceLocked = 0,
+    rollOfThedice = 0,
+    setOfdice = [],
     results = [],
     players = [],
     customRate = 0 // ratio sound duration, dice delay
+
 
 function MyDice(id) {
     this.id = id
@@ -68,7 +79,7 @@ playersQty.forEach(btn => btn.addEventListener('click', () => {
 // choose the color
 
 myColor.forEach(color => color.addEventListener('click', () => {
-    document.querySelector('.color-container').style.transform = "scale(1)"
+    qs('.color-container').style.transform = "scale(1)"
 })
 )
 
@@ -89,13 +100,13 @@ const colorChosen = (colorClicked) => {
 
     playerTurn === 0 && document.documentElement.style.setProperty('--current-player-color', colorClicked.dataset.color)
 
-    document.querySelector('.color-container').style.transform = "scale(0)"
+    qs('.color-container').style.transform = "scale(0)"
 }
 
 // choose the avatar
 
 myAvatar.addEventListener('click', () => {
-    document.querySelector('.avatar-container').style.transform = "scale(1)"
+    qs('.avatar-container').style.transform = "scale(1)"
 })
 
 avatars.forEach(avatar => {
@@ -108,10 +119,10 @@ const avatarChosen = (avatarClicked) => {
 
     avatarClicked.classList.add('selected')
 
-    document.querySelector('.my-avatar').innerHTML = `<i class="fas ${avatarClicked.dataset.avatar}"></i>`
-    document.querySelector(`.player-${playerTurn + 1} .player-avatar`).innerHTML = `<i class="fas ${avatarClicked.dataset.avatar}"></i>`
+    qs('.my-avatar').innerHTML = `<i class="fas ${avatarClicked.dataset.avatar}"></i>`
+    qs(`.player-${playerTurn + 1} .player-avatar`).innerHTML = `<i class="fas ${avatarClicked.dataset.avatar}"></i>`
 
-    document.querySelector('.avatar-container').style.transform = "scale(0)"
+    qs('.avatar-container').style.transform = "scale(0)"
 }
 
 // validation of the player settings
@@ -119,20 +130,20 @@ const avatarChosen = (avatarClicked) => {
 playerForm.addEventListener('submit', e => {
     e.preventDefault()
 
-    players.push(new Player(playerScore[playerTurn], document.querySelector('.players-identity input').value))
+    players.push(new Player(playerScore[playerTurn], qs('.players-identity input').value))
 
     if (playerTurn === 0 && playerQty === 2) {
         // reset of the values
-        document.querySelector('.player-settings').innerText = 'Player 2'
-        document.querySelector('.name-field').value = 'Bar'
-        document.querySelector('.my-color').style.background = 'var(--player2-color)'
+        qs('.player-settings').innerText = 'Player 2'
+        qs('.name-field').value = 'Bar'
+        qs('.my-color').style.background = 'var(--player2-color)'
         colors.forEach(col => col.classList.remove('selected'))
         playerTurn++
     }
     else {
         playerQty === 1 && (
             players.push(new Player(playerScore[1], "Max")),
-            document.querySelector(`.player-2 .player-avatar`).innerHTML = `<i class="fas fa-desktop"></i>`
+            qs(`.player-2 .player-avatar`).innerHTML = `<i class="fas fa-desktop"></i>`
         )
 
         changeSlide()
@@ -143,8 +154,17 @@ playerForm.addEventListener('submit', e => {
     }
 })
 
+// sound and music
+soundSlider.addEventListener('input', e => {
+    console.log('soundslider')
+    rollindiceSound.volume = (e.target.value / 100)
+})
 
-//Let's play this awesome dices game :)
+musicSlider.addEventListener('input', e => {
+    music.volume = (e.target.value / 100)
+})
+
+//Let's play this awesome dice game :)
 
 function launchGame() {
 
@@ -155,7 +175,7 @@ function launchGame() {
 
     console.log('game launched')
 
-    dices.forEach(dice => setOfDices.push(new MyDice(dice)))
+    dice.forEach(dice => setOfdice.push(new MyDice(dice)))
 
     const getRandomInt = (max) => {
         return Math.floor(Math.random() * max);
@@ -165,22 +185,22 @@ function launchGame() {
         let valueToLock = 0
 
         setTimeout(() => {
-            if (rollOfTheDices > 0) {
+            if (rollOfThedice > 0) {
                 for (let diceValue = 1; diceValue <= 6; diceValue++) {
 
                     //I check if there is a double >= 4
-                    const double = (setOfDices.filter(dice => dice.value === diceValue).length === 2)
+                    const double = (setOfdice.filter(dice => dice.value === diceValue).length === 2)
                     double && diceValue >= 4 && (valueToLock = diceValue)
 
                     //I check if there is a triple
-                    const triple = setOfDices.every(dice => dice.value === diceValue)
+                    const triple = setOfdice.every(dice => dice.value === diceValue)
                     triple && (valueToLock = diceValue)
                 }
 
-                //If there is a good double or a triple, i keep the dices. If not, I keep the 5 and/or 6 dice(s)
-                setOfDices.forEach((dice, idx) => {
+                //If there is a good double or a triple, i keep the dice. If not, I keep the 5 and/or 6 dice(s)
+                setOfdice.forEach((dice, idx) => {
                     if (valueToLock > 0) {
-                        dice.value === valueToLock ? (setOfDices[idx].locked = true, setOfDices[idx].id.classList.add('locked')) : (setOfDices[idx].locked = false, setOfDices[idx].id.classList.remove('locked'))
+                        dice.value === valueToLock ? (setOfdice[idx].locked = true, setOfdice[idx].id.classList.add('locked')) : (setOfdice[idx].locked = false, setOfdice[idx].id.classList.remove('locked'))
                         dice.value === valueToLock ? lockingDice(true, idx) : lockingDice(false, idx)
                     }
                     else {
@@ -203,7 +223,7 @@ function launchGame() {
         if (txt) {
             roundOver = true
 
-            txt === 3 ? message('Draw game') : message(`${players[txt - 1].name} has won with ${players[txt - 1].score} pts !`)
+            message(txt === 3 ? 'Draw game' : `${players[txt - 1].name} has won with ${players[txt - 1].score} pts !`, '<i class="far fa-grin"></i>')
 
             players.forEach((player, index) => {
                 player.score = 0
@@ -218,20 +238,20 @@ function launchGame() {
         document.documentElement.style.setProperty('--current-player-color', playerColor[player])
     }
 
-    // roll the dices and get the result
+    // roll the dice and get the result
     const roll = () => {
 
         canRoll = false
 
-        rollOfTheDices++
+        rollOfThedice++
 
-        dicesLocked === 3 && (rollOfTheDices = 3)
+        diceLocked === 3 && (rollOfThedice = 3)
 
         delay = 0
 
         let myScore = 0
 
-        setOfDices.forEach((dice, idx) => {
+        setOfdice.forEach((dice, idx) => {
 
             if (dice.locked) {
                 return
@@ -286,16 +306,15 @@ function launchGame() {
         results.every(res => res === results[0]) ? myScore = 250 : myScore = results.reduce((prev, curr) => prev + curr, 0) * 10
 
 
-        // sound of the dice rollin
-        customRate = (rollinDiceSound.duration * 1000) / delay
-        rollinDiceSound.playbackRate = customRate
-        rollinDiceSound.volume = .5
-        rollinDiceSound.play()
+        // sound of the dice rolling
+        customRate = delay > 0 ? (rollindiceSound.duration * 1000) / delay : 0
+        rollindiceSound.playbackRate = customRate
+        rollindiceSound.play()
 
 
         setTimeout(() => {
             score.textContent = myScore + ' pts'
-            rollOfTheDices < 3 ? (
+            rollOfThedice < 3 ? (
                 canRoll = true,
                 playerQty === 1 && playerTurn === 1 && cpuTurn())
                 : endOfTurn(myScore)
@@ -307,22 +326,24 @@ function launchGame() {
     })
 
     diceContainer.forEach((container, idx) => container.addEventListener('click', () => {
-        if (rollOfTheDices > 0 && canRoll) {
-            setOfDices[idx].locked ? lockingDice(false, idx) : lockingDice(true, idx)
-            rollBtn.textContent = dicesLocked === 3 ? "TAKE" : "ROLL"
+        if (rollOfThedice > 0 && canRoll) {
+            setOfdice[idx].locked ? lockingDice(false, idx) : lockingDice(true, idx)
+            rollBtn.textContent = diceLocked === 3 ? "TAKE" : "ROLL"
         }
     }))
 
     const lockingDice = (action, dice) => {
-        setOfDices[dice].locked = action ? true : false
-        action ? setOfDices[dice].id.classList.add('locked') : setOfDices[dice].id.classList.remove('locked')
-        dicesLocked += action ? 1 : -1
+        setOfdice[dice].locked = action ? true : false
+        action ? setOfdice[dice].id.classList.add('locked') : setOfdice[dice].id.classList.remove('locked')
+        diceLocked += action ? 1 : -1
     }
 
     // display the message at the end of turn / round / game
-    const message = (message) => {
-        messageModal.style.transform = 'translateY(0)'
-        messageText.textContent = message
+    const message = (myMessage, myPresenter) => {
+        messageModal.style.transform = 'translateX(0)'
+        messageModal.style.opacity = '1'
+        messageText.textContent = myMessage
+        presenter.innerHTML = myPresenter
     }
 
     messageModal.addEventListener('submit', (e) => {
@@ -330,7 +351,8 @@ function launchGame() {
 
         canRoll = true
 
-        messageModal.style.transform = 'translateY(100vh)'
+        messageModal.style.transform = 'translateX(100vw)'
+        messageModal.style.opacity = '0'
 
         if (gameOver) {
             cleanBoard()
@@ -361,7 +383,7 @@ function launchGame() {
             console.log('toto')
             playerContainer[index].querySelector('.player-total').innerHTML = `<div class="prev-score">${player.total}<span class="tiny-score"></span></div>`
         })
-        setOfDices.forEach((dice) => {
+        setOfdice.forEach(dice => {
             dice.angleX = 0
             dice.angleY = 0
             dice.id.style.transform = "rotateX(" + dice.angleX + "deg) rotateY(" + dice.angleY + "deg)"
@@ -369,21 +391,24 @@ function launchGame() {
     }
 
     //end of the turn
-    function endOfTurn (myScore)  {
+    function endOfTurn(myScore) {
 
         console.log('turn ended', playerTurn)
 
         setTimeout(() => {
             const myTxt = myScore < 80 ? 'Don\'t cry' : myScore < 110 ? 'OK' : myScore < 130 ? 'Well done' : myScore < 150 ? 'Great' : myScore === 250 ? 'Awesome' : 'Fantastic'
-            message(`${myTxt} ${players[playerTurn].name},\r\n you had ${myScore} pts !`)
 
-            rollOfTheDices = 0
-            dicesLocked = 0
+            const myPresenter = myScore < 80 ? '<i class="far fa-grin-beam-sweat"></i>' : myScore < 110 ? '<i class="far fa-smile"></i>' : myScore < 130 ? '<i class="far fa-smile-beam"></i>' : myScore < 150 ? '<i class="far fa-grin-squint"></i>' : myScore === 250 ? '<i class="far fa-grin-hearts"></i>' : '<i class="far fa-grin-stars"></i>'
+
+            message(`${myTxt} ${players[playerTurn].name},\r\n you get ${myScore} pts !`, myPresenter)
+
+            rollOfThedice = 0
+            diceLocked = 0
             rollBtn.textContent = "ROLL"
             score.textContent = '0 pt'
             results = []
 
-            setOfDices.forEach(dice => {
+            setOfdice.forEach(dice => {
                 dice.locked = false
                 dice.id.classList.remove('locked')
             })
@@ -398,14 +423,14 @@ function launchGame() {
 
     //winner of the turn
 
-    function turnWinner (winner) {
+    function turnWinner(winner) {
         players[winner].total -= players[winner].score
 
         const prevScore = playerTotal[winner].querySelector('.prev-score')
 
         prevScore.querySelector('.tiny-score').textContent = `(${players[winner].score})`
-        
-        prevScore.className='crossed'
+
+        prevScore.className = 'crossed'
 
         console.log(playerTotal[winner])
 
@@ -420,12 +445,27 @@ function launchGame() {
 
     function endOfGame(winner) {
         players[winner].gameWon += 1
-        message(`${players[winner].name} won the game`)
+        message(`${players[winner].name} won the game`, '<i class="far fa-grin"></i>')
         console.log('joueur ' + players[winner].name + ' a gagné !!!')
         gameOver = true
     }
 
 }
+
+//reset the game
+resetBtn.addEventListener('click', () => {
+    
+    optionCheckbox.checked = false
+
+    gameSlides[1].style.display = 'none'
+    gameSlides[2].style.display = 'none'
+    gameSlides[2].style.opacity = 0
+    
+    gameSlides[0].style.opacity = 1
+    gameSlides[0].style.display = "flex"
+
+    currentSlide = 0
+})
 
 
 // sound : https://maxime-malfilatre.com/sandbox/sound/rollinDice.wav

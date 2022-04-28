@@ -41,14 +41,12 @@
         </div>
     </div>
 
-    <h1 class="title">My great dices game</h1>
+    <h1 class="title">My great dice game</h1>
 
     <div class="game-board">
         <div class="slide-content">
 
             <div class="slide slide-1">
-
-                BUG QUAND ON VEROUILLE LES 3 DES ET QU ON TAKE AVANT LE DERNIER LANCE !!!!!
 
                 <!-- ====== player quantity ====== -->
                 <button class="choose-players-number" data-qty="1">
@@ -317,8 +315,12 @@
 
         </div>
         <form class="message-modal">
-            <div class="message"></div>
-            <button type="submit" class="submit-button">ok</button>
+            <div class="bubble">
+                <div class="message"></div>
+                <button type="submit" class="submit-button">ok</button>
+            </div>
+            <div class="presenter">
+            </div>
         </form>
     </div>
 
@@ -329,19 +331,71 @@
             <h2 class="title">Options</h2>
 
             <div class="options">
-                <div class="sliders-container">
-                    🎜 <input type="range" min="1" max="100" value="100" class="slider" id="music">
 
-                    🕪 <input type="range" min="1" max="100" value="100" class="slider" id="sound">
+                <div class="sliders-container">
+
+                    <div class="music-container">
+                        <div class="options-title">
+                            music
+                        </div>
+                        <div class="slider-container">
+                            🎜
+                            <input type="range" min="0" max="100" value="50" class="slider" id="music">
+                        </div>
+                    </div>
+
+                    <div class="sound-container">
+                        <div class="options-title">
+                            sound
+                        </div>
+                        <div class="slider-container">
+                            🕪
+                            <input type="range" min="0" max="100" value="50" class="slider" id="sound">
+                        </div>
+                    </div>
+
                 </div>
+
                 <div class="rules">
-                    rules
+
+                    <input id="rules-checkbox" type="checkbox">
+                    <div class="rules-wrapper">
+                        <h3>
+                            Aim of the game :
+                        </h3>
+                        To be the first player to reach 0.
+
+                        <h3>
+                            How to play :
+                        </h3>
+                        You have 3 rolls.<br />
+                        At the end of each roll, you can decide to lock / unlock any dice of your choice.<br />
+                        At the end of the turn, the player with the best score can substract the turn score to the total
+                        score.
+
+                        <h3>
+                            Values of the combinations :
+                        </h3>
+                        3 of a kind : 250 points<br />
+                        sum of the dice x 10.
+
+                        <h3>Good luck !</h3>
+
+                    </div>
+                    <label for="rules-checkbox" class="toggle-rules">
+                        rules
+                    </label>
+
                 </div>
+
+                <button class="reset options-title">
+                    reset the game
+                </button>
             </div>
 
         </div>
         <label for="option-checkbox" class="toggle-option">
-            <i class="fas fa-gear"></i>⚙
+            <i class="fas fa-cog"></i>
         </label>
     </div>
 </body>
