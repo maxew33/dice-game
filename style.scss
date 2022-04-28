@@ -134,7 +134,7 @@ h2 {
     top: 5vh;
     left: 5vw;
     clip-path: circle(0 at calc(90vw - 5vmin) 5vmin);
-    transition: clip-path .75s ease-out;
+    transition: clip-path 0.75s ease-out;
     background: $option-bg-color;
     border-radius: 5vmin;
 
@@ -208,35 +208,40 @@ h2 {
         justify-content: center;
         gap: 25px;
         align-items: center;
-    }
 
-    .slider {
-        -webkit-appearance: none;
-        width: 25%;
-        height: 15px;
-        border-radius: 999px;
-        background: #d3d3d3;
-        outline: none;
-        -webkit-transition: 0.2s;
-        transition: opacity 0.2s;
-    }
+        .music-symbol, 
+        .sound-symbol{
+            cursor: pointer;
+        }
 
-    .slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        background: $carpet-color;
-        cursor: pointer;
-    }
+        .slider {
+            -webkit-appearance: none;
+            width: 25%;
+            height: 15px;
+            border-radius: 999px;
+            background: #d3d3d3;
+            outline: none;
+            -webkit-transition: 0.2s;
+            transition: opacity 0.2s;
+        }
 
-    .slider::-moz-range-thumb {
-        width: 25px;
-        height: 25px;
-        border-radius: 50%;
-        background: $carpet-color;
-        cursor: pointer;
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: $carpet-color;
+            cursor: pointer;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background: $carpet-color;
+            cursor: pointer;
+        }
     }
 }
 
@@ -265,7 +270,7 @@ h2 {
 
         &::after,
         &::before {
-            content: "+";
+            content: "▽";
         }
     }
 
@@ -276,7 +281,7 @@ h2 {
 
         ~ .toggle-rules::after,
         ~ .toggle-rules::before {
-            content: "-";
+            content: "△";
         }
     }
 
@@ -295,7 +300,7 @@ h2 {
     }
 }
 
-.reset{
+.reset {
     cursor: pointer;
     width: 50%;
 }
@@ -758,7 +763,7 @@ h2 {
         font-size: 15rem;
     }
 
-    .bubble{
+    .bubble {
         position: relative;
         display: flex;
         align-items: center;
@@ -771,8 +776,8 @@ h2 {
         margin: 5vmin;
         padding: 2.5vmin;
 
-        &::after{
-            content:'';
+        &::after {
+            content: "";
             position: absolute;
             left: 3vmax;
             bottom: -3vmax;
@@ -780,7 +785,7 @@ h2 {
             border-left: 2vmax solid transparent;
         }
 
-        .submit-button{
+        .submit-button {
             background: $carpet-color;
             color: $text-color;
         }

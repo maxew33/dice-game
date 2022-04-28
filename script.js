@@ -23,13 +23,12 @@ const qsall = document.querySelectorAll.bind(document), //shortcut for document.
     goal = 1000,
     rollindiceSound = new Audio('https://maxime-malfilatre.com/sandbox/sound/rollinDice.wav'),
     music = new Audio('https://maxime-malfilatre.com/sandbox/sound/music-dicegame.wav'),
-    optionCheckbox = document.getElementById('option-checkbox'),
     musicSlider = document.getElementById('music'),
     soundSlider = document.getElementById('sound'),
+    musicSymbol = qs('.music-symbol'),
+    soundSymbol = qs('.sound-symbol'),
+    optionCheckbox = document.getElementById('option-checkbox'),
     resetBtn = qs('.reset')
-
-    rollindiceSound.volume = .5
-    music.volume = .5
 
 let currentSlide = 0,
     playerQty = 0,
@@ -38,6 +37,7 @@ let currentSlide = 0,
     gameOver = false,
     delay = 0,
     canRoll = true,
+    cpuCanPlay = true,
     diceLocked = 0,
     rollOfThedice = 0,
     setOfdice = [],
@@ -155,14 +155,51 @@ playerForm.addEventListener('submit', e => {
 })
 
 // sound and music
+
+rollindiceSound.volume = .5
+music.volume = .5
+
+const mute = (target) => {
+    target === 'sound' ?
+        (
+            soundSlider.value = 0,
+            rollindiceSound.volume = 0
+        )
+        : (
+            musicSlider.value = 0,
+            music.volume = 0
+        )
+
+}
+
 soundSlider.addEventListener('input', e => {
-    console.log('soundslider')
-    rollindiceSound.volume = (e.target.value / 100)
+    if (e.target.value === 0) {
+        mute('sound')
+    }
+    else {
+        rollindiceSound.volume = (e.target.value / 100)
+    }
+})
+
+soundSymbol.addEventListener('click', () => {
+    mute('sound')
 })
 
 musicSlider.addEventListener('input', e => {
-    music.volume = (e.target.value / 100)
+    if (e.target.value === 0) {
+        mute('music')
+    }
+    else {
+        music.volume = (e.target.value / 100)
+    }
+
+}
+)
+
+musicSymbol.addEventListener('click', () => {
+    mute('music')
 })
+
 
 //Let's play this awesome dice game :)
 
@@ -182,9 +219,10 @@ function launchGame() {
     }
 
     const cpuTurn = () => {
+
         let valueToLock = 0
 
-        setTimeout(() => {
+        cpuCanPlay && setTimeout(() => {
             if (rollOfThedice > 0) {
                 for (let diceValue = 1; diceValue <= 6; diceValue++) {
 
@@ -450,17 +488,25 @@ function launchGame() {
         gameOver = true
     }
 
+    // if the option menu is open, pause the cpu turn
+    optionCheckbox.addEventListener('change', (e) => {
+        playerQty === 1 && playerTurn === 1 && currentSlide === 2 && (e.target.checked ? cpuCanPlay = false : (cpuCanPlay = true, roll()))
+    })
+
 }
 
 //reset the game
 resetBtn.addEventListener('click', () => {
-    
+
     optionCheckbox.checked = false
+
+    music.pause()
+    music.currentTime = 0
 
     gameSlides[1].style.display = 'none'
     gameSlides[2].style.display = 'none'
     gameSlides[2].style.opacity = 0
-    
+
     gameSlides[0].style.opacity = 1
     gameSlides[0].style.display = "flex"
 

@@ -190,7 +190,11 @@ h2 {
   gap: 25px;
   align-items: center;
 }
-.sliders-container .slider {
+.sliders-container .slider-container .music-symbol,
+.sliders-container .slider-container .sound-symbol {
+  cursor: pointer;
+}
+.sliders-container .slider-container .slider {
   -webkit-appearance: none;
   width: 25%;
   height: 15px;
@@ -199,7 +203,7 @@ h2 {
   outline: none;
   transition: opacity 0.2s;
 }
-.sliders-container .slider::-webkit-slider-thumb {
+.sliders-container .slider-container .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 25px;
@@ -208,7 +212,7 @@ h2 {
   background: hsl(147deg, 50%, 23%);
   cursor: pointer;
 }
-.sliders-container .slider::-moz-range-thumb {
+.sliders-container .slider-container .slider::-moz-range-thumb {
   width: 25px;
   height: 25px;
   border-radius: 50%;
@@ -239,14 +243,14 @@ h2 {
   border-radius: 5vmin;
 }
 .rules .toggle-rules::after, .rules .toggle-rules::before {
-  content: "+";
+  content: "▽";
 }
 .rules #rules-checkbox:checked ~ .rules-wrapper {
   transform: translateY(0%);
 }
 .rules #rules-checkbox:checked ~ .toggle-rules::after,
 .rules #rules-checkbox:checked ~ .toggle-rules::before {
-  content: "-";
+  content: "△";
 }
 .rules .rules-wrapper {
   position: absolute;
