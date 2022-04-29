@@ -26,7 +26,7 @@ $border-color: whitesmoke;
 
 body {
     width: 100vw;
-    min-height: 100vh;
+    height: 100vh;
     overflow: hidden;
 }
 
@@ -209,9 +209,20 @@ h2 {
         gap: 25px;
         align-items: center;
 
-        .music-symbol, 
-        .sound-symbol{
+        .music-symbol,
+        .sound-symbol {
+            position: relative;
+            display: inline-block;
             cursor: pointer;
+        }
+
+        .muted::after {
+            content: "⦰";
+            font-size: 3rem;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
         }
 
         .slider {
@@ -300,10 +311,33 @@ h2 {
     }
 }
 
-.reset {
+.reset-btn {
     cursor: pointer;
     width: 50%;
 }
+
+.reset{
+    .presenter{
+        color: orangered;
+    }
+    .confirm-reset{
+        background: red;
+    }
+}
+
+// .reset{
+//     position: fixed;
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     justify-content: space-evenly;
+//     height: 100vh;
+//     width: 100vw;
+//     background: black;
+//     transform: translateX(-100vw);
+//     color: orangered;
+//     transition: transform .7s ease-in;
+// }
 
 /* ====== slide 1 ====== */
 
@@ -736,6 +770,7 @@ h2 {
         color: var(--current-player-color);
     }
 }
+
 
 .message-modal {
     width: 100vw;

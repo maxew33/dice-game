@@ -1,41 +1,54 @@
 const qsall = document.querySelectorAll.bind(document), //shortcut for document.querySelectorAll
     qs = document.querySelector.bind(document), //shortcut for document.querySelector,
-    setGame = qs('.set-game'),
+    
     gameSlides = [...qsall('.slide')],
+
+    /* --- game's setting --- */
     playersQty = [...qsall('.choose-players-number')],
     playerForm = qs('.players-identity'),
     avatars = [...qsall('.avatar-container .item-list .item')],
     myAvatar = qs('.my-avatar'),
     colors = [...qsall('.color-container .item-list .item')],
     myColor = [...qsall('.my-color')],
+    playerColor = ['hsl(120deg, 100%, 80%)', 'hsl(270deg, 100%, 80%)'],
+
+    /* --- game board / game variables --- */
     rollBtn = qs('.roll-btn'),
     diceContainer = [...qsall('.dice-container')],
     playerContainer = [...qsall('.player-container')],
     playerScore = [...qsall('.player-score')],
     playerTotal = [...qsall('.player-total')],
     dice = [...qsall('.dice')],
-    messageModal = qs('.message-modal'),
-    messageText = qs('.message'),
-    presenter = qs('.presenter'),
     score = qs('.score'),
     rollMax = 8,
-    playerColor = ['hsl(120deg, 100%, 80%)', 'hsl(270deg, 100%, 80%)'],
-    goal = 1000,
-    rollindiceSound = new Audio('https://maxime-malfilatre.com/sandbox/sound/rollinDice.wav'),
-    music = new Audio('https://maxime-malfilatre.com/sandbox/sound/music-dicegame.wav'),
-    musicSlider = document.getElementById('music'),
-    soundSlider = document.getElementById('sound'),
-    musicSymbol = qs('.music-symbol'),
-    soundSymbol = qs('.sound-symbol'),
+    goal = 100,
+
+    /* --- end of turn / game message displayed --- */
+    messageModal = qs('.informations'),
+    messageText = qs('.my-message'),
+    presenter = qs('.presenter'),
+
+    /* ------ options ------ */
     optionCheckbox = document.getElementById('option-checkbox'),
-    resetBtn = qs('.reset')
+
+    /* --- sound n music --- */
+    diceSound = new Audio('https://maxime-malfilatre.com/sandbox/sound/rollinDice.wav'),
+    music = new Audio('https://maxime-malfilatre.com/sandbox/sound/music-dicegame.wav'),
+    /* --- music options --- */
+    audioSources = [music, diceSound],
+    audioSliders = [document.getElementById('music'), document.getElementById('sound')],
+    audioSymbols = [qs('.music-symbol'), qs('.sound-symbol')],
+    audioMuted = [false, false],
+
+    resetBtn = qs('.reset-btn'),
+    resetModal = qs('.reset')
 
 let currentSlide = 0,
     playerQty = 0,
     playerTurn = 0,
     roundOver = false,
     gameOver = false,
-    delay = 0,
+    delay = 0, // set the delay before the message modal is displayed
     canRoll = true,
     cpuCanPlay = true,
     diceLocked = 0,
@@ -156,49 +169,41 @@ playerForm.addEventListener('submit', e => {
 
 // sound and music
 
-rollindiceSound.volume = .5
-music.volume = .5
+audioSources.forEach(source => source.volume = .5)
 
 const mute = (target) => {
-    target === 'sound' ?
-        (
-            soundSlider.value = 0,
-            rollindiceSound.volume = 0
-        )
-        : (
-            musicSlider.value = 0,
-            music.volume = 0
-        )
 
+        audioMuted[target] = !audioMuted[target]
+
+        console.log(audioMuted)
+
+        let myVolume = audioMuted[target] ? 0 : .5
+
+        console.log(myVolume)
+
+        audioSliders[target].value = myVolume*100
+        audioSources[target].volume = myVolume
+
+        audioSymbols[target].classList.toggle('muted')
 }
 
-soundSlider.addEventListener('input', e => {
-    if (e.target.value === 0) {
-        mute('sound')
-    }
-    else {
-        rollindiceSound.volume = (e.target.value / 100)
-    }
+audioSliders.forEach((slider, idx) => {
+    slider.addEventListener('input', e => {
+
+        const myVolume = (e.target.value / 100)
+
+        audioSources[idx].volume = myVolume
+
+        myVolume === 0 ? mute(idx) : audioMuted[idx] && (audioSymbols[idx].classList.toggle('muted'), audioMuted[idx] = false)
+    })
 })
 
-soundSymbol.addEventListener('click', () => {
-    mute('sound')
-})
-
-musicSlider.addEventListener('input', e => {
-    if (e.target.value === 0) {
-        mute('music')
-    }
-    else {
-        music.volume = (e.target.value / 100)
-    }
-
+audioSymbols.forEach((symbol, idx) => {
+    symbol.addEventListener('click', () => {
+        mute(idx)
+    })
 }
 )
-
-musicSymbol.addEventListener('click', () => {
-    mute('music')
-})
 
 
 //Let's play this awesome dice game :)
@@ -252,8 +257,6 @@ function launchGame() {
         }, 250)
     }
 
-
-
     const newPlayerTurn = (player, txt) => {
 
         console.log('newTurn ' + txt)
@@ -306,6 +309,7 @@ function launchGame() {
 
             dice.angleX += 90 * xTurn
             dice.angleY += 90 * yTurn
+
             // balancing the results
             if (dice.angleX % 180) {
                 getRandomInt(3) > 1 && (dice.angleX += 90)
@@ -345,9 +349,9 @@ function launchGame() {
 
 
         // sound of the dice rolling
-        customRate = delay > 0 ? (rollindiceSound.duration * 1000) / delay : 0
-        rollindiceSound.playbackRate = customRate
-        rollindiceSound.play()
+        customRate = delay > 0 ? (diceSound.duration * 1000) / delay : 0
+        diceSound.playbackRate = customRate
+        diceSound.play()
 
 
         setTimeout(() => {
@@ -360,6 +364,7 @@ function launchGame() {
     }
 
     rollBtn.addEventListener('click', () => {
+        console.log('ollin')
         canRoll && (playerQty === 2 || playerTurn === 0) && roll()
     })
 
@@ -400,13 +405,6 @@ function launchGame() {
             // if it is the end of the first player turn then launch the second player turn / if it is the end of the second player turn, chek the winner
             playerTurn === 0 ? newPlayerTurn(1) : players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 3)
         }
-        // if (playerTurn === 0 && !roundOver) {
-        //     newPlayerTurn(1)
-        //     playerQty === 1 && cpuTurn()
-        // }
-        // else if (!roundOver) {
-        //     players[0].score !== players[1].score ? players[0].score > players[1].score ? turnWinner(0) : turnWinner(1) : newPlayerTurn(0, 3)
-        // }
         else { roundOver = !roundOver }
     })
 
@@ -418,14 +416,14 @@ function launchGame() {
             player.score = 0
             playerContainer[index].querySelector('.player-name').textContent = player.name + '(' + player.gameWon + ')'
             playerContainer[index].querySelector('.player-score').textContent = player.score
-            console.log('toto')
             playerContainer[index].querySelector('.player-total').innerHTML = `<div class="prev-score">${player.total}<span class="tiny-score"></span></div>`
         })
-        setOfdice.forEach(dice => {
-            dice.angleX = 0
-            dice.angleY = 0
-            dice.id.style.transform = "rotateX(" + dice.angleX + "deg) rotateY(" + dice.angleY + "deg)"
-        })
+        // setOfdice.forEach(dice => {
+        //     dice.angleX = 0
+        //     dice.angleY = 0
+        //     dice.id.style.transform = "rotateX(" + dice.angleX + "deg) rotateY(" + dice.angleY + "deg)"
+        // })
+
     }
 
     //end of the turn
@@ -460,7 +458,6 @@ function launchGame() {
 
 
     //winner of the turn
-
     function turnWinner(winner) {
         players[winner].total -= players[winner].score
 
@@ -474,8 +471,6 @@ function launchGame() {
 
         playerTotal[winner].innerHTML += `<div class="prev-score">${players[winner].total}<span class="tiny-score"></span></div>`
 
-        // playerTotal[winner].innerHTML += ` (${players[winner].score})<span class="crossed"> </span><span>${players[winner].total}<span>`
-
         players[winner].total <= 0 ? endOfGame(winner) : newPlayerTurn(0, winner + 1)
     }
 
@@ -485,23 +480,29 @@ function launchGame() {
         players[winner].gameWon += 1
         message(`${players[winner].name} won the game`, '<i class="far fa-grin"></i>')
         console.log('joueur ' + players[winner].name + ' a gagné !!!')
+        newPlayerTurn(0)
         gameOver = true
     }
 
     // if the option menu is open, pause the cpu turn
     optionCheckbox.addEventListener('change', (e) => {
-        playerQty === 1 && playerTurn === 1 && currentSlide === 2 && (e.target.checked ? cpuCanPlay = false : (cpuCanPlay = true, roll()))
+        //if there is 1 player vs the cpu, we are on the 2nd slide (the game board one) and it is the cpu turn, if it is check, set the cpuCanPlay to false in order to prevent it to play, if it is not, set the cpuCanPlay to true.
+        //in any other case, set the cpuCanplay to true (prevent the bug that appears when the option modal is open durig the sto of the last roll of the cpu)
+        playerQty === 1 && currentSlide === 2 && playerTurn === 1 ? (e.target.checked ? cpuCanPlay = false : (cpuCanPlay = true, roll())) : cpuCanPlay = true
     })
 
 }
 
 //reset the game
-resetBtn.addEventListener('click', () => {
 
+const resetTheGame = () => {
+    
     optionCheckbox.checked = false
 
     music.pause()
     music.currentTime = 0
+
+    players.length = 0
 
     gameSlides[1].style.display = 'none'
     gameSlides[2].style.display = 'none'
@@ -511,7 +512,23 @@ resetBtn.addEventListener('click', () => {
     gameSlides[0].style.display = "flex"
 
     currentSlide = 0
+
+}
+
+const displayResetModal = (action) =>{
+    resetModal.style.transform = `translate(${action === "hide" ? 100 : 0}vw)`
+    resetModal.style.opacity = `${action === "hide" ? 0 : 1}`
+}
+
+resetBtn.addEventListener('click', () => {
+    displayResetModal('show')
 })
 
+qs('.confirm-reset').addEventListener('click', () => {
+    displayResetModal('hide')
+    resetTheGame()
+})
 
-// sound : https://maxime-malfilatre.com/sandbox/sound/rollinDice.wav
+qs('.reject-reset').addEventListener('click', () => {
+    displayResetModal('hide')
+})

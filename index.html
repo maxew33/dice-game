@@ -314,14 +314,16 @@
             </div>
 
         </div>
-        <form class="message-modal">
+
+        <form class="message-modal informations">
             <div class="bubble">
-                <div class="message"></div>
+                <div class="my-message"></div>
                 <button type="submit" class="submit-button">ok</button>
             </div>
             <div class="presenter">
             </div>
         </form>
+
     </div>
 
     <div class="option-container">
@@ -388,7 +390,7 @@
 
                 </div>
 
-                <button class="reset options-title">
+                <button class="reset-btn options-title">
                     reset the game
                 </button>
             </div>
@@ -397,7 +399,23 @@
         <label for="option-checkbox" class="toggle-option">
             <i class="fas fa-cog"></i>
         </label>
+    </div>   
+        
+    <div class="message-modal reset">
+        <div class="bubble">
+            <div class="message">Are you sure you want to reset the game ? <br/>
+            Everything will be lost ! </div>
+
+            <button class="submit-button confirm-reset">yes</button>
+            
+            <button class="submit-button reject-reset">no</button>
+        </div>
+        <div class="presenter">
+            <i class="fas fa-flushed"></i>
+        </div>
     </div>
+
+
 </body>
 
 </html>
