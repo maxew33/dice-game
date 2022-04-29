@@ -408,23 +408,7 @@ function launchGame() {
         else { roundOver = !roundOver }
     })
 
-    //clean board
-    function cleanBoard() {
-
-        players.forEach((player, index) => {
-            player.total = goal
-            player.score = 0
-            playerContainer[index].querySelector('.player-name').textContent = player.name + '(' + player.gameWon + ')'
-            playerContainer[index].querySelector('.player-score').textContent = player.score
-            playerContainer[index].querySelector('.player-total').innerHTML = `<div class="prev-score">${player.total}<span class="tiny-score"></span></div>`
-        })
-        // setOfdice.forEach(dice => {
-        //     dice.angleX = 0
-        //     dice.angleY = 0
-        //     dice.id.style.transform = "rotateX(" + dice.angleX + "deg) rotateY(" + dice.angleY + "deg)"
-        // })
-
-    }
+    
 
     //end of the turn
     function endOfTurn(myScore) {
@@ -493,9 +477,32 @@ function launchGame() {
 
 }
 
+//clean board
+function cleanBoard() {
+
+    score.textContent = 0 + ' pt'
+
+    players.forEach((player, index) => {
+        player.total = goal
+        player.score = 0
+        playerContainer[index].querySelector('.player-name').textContent = player.name + '(' + player.gameWon + ')'
+        playerContainer[index].querySelector('.player-score').textContent = player.score
+        playerContainer[index].querySelector('.player-total').innerHTML = `<div class="prev-score">${player.total}<span class="tiny-score"></span></div>`
+    })
+    setOfdice.forEach(dice => {
+        dice.angleX = 0
+        dice.angleY = 0
+        dice.id.style.transitionDuration = "0s"
+        dice.id.style.transform = "rotateX(" + dice.angleX + "deg) rotateY(" + dice.angleY + "deg)"
+    })
+
+}
+
 //reset the game
 
 const resetTheGame = () => {
+
+    cleanBoard()
     
     optionCheckbox.checked = false
 
@@ -503,6 +510,14 @@ const resetTheGame = () => {
     music.currentTime = 0
 
     players.length = 0
+    setOfdice.length = 0
+
+    playerTurn = 0
+    roundOver = false
+    gameOver = false
+    canRoll = true
+    cpuCanPlay = true
+    rollOfThedice = 0
 
     gameSlides[1].style.display = 'none'
     gameSlides[2].style.display = 'none'
