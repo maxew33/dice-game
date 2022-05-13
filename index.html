@@ -49,12 +49,14 @@
             <div class="slide slide-1">
 
                 <!-- ====== player quantity ====== -->
-                <button class="choose-players-number" data-qty="1">
+                <button class="choose-players-qty" data-qty="1">
+                    <div class="btn"></div>
                     <i class="fas fa-user"></i>
                     <br />
                     1 player
                 </button>
-                <button class="choose-players-number" data-qty="2">
+                <button class="choose-players-qty" data-qty="2">
+                    <div class="btn"></div>
                     <i class="fas fa-user"></i> <i class="fas fa-user"></i>
                     <br />
                     2 players
@@ -68,23 +70,37 @@
 
                 <form class="players-identity">
 
-                    <div class="player-avatar">
-                        Your avatar :
+                    <div class="player-option-container">
+
+                        <div class="player-avatar">
+                            Your avatar :
+                        </div>
+
+                        <div class="my-avatar choose-box">
+                            <i class="fas fa-user"></i>
+                        </div>
+
                     </div>
 
-                    <label for="player-name">Your name : </label>
+                    <div class="player-option-container">
 
-                    <div class="player-color">
-                        Your color :
+                        <label for="player-name" class="player-option">
+                            Your name : 
+                        </label>
+
+                        <input type="text" class="name-field" id="player-name" value="Foo" maxlength="10">
+
                     </div>
 
-                    <div class="my-avatar choose-box">
-                        <i class="fas fa-user"></i>
-                    </div>
+                    <div class="player-option-container">
 
-                    <input type="text" class="name-field" id="player-name" value="Foo">
+                        <div class="player-color">
+                            Your color :
+                        </div>
 
-                    <div class="my-color choose-box">
+                        <div class="my-color choose-box">
+                        </div>
+
                     </div>
 
                     <button type="submit" class="submit-button">
@@ -98,9 +114,11 @@
             <div class="slide slide-3">
 
                 <div class="player-container player-1">
-                    <div class="player-avatar"><i class="fas fa-user"></i></div>
-                    <div class="player-informations">
+                    <div class="player-avatar">
+                        <i class="fas fa-user"></i>
                         <div class="player-name"></div>
+                    </div>
+                    <div class="player-informations">
                         <div class="player-score-wrapper">
                             My score : <span class="player-score"></span>
                         </div>
@@ -302,9 +320,11 @@
                 </div>
 
                 <div class="player-container player-2">
-                    <div class="player-avatar"><i class="fas fa-user"></i></div>
+                    <div class="player-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="player-name"></div>
                     <div class="player-informations">
-                        <div class="player-name"></div>
                         <div class="player-score-wrapper">
                             My score : <span class="player-score"></span>
                         </div>
@@ -399,15 +419,15 @@
         <label for="option-checkbox" class="toggle-option">
             <i class="fas fa-cog"></i>
         </label>
-    </div>   
-        
+    </div>
+
     <div class="message-modal reset">
         <div class="bubble">
-            <div class="message">Are you sure you want to reset the game ? <br/>
-            Everything will be lost ! </div>
+            <div class="message">Are you sure you want to reset the game ? <br />
+                Everything will be lost ! </div>
 
             <button class="submit-button confirm-reset">yes</button>
-            
+
             <button class="submit-button reject-reset">no</button>
         </div>
         <div class="presenter">
@@ -415,6 +435,32 @@
         </div>
     </div>
 
+
+    <!-- signature -->
+    <a href="https://maxime-malfilatre.com" class="signature" target="_blank">
+        <div class="link">
+            <span class="brace">
+                {
+            </span>
+            <span class="before">
+                <span class="before-text">
+                    &nbsp;by
+                </span>
+            </span>
+            <span class="my-name">
+                m
+            </span>
+            <span class="after">
+                <span class="after-text">
+                    <span class="spin">axe</span>
+                    <span>w</span>
+                </span>
+            </span>
+            <span class="brace">
+                }
+            </span>
+        </div>
+    </a>
 
 </body>
 

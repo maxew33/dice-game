@@ -22,6 +22,7 @@ $border-color: whitesmoke;
     --current-player-color: hsl(120deg, 80%, 60%);
     --player1-color: hsl(120deg, 80%, 60%);
     --player2-color: hsl(270deg, 80%, 60%);
+    --hover-color: #f7b318;
 }
 
 body {
@@ -33,7 +34,10 @@ body {
 .title {
     position: absolute;
     background: $carpet-color;
-    top: 2.5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 10vh;
     left: 50%;
     font-family: $fontfam-1;
     color: $text-color;
@@ -43,12 +47,16 @@ body {
 }
 
 h1 {
-    font-size: 2.5rem;
+    font-size: min(2.5rem, 4vw);
     z-index: 50;
 }
 
 h2 {
-    font-size: 2.15rem;
+    font-size: min(2.15rem, 3.5vw);
+}
+
+.player-settings {
+    top: 5vh;
 }
 
 .game-board {
@@ -81,7 +89,7 @@ h2 {
         border-radius: 100%;
         display: grid;
         place-content: center;
-        font-size: 5rem;
+        font-size: min(5rem, 8vw);
     }
 
     &::after {
@@ -301,9 +309,37 @@ h2 {
         transform: translateY(-100%);
         left: 12.5%;
         width: 75%;
+        max-height: 35vh;
         padding: 5.5vh 0.75vw 0 0.75vw;
         transition: transform 1s ease-out;
         line-height: 1.15;
+        overflow-y: scroll;
+
+        // -ms-overflow-style: none; /* IE and Edge */
+        // scrollbar-width: none; /* Firefox */
+
+        // &::-webkit-scrollbar {
+        //     display: none;
+        // }
+
+        /* width */
+        &::-webkit-scrollbar {
+            width: 1rem;
+        }
+
+        /* Track */
+        &::-webkit-scrollbar-track {
+            background: $option-bg-color;
+        }
+
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background-image: linear-gradient(135deg, $option-bg-color 40%, transparent 40%),
+                linear-gradient(225deg, $option-bg-color 40%, transparent 40%),
+                linear-gradient(45deg, $option-bg-color 40%, transparent 40%), linear-gradient(315deg, $option-bg-color 40%, #e5e5f7 40%);
+            background-position: .5rem 0, .5rem 0, 0 0, 0 0;
+            background-repeat: repeat;
+        }
 
         h3 {
             padding: 1rem 0 0.25rem 0;
@@ -316,12 +352,18 @@ h2 {
     width: 50%;
 }
 
-.reset{
-    .presenter{
+.reset {
+    .presenter {
         color: orangered;
     }
-    .confirm-reset{
+    .confirm-reset {
         background: red;
+    }
+}
+
+@keyframes passing-through {
+    to {
+        transform: translateX(55vmin) rotate(10deg);
     }
 }
 
@@ -343,10 +385,12 @@ h2 {
 
 .slide-1 {
     display: flex;
+    flex-wrap: wrap;
 }
 
-.choose-players-number {
-    width: 40%;
+.choose-players-qty {
+    position: relative;
+    width: 40vmax;
     cursor: pointer;
     padding: 2vmin;
     border: none;
@@ -360,8 +404,23 @@ h2 {
         font-size: 2.5rem;
     }
 
+    .btn {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        border-radius: inherit;
+        box-shadow: 0 0 2.5rem 0.5rem var(--hover-color);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 0.25s ease-in;
+    }
+
     &:hover {
-        transform: scale(1.05);
+        .btn {
+            opacity: 1;
+        }
     }
 }
 
@@ -370,12 +429,15 @@ h2 {
 .players-identity {
     justify-self: center;
     display: grid;
-    grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+    grid-template: repeat(2, 1fr) / repeat(3, 1fr);
     gap: 25px;
     width: 90%;
 
-    > * {
-        place-self: center;
+    .player-option-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
     }
 
     .choose-box {
@@ -385,6 +447,8 @@ h2 {
         color: $text-color;
         border-radius: 2.5vmin;
         cursor: pointer;
+        display: grid;
+        place-content: center;
     }
 
     .my-color {
@@ -392,7 +456,7 @@ h2 {
     }
 
     .name-field {
-        border-radius: 2vmin;
+        border-radius: 1.25rem;
         border: 0.5vmin solid $border-color;
         background: hsl(0deg, 0%, 90%, 0.5);
         font-family: $fontfam-2;
@@ -400,6 +464,7 @@ h2 {
         text-align: center;
         font-size: 2rem;
         height: 5rem;
+        width: 100%;
     }
 
     .name-field:focus {
@@ -414,9 +479,10 @@ h2 {
 }
 
 .submit-button {
+    position: relative;
     text-transform: uppercase;
     font-size: 2.5rem;
-    border-radius: 2.5rem;
+    border-radius: 1.25rem;
     border: none;
     width: 7.5rem;
     height: 5rem;
@@ -425,6 +491,24 @@ h2 {
     font-family: $fontfam-2;
     background: whitesmoke;
     color: $carpet-color;
+
+    &::after {
+        content: "";
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        border-radius: inherit;
+        box-shadow: 0 0 2.5rem 0.5rem var(--hover-color);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 0.25s ease-in;
+    }
+
+    &:hover::after {
+        opacity: 1;
+    }
 }
 
 .selection-container {
@@ -553,7 +637,7 @@ h2 {
     display: flex;
     flex-direction: column;
     color: $text-color;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: $fontfam-1;
     font-size: 1.5rem;
 
     &.player-1 {
@@ -567,14 +651,20 @@ h2 {
     .player-avatar {
         grid-area: avatar;
         width: 17.5vw;
-        height: 15vw;
-        border: 1vmin solid $border-color;
-        border-radius: 25px;
-        background: hsl(0, 0, 100, 0.1);
+        height: 25vw;
         align-self: center;
-        display: grid;
-        place-content: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
         font-size: 10vw;
+    }
+
+    .player-name {
+        font-size: 2rem;
+        align-self: center;
+        line-height: 1.5;
+        color: $text-color;
     }
 
     .player-informations {
@@ -582,14 +672,8 @@ h2 {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        font-family: $fontfam-1;
         color: $text-color;
 
-        .player-name {
-            font-size: 2rem;
-            align-self: center;
-            line-height: 1.5;
-        }
 
         .player-score-wrapper {
             line-height: 2;
@@ -772,7 +856,6 @@ h2 {
     }
 }
 
-
 .message-modal {
     width: 100vw;
     height: 100vh;
@@ -826,4 +909,130 @@ h2 {
             color: $text-color;
         }
     }
+}
+
+/* signature */
+
+.link {
+    position: fixed;
+    z-index: 100;
+    left: calc(2.5vmin - 0.75rem);
+    bottom: calc(2.5vmin - 0.75rem);
+    font-size: 1.5rem;
+    font-family: arial, sans-serif;
+    color: $text-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    .my-name {
+        position: relative;
+    }
+
+    .before,
+    .after {
+        overflow: hidden;
+        width: 0px;
+        transition: width 0.5s;
+        transform-origin: right;
+    }
+
+    .before-text {
+        display: inline-block;
+        width: auto;
+        text-align: right;
+    }
+
+    .after-text {
+        display: flex;
+        align-items: center;
+        width: auto;
+        height: 3rem;
+        transform-origin: top center;
+    }
+
+    &:hover .before {
+        width: 2.5rem;
+    }
+
+    &:hover .after {
+        width: 4rem;
+    }
+
+    &:hover .spin {
+        display: inline-block;
+        transition: 0.5s transform 0.5s ease-in-out;
+        transform: rotate(360deg);
+    }
+}
+
+// media queries
+
+@media (max-width: 1000px) {
+    .players-identity {
+        grid-template: repeat(4, 1fr) / 1fr;
+
+        .submit-button {
+            grid-column: 1;
+        }
+    }
+}
+
+@media (orientation: portrait) {
+
+.slide-3 {
+    grid-template: 2fr 1fr 2fr / 1fr;
+}
+
+/* === players === */
+
+.player-container {
+    height: 30vh;
+    width: 80vw;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+
+    .player-avatar {
+        grid-area: avatar;
+        width: 17.5vw;
+        height: 15vw;
+        align-self: center;
+        display: grid;
+        place-content: center;
+        font-size: 10vw;
+    }
+
+    .player-name {
+        font-size: 2rem;
+        align-self: center;
+        line-height: 1.5;
+    }
+
+    .player-informations {
+        height: 30vh;
+        width: 50vw;
+        display: flex;
+        flex-direction: row;
+
+
+        .player-score-wrapper {
+            line-height: 2;
+        }
+
+        .player-total {
+            height: 20vh;
+            flex-direction: row;
+        }
+    }
+}
+/* === dice === */
+
+.board-container {
+    height: 20vh;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+}
 }

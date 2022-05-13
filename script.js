@@ -4,7 +4,7 @@ const qsall = document.querySelectorAll.bind(document), //shortcut for document.
     gameSlides = [...qsall('.slide')],
 
     /* --- game's setting --- */
-    playersQty = [...qsall('.choose-players-number')],
+    playersQty = [...qsall('.choose-players-qty')],
     playerForm = qs('.players-identity'),
     avatars = [...qsall('.avatar-container .item-list .item')],
     myAvatar = qs('.my-avatar'),
@@ -21,7 +21,7 @@ const qsall = document.querySelectorAll.bind(document), //shortcut for document.
     dice = [...qsall('.dice')],
     score = qs('.score'),
     rollMax = 8,
-    goal = 100,
+    goal = 1000,
 
     /* --- end of turn / game message displayed --- */
     messageModal = qs('.informations'),

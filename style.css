@@ -15,6 +15,7 @@
   --current-player-color: hsl(120deg, 80%, 60%);
   --player1-color: hsl(120deg, 80%, 60%);
   --player2-color: hsl(270deg, 80%, 60%);
+  --hover-color: #f7b318;
 }
 
 body {
@@ -26,7 +27,10 @@ body {
 .title {
   position: absolute;
   background: hsl(147deg, 50%, 23%);
-  top: 2.5vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 10vh;
   left: 50%;
   font-family: "Courgette", cursive;
   color: whitesmoke;
@@ -36,12 +40,16 @@ body {
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: min(2.5rem, 4vw);
   z-index: 50;
 }
 
 h2 {
-  font-size: 2.15rem;
+  font-size: min(2.15rem, 3.5vw);
+}
+
+.player-settings {
+  top: 5vh;
 }
 
 .game-board {
@@ -72,7 +80,7 @@ h2 {
   border-radius: 100%;
   display: grid;
   place-content: center;
-  font-size: 5rem;
+  font-size: min(5rem, 8vw);
 }
 .slide-content::after {
   content: "♥";
@@ -267,9 +275,25 @@ h2 {
   transform: translateY(-100%);
   left: 12.5%;
   width: 75%;
+  max-height: 35vh;
   padding: 5.5vh 0.75vw 0 0.75vw;
   transition: transform 1s ease-out;
   line-height: 1.15;
+  overflow-y: scroll;
+  /* width */
+  /* Track */
+  /* Handle */
+}
+.rules .rules-wrapper::-webkit-scrollbar {
+  width: 1rem;
+}
+.rules .rules-wrapper::-webkit-scrollbar-track {
+  background: hsl(147deg, 50%, 13%);
+}
+.rules .rules-wrapper::-webkit-scrollbar-thumb {
+  background-image: linear-gradient(135deg, hsl(147deg, 50%, 13%) 40%, transparent 40%), linear-gradient(225deg, hsl(147deg, 50%, 13%) 40%, transparent 40%), linear-gradient(45deg, hsl(147deg, 50%, 13%) 40%, transparent 40%), linear-gradient(315deg, hsl(147deg, 50%, 13%) 40%, #e5e5f7 40%);
+  background-position: 0.5rem 0, 0.5rem 0, 0 0, 0 0;
+  background-repeat: repeat;
 }
 .rules .rules-wrapper h3 {
   padding: 1rem 0 0.25rem 0;
@@ -287,13 +311,26 @@ h2 {
   background: red;
 }
 
+@-webkit-keyframes passing-through {
+  to {
+    transform: translateX(55vmin) rotate(10deg);
+  }
+}
+
+@keyframes passing-through {
+  to {
+    transform: translateX(55vmin) rotate(10deg);
+  }
+}
 /* ====== slide 1 ====== */
 .slide-1 {
   display: flex;
+  flex-wrap: wrap;
 }
 
-.choose-players-number {
-  width: 40%;
+.choose-players-qty {
+  position: relative;
+  width: 40vmax;
   cursor: pointer;
   padding: 2vmin;
   border: none;
@@ -303,23 +340,38 @@ h2 {
   line-height: 1.75;
   color: hsl(147deg, 50%, 23%);
 }
-.choose-players-number .fas {
+.choose-players-qty .fas {
   font-size: 2.5rem;
 }
-.choose-players-number:hover {
-  transform: scale(1.05);
+.choose-players-qty .btn {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  box-shadow: 0 0 2.5rem 0.5rem var(--hover-color);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.25s ease-in;
+}
+.choose-players-qty:hover .btn {
+  opacity: 1;
 }
 
 /* ====== slide 2 ====== */
 .players-identity {
   justify-self: center;
   display: grid;
-  grid-template: repeat(3, 1fr)/repeat(3, 1fr);
+  grid-template: repeat(2, 1fr)/repeat(3, 1fr);
   gap: 25px;
   width: 90%;
 }
-.players-identity > * {
-  place-self: center;
+.players-identity .player-option-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
 }
 .players-identity .choose-box {
   height: 10vmin;
@@ -328,12 +380,14 @@ h2 {
   color: whitesmoke;
   border-radius: 2.5vmin;
   cursor: pointer;
+  display: grid;
+  place-content: center;
 }
 .players-identity .my-color {
   background: var(--player1-color);
 }
 .players-identity .name-field {
-  border-radius: 2vmin;
+  border-radius: 1.25rem;
   border: 0.5vmin solid whitesmoke;
   background: hsla(0deg, 0%, 90%, 0.5);
   font-family: arial;
@@ -341,6 +395,7 @@ h2 {
   text-align: center;
   font-size: 2rem;
   height: 5rem;
+  width: 100%;
 }
 .players-identity .name-field:focus {
   background: hsla(0deg, 0%, 50%, 0.75);
@@ -352,9 +407,10 @@ h2 {
 }
 
 .submit-button {
+  position: relative;
   text-transform: uppercase;
   font-size: 2.5rem;
-  border-radius: 2.5rem;
+  border-radius: 1.25rem;
   border: none;
   width: 7.5rem;
   height: 5rem;
@@ -363,6 +419,22 @@ h2 {
   font-family: arial;
   background: whitesmoke;
   color: hsl(147deg, 50%, 23%);
+}
+.submit-button::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  box-shadow: 0 0 2.5rem 0.5rem var(--hover-color);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.25s ease-in;
+}
+.submit-button:hover::after {
+  opacity: 1;
 }
 
 .selection-container {
@@ -461,7 +533,7 @@ h2 {
   display: flex;
   flex-direction: column;
   color: whitesmoke;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Courgette", cursive;
   font-size: 1.5rem;
 }
 .player-container.player-1 {
@@ -473,27 +545,26 @@ h2 {
 .player-container .player-avatar {
   grid-area: avatar;
   width: 17.5vw;
-  height: 15vw;
-  border: 1vmin solid whitesmoke;
-  border-radius: 25px;
-  background: hsla(0deg, 0%, 100%, 0.1);
+  height: 25vw;
   align-self: center;
-  display: grid;
-  place-content: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   font-size: 10vw;
+}
+.player-container .player-name {
+  font-size: 2rem;
+  align-self: center;
+  line-height: 1.5;
+  color: whitesmoke;
 }
 .player-container .player-informations {
   height: calc(90vh - 15vw);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-family: "Courgette", cursive;
   color: whitesmoke;
-}
-.player-container .player-informations .player-name {
-  font-size: 2rem;
-  align-self: center;
-  line-height: 1.5;
 }
 .player-container .player-informations .player-score-wrapper {
   line-height: 2;
@@ -718,4 +789,110 @@ h2 {
 .message-modal .bubble .submit-button {
   background: hsl(147deg, 50%, 23%);
   color: whitesmoke;
+}
+
+/* signature */
+.link {
+  position: fixed;
+  z-index: 100;
+  left: calc(2.5vmin - 0.75rem);
+  bottom: calc(2.5vmin - 0.75rem);
+  font-size: 1.5rem;
+  font-family: arial, sans-serif;
+  color: whitesmoke;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.link .my-name {
+  position: relative;
+}
+.link .before,
+.link .after {
+  overflow: hidden;
+  width: 0px;
+  transition: width 0.5s;
+  transform-origin: right;
+}
+.link .before-text {
+  display: inline-block;
+  width: auto;
+  text-align: right;
+}
+.link .after-text {
+  display: flex;
+  align-items: center;
+  width: auto;
+  height: 3rem;
+  transform-origin: top center;
+}
+.link:hover .before {
+  width: 2.5rem;
+}
+.link:hover .after {
+  width: 4rem;
+}
+.link:hover .spin {
+  display: inline-block;
+  transition: 0.5s transform 0.5s ease-in-out;
+  transform: rotate(360deg);
+}
+
+@media (max-width: 1000px) {
+  .players-identity {
+    grid-template: repeat(4, 1fr)/1fr;
+  }
+  .players-identity .submit-button {
+    grid-column: 1;
+  }
+}
+@media (orientation: portrait) {
+  .slide-3 {
+    grid-template: 2fr 1fr 2fr/1fr;
+  }
+
+  /* === players === */
+  .player-container {
+    height: 30vh;
+    width: 80vw;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
+  .player-container .player-avatar {
+    grid-area: avatar;
+    width: 17.5vw;
+    height: 15vw;
+    align-self: center;
+    display: grid;
+    place-content: center;
+    font-size: 10vw;
+  }
+  .player-container .player-name {
+    font-size: 2rem;
+    align-self: center;
+    line-height: 1.5;
+  }
+  .player-container .player-informations {
+    height: 30vh;
+    width: 50vw;
+    display: flex;
+    flex-direction: row;
+  }
+  .player-container .player-informations .player-score-wrapper {
+    line-height: 2;
+  }
+  .player-container .player-informations .player-total {
+    height: 20vh;
+    flex-direction: row;
+  }
+
+  /* === dice === */
+  .board-container {
+    height: 20vh;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+  }
 }/*# sourceMappingURL=style.css.map */
