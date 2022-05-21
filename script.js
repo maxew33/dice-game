@@ -13,7 +13,7 @@ const qsall = document.querySelectorAll.bind(document), //shortcut for document.
     playerColor = ['hsl(120deg, 100%, 80%)', 'hsl(270deg, 100%, 80%)'],
 
     /* --- game board / game variables --- */
-    rollBtn = qs('.roll-btn'),
+    rollBtn = qs('.roll-button'),
     diceContainer = [...qsall('.dice-container')],
     playerContainer = [...qsall('.player-container')],
     playerScore = [...qsall('.player-score')],
@@ -40,7 +40,7 @@ const qsall = document.querySelectorAll.bind(document), //shortcut for document.
     audioSymbols = [qs('.music-symbol'), qs('.sound-symbol')],
     audioMuted = [false, false],
 
-    resetBtn = qs('.reset-btn'),
+    resetBtn = qs('.reset-button'),
     resetModal = qs('.reset')
 
 let currentSlide = 0,
@@ -483,6 +483,9 @@ function cleanBoard() {
     score.textContent = 0 + ' pt'
 
     players.forEach((player, index) => {
+
+console.log(playerContainer[index], playerContainer[index].querySelector('.player-name'))
+
         player.total = goal
         player.score = 0
         playerContainer[index].querySelector('.player-name').textContent = player.name + '(' + player.gameWon + ')'

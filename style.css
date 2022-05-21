@@ -8,14 +8,16 @@
 
 :root {
   --border-radius: 1vmin;
-  --face-size: 12.5vmin;
+  --face-size: min(12.5vh, 17.5vw);
   --duration: 2s;
-  --point-size: 2.25vmin;
+  --point-size: min(2.25vh, 3.5vw);
   --point-position: 1.75vmin;
   --current-player-color: hsl(120deg, 80%, 60%);
   --player1-color: hsl(120deg, 80%, 60%);
   --player2-color: hsl(270deg, 80%, 60%);
+  --carpet-color: hsl(147deg, 50%, 23%);
   --hover-color: #f7b318;
+  --alert-color: orangered;
 }
 
 body {
@@ -26,26 +28,41 @@ body {
 
 .title {
   position: absolute;
-  background: hsl(147deg, 50%, 23%);
   display: flex;
-  align-items: center;
   justify-content: center;
-  height: 10vh;
+  height: 5vh;
   left: 50%;
   font-family: "Courgette", cursive;
   color: whitesmoke;
-  transform: translateX(-50%);
-  padding: 0 25px;
-  border-radius: 50vw;
+  transform: translate(-50%, 12.5%);
 }
 
 h1 {
-  font-size: min(2.5rem, 4vw);
-  z-index: 50;
+  font-size: min(2.5rem, 7.5vw);
+  text-shadow: 1px 1px 0 var(--carpet-color), 1px -1px 0 var(--carpet-color), -1px 1px 0 var(--carpet-color), -1px -1px 0 var(--carpet-color), 1px 0px 0 var(--carpet-color), 0px 1px 0 var(--carpet-color), -1px 0px 0 var(--carpet-color), 0px -1px 0 var(--carpet-color);
+  width: 100%;
+  z-index: 30;
 }
 
 h2 {
-  font-size: min(2.15rem, 3.5vw);
+  font-size: min(2.15rem, 6.5vw);
+}
+
+.button-hover-shadow::after {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: inherit;
+  box-shadow: 0 0 2.5rem 0.5rem var(--hover-color);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.25s ease-in;
+}
+.button-hover-shadow:hover::after {
+  opacity: 1;
 }
 
 .player-settings {
@@ -75,8 +92,8 @@ h2 {
   position: absolute;
   height: 15vmin;
   width: 15vmin;
-  border: 1vmin solid hsl(147deg, 50%, 23%);
-  background: hsl(147deg, 50%, 23%);
+  border: 1vmin solid var(--carpet-color);
+  background: var(--carpet-color);
   border-radius: 100%;
   display: grid;
   place-content: center;
@@ -115,10 +132,6 @@ h2 {
 }
 
 /* ====== options ====== */
-.option-container {
-  z-index: 20;
-}
-
 .option-wrapper {
   position: fixed;
   top: 5vh;
@@ -130,6 +143,7 @@ h2 {
   transition: clip-path 0.75s ease-out, -webkit-clip-path 0.75s ease-out;
   background: hsl(147deg, 50%, 13%);
   border-radius: 5vmin;
+  z-index: 20;
 }
 .option-wrapper .title {
   background: hsl(147deg, 50%, 13%);
@@ -148,9 +162,10 @@ h2 {
   cursor: pointer;
   display: grid;
   place-content: center;
+  z-index: 30;
 }
 
-#option-checkbox:checked ~ .option-wrapper {
+#option-checkbox:checked + .option-wrapper {
   -webkit-clip-path: circle(150% at calc(90vw - 5vmin) 5vmin);
           clip-path: circle(150% at calc(90vw - 5vmin) 5vmin);
 }
@@ -165,13 +180,14 @@ h2 {
   font-family: arial;
 }
 .options .options-title {
-  text-align: center;
+  display: grid;
+  place-content: center;
   height: 5vh;
   width: 50%;
   font-family: "Courgette", cursive;
-  font-size: 2rem;
   border: 0.5vmin solid whitesmoke;
   border-radius: 5vmin;
+  font-size: min(2rem, 5vw);
 }
 
 .sliders-container {
@@ -227,14 +243,14 @@ h2 {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: hsl(147deg, 50%, 23%);
+  background: var(--carpet-color);
   cursor: pointer;
 }
 .sliders-container .slider-container .slider::-moz-range-thumb {
   width: 25px;
   height: 25px;
   border-radius: 50%;
-  background: hsl(147deg, 50%, 23%);
+  background: var(--carpet-color);
   cursor: pointer;
 }
 
@@ -248,27 +264,32 @@ h2 {
   display: none;
 }
 .rules .toggle-rules {
+  --rotation: 0deg;
   position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
   cursor: pointer;
   height: 5vh;
   left: 12.5%;
   width: 75%;
   background: hsl(147deg, 50%, 13%);
   font-family: "Courgette", cursive;
-  font-size: 2rem;
-  text-align: center;
+  font-size: min(2rem, 5vw);
   border: 0.5vmin solid whitesmoke;
   border-radius: 5vmin;
 }
 .rules .toggle-rules::after, .rules .toggle-rules::before {
   content: "▽";
+  transform: rotate(var(--rotation));
+  transition: transform 0.5s ease-in-out;
 }
-.rules #rules-checkbox:checked ~ .rules-wrapper {
+.rules #rules-checkbox:checked + .rules-wrapper {
   transform: translateY(0%);
 }
-.rules #rules-checkbox:checked ~ .toggle-rules::after,
-.rules #rules-checkbox:checked ~ .toggle-rules::before {
-  content: "△";
+.rules #rules-checkbox:checked + .toggle-rules::after,
+.rules #rules-checkbox:checked + .toggle-rules::before {
+  --rotation: -180deg;
 }
 .rules .rules-wrapper {
   position: absolute;
@@ -299,16 +320,31 @@ h2 {
   padding: 1rem 0 0.25rem 0;
 }
 
-.reset-btn {
+.reset-button {
+  --hover-color: red;
+  position: relative;
   cursor: pointer;
   width: 50%;
 }
+.reset-button:hover {
+  background: var(--alert-color);
+  border: var(--alert-color);
+  color: whitesmoke;
+}
 
 .reset .presenter {
-  color: orangered;
+  color: var(--alert-color);
+}
+.reset .submit-button {
+  color: whitesmoke;
 }
 .reset .confirm-reset {
-  background: red;
+  --hover-color: var(--alert-color);
+  background: var(--alert-color);
+}
+.reset .reject-reset {
+  --hover-color: var(--carpet-color);
+  background: var(--carpet-color);
 }
 
 @-webkit-keyframes passing-through {
@@ -338,25 +374,10 @@ h2 {
   font-size: 1.5rem;
   transition: transform 0.25s ease-in-out;
   line-height: 1.75;
-  color: hsl(147deg, 50%, 23%);
+  color: var(--carpet-color);
 }
 .choose-players-qty .fas {
   font-size: 2.5rem;
-}
-.choose-players-qty .btn {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  border-radius: inherit;
-  box-shadow: 0 0 2.5rem 0.5rem var(--hover-color);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 0.25s ease-in;
-}
-.choose-players-qty:hover .btn {
-  opacity: 1;
 }
 
 /* ====== slide 2 ====== */
@@ -374,9 +395,9 @@ h2 {
   justify-content: space-between;
 }
 .players-identity .choose-box {
-  height: 10vmin;
-  width: 10vmin;
-  font-size: 8vmin;
+  width: min(5rem, 20vw);
+  aspect-ratio: 1;
+  font-size: min(5rem, 20vw);
   color: whitesmoke;
   border-radius: 2.5vmin;
   cursor: pointer;
@@ -418,23 +439,7 @@ h2 {
   cursor: pointer;
   font-family: arial;
   background: whitesmoke;
-  color: hsl(147deg, 50%, 23%);
-}
-.submit-button::after {
-  content: "";
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  border-radius: inherit;
-  box-shadow: 0 0 2.5rem 0.5rem var(--hover-color);
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-  transition: opacity 0.25s ease-in;
-}
-.submit-button:hover::after {
-  opacity: 1;
+  color: var(--carpet-color);
 }
 
 .selection-container {
@@ -542,7 +547,7 @@ h2 {
 .player-container.player-2 {
   color: var(--player2-color);
 }
-.player-container .player-avatar {
+.player-container .player-id {
   grid-area: avatar;
   width: 17.5vw;
   height: 25vw;
@@ -609,7 +614,7 @@ h2 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
 }
 
 .dice-container {
@@ -641,6 +646,14 @@ h2 {
   left: 0.5vmin;
   font-size: 1.5vmin;
   transform: rotate(-15deg);
+}
+
+.dice-wrapper {
+  height: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
 }
 
 .dice {
@@ -724,19 +737,30 @@ h2 {
   right: var(--point-position);
 }
 
-.roll-btn {
+.action-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 2vmin;
+  align-items: center;
+  width: 100%;
+}
+
+.roll-button {
+  position: relative;
   padding: 1vmin;
   border: none;
   border-radius: 1vmin;
   cursor: pointer;
+  height: calc(var(--face-size) / 2);
+  aspect-ratio: 3;
 }
 
-.score-container {
-  font-size: 4vmin;
+.score {
+  font-size: min(2.5rem, 7.5vw);
   font-family: arial;
-}
-.score-container .score {
   color: var(--current-player-color);
+  text-align: center;
+  width: min(25vw, 100%);
 }
 
 .message-modal {
@@ -773,7 +797,7 @@ h2 {
   flex-wrap: wrap;
   height: max(50vh, 100vh - 75vw);
   background: whitesmoke;
-  color: hsl(147deg, 50%, 23%);
+  color: var(--carpet-color);
   border-radius: 25px;
   margin: 5vmin;
   padding: 2.5vmin;
@@ -786,9 +810,8 @@ h2 {
   border-top: 3vmax solid whitesmoke;
   border-left: 2vmax solid transparent;
 }
-.message-modal .bubble .submit-button {
-  background: hsl(147deg, 50%, 23%);
-  color: whitesmoke;
+.message-modal .bubble .message {
+  width: 100%;
 }
 
 /* signature */
@@ -842,6 +865,7 @@ h2 {
 @media (max-width: 1000px) {
   .players-identity {
     grid-template: repeat(4, 1fr)/1fr;
+    height: 70%;
   }
   .players-identity .submit-button {
     grid-column: 1;
@@ -849,7 +873,7 @@ h2 {
 }
 @media (orientation: portrait) {
   .slide-3 {
-    grid-template: 2fr 1fr 2fr/1fr;
+    grid-template: repeat(3, 1fr)/1fr;
   }
 
   /* === players === */
@@ -860,7 +884,7 @@ h2 {
     align-items: center;
     justify-content: space-around;
   }
-  .player-container .player-avatar {
+  .player-container .player-id {
     grid-area: avatar;
     width: 17.5vw;
     height: 15vw;
@@ -877,22 +901,32 @@ h2 {
   .player-container .player-informations {
     height: 30vh;
     width: 50vw;
-    display: flex;
-    flex-direction: row;
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 2vh 0;
   }
   .player-container .player-informations .player-score-wrapper {
     line-height: 2;
   }
   .player-container .player-informations .player-total {
     height: 20vh;
-    flex-direction: row;
+    width: 95%;
+    padding: 1%;
   }
 
   /* === dice === */
   .board-container {
-    height: 20vh;
+    height: 100%;
+  }
+
+  .dice-wrapper {
+    width: 90%;
+    height: var(--face-size);
     flex-direction: row;
-    align-items: center;
+  }
+
+  .action-wrapper {
+    flex-direction: row;
     justify-content: space-evenly;
   }
 }/*# sourceMappingURL=style.css.map */

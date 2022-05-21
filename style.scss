@@ -10,19 +10,23 @@ $fontfam-1: "Courgette", cursive;
 $fontfam-2: arial;
 $text-color: whitesmoke;
 $option-bg-color: hsl(147deg, 50%, 13%);
-$carpet-color: hsl(147deg, 50%, 23%);
 $border-color: whitesmoke;
+$font-size-1:  min(2.5rem, 7.5vw);
+$font-size-2:  min(2.15rem, 6.5vw);
+$font-size-3:  min(2rem, 5vw);
 
 :root {
     --border-radius: 1vmin;
-    --face-size: 12.5vmin;
+    --face-size: min(12.5vh, 17.5vw);
     --duration: 2s;
-    --point-size: 2.25vmin;
+    --point-size: min(2.25vh, 3.5vw);
     --point-position: 1.75vmin;
     --current-player-color: hsl(120deg, 80%, 60%);
     --player1-color: hsl(120deg, 80%, 60%);
     --player2-color: hsl(270deg, 80%, 60%);
+    --carpet-color: hsl(147deg, 50%, 23%);
     --hover-color: #f7b318;
+    --alert-color: orangered;
 }
 
 body {
@@ -33,26 +37,45 @@ body {
 
 .title {
     position: absolute;
-    background: $carpet-color;
     display: flex;
-    align-items: center;
     justify-content: center;
-    height: 10vh;
+    height: 5vh;
     left: 50%;
     font-family: $fontfam-1;
     color: $text-color;
-    transform: translateX(-50%);
-    padding: 0 25px;
-    border-radius: 50vw;
+    transform: translate(-50%, 12.5%);
 }
 
 h1 {
-    font-size: min(2.5rem, 4vw);
-    z-index: 50;
+    font-size: $font-size-1;
+    text-shadow: 1px 1px 0 var(--carpet-color), 1px -1px 0 var(--carpet-color), -1px 1px 0 var(--carpet-color), -1px -1px 0 var(--carpet-color),
+        1px 0px 0 var(--carpet-color), 0px 1px 0 var(--carpet-color), -1px 0px 0 var(--carpet-color), 0px -1px 0 var(--carpet-color);
+    width: 100%;
+    z-index: 30;
 }
 
 h2 {
-    font-size: min(2.15rem, 3.5vw);
+    font-size: $font-size-2;
+}
+
+.button-hover-shadow{
+    &::after{
+        content: '';
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        border-radius: inherit;
+        box-shadow: 0 0 2.5rem 0.5rem var(--hover-color);
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: opacity 0.25s ease-in;
+    }
+        
+    &:hover::after {
+            opacity: 1;
+    }
 }
 
 .player-settings {
@@ -84,8 +107,8 @@ h2 {
         position: absolute;
         height: 15vmin;
         width: 15vmin;
-        border: 1vmin solid $carpet-color;
-        background: $carpet-color;
+        border: 1vmin solid var(--carpet-color);
+        background: var(--carpet-color);
         border-radius: 100%;
         display: grid;
         place-content: center;
@@ -134,7 +157,7 @@ h2 {
     // position: absolute;
     // top: 7.5vh;
     // right: 7.5vw;
-    z-index: 20;
+    // z-index: 20;
 }
 
 .option-wrapper {
@@ -145,6 +168,7 @@ h2 {
     transition: clip-path 0.75s ease-out;
     background: $option-bg-color;
     border-radius: 5vmin;
+    z-index: 20;
 
     .title {
         background: $option-bg-color;
@@ -164,10 +188,11 @@ h2 {
     cursor: pointer;
     display: grid;
     place-content: center;
+    z-index: 30;
 }
 
 #option-checkbox:checked {
-    ~ .option-wrapper {
+    + .option-wrapper {
         clip-path: circle(150% at calc(90vw - 5vmin) 5vmin);
     }
 }
@@ -182,13 +207,14 @@ h2 {
     font-family: $fontfam-2;
 
     .options-title {
-        text-align: center;
+        display: grid;
+        place-content: center;
         height: 5vh;
         width: 50%;
         font-family: $fontfam-1;
-        font-size: 2rem;
         border: 0.5vmin solid $border-color;
         border-radius: 5vmin;
+        font-size:$font-size-3;
     }
 }
 
@@ -250,7 +276,7 @@ h2 {
             width: 25px;
             height: 25px;
             border-radius: 50%;
-            background: $carpet-color;
+            background: var(--carpet-color);
             cursor: pointer;
         }
 
@@ -258,7 +284,7 @@ h2 {
             width: 25px;
             height: 25px;
             border-radius: 50%;
-            background: $carpet-color;
+            background: var(--carpet-color);
             cursor: pointer;
         }
     }
@@ -275,32 +301,39 @@ h2 {
     }
 
     .toggle-rules {
+
+        --rotation: 0deg;
+
         position: absolute;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
         cursor: pointer;
         height: 5vh;
         left: 12.5%;
         width: 75%;
         background: $option-bg-color;
         font-family: $fontfam-1;
-        font-size: 2rem;
-        text-align: center;
+        font-size: min(2rem, 5vw);
         border: 0.5vmin solid $border-color;
         border-radius: 5vmin;
 
         &::after,
         &::before {
             content: "▽";
+            transform: rotate(var(--rotation));
+            transition: transform .5s ease-in-out;
         }
     }
 
     #rules-checkbox:checked {
-        ~ .rules-wrapper {
+        + .rules-wrapper {
             transform: translateY(0%);
         }
 
-        ~ .toggle-rules::after,
-        ~ .toggle-rules::before {
-            content: "△";
+        + .toggle-rules::after,
+        + .toggle-rules::before {
+            --rotation: -180deg;
         }
     }
 
@@ -336,8 +369,9 @@ h2 {
         &::-webkit-scrollbar-thumb {
             background-image: linear-gradient(135deg, $option-bg-color 40%, transparent 40%),
                 linear-gradient(225deg, $option-bg-color 40%, transparent 40%),
-                linear-gradient(45deg, $option-bg-color 40%, transparent 40%), linear-gradient(315deg, $option-bg-color 40%, #e5e5f7 40%);
-            background-position: .5rem 0, .5rem 0, 0 0, 0 0;
+                linear-gradient(45deg, $option-bg-color 40%, transparent 40%),
+                linear-gradient(315deg, $option-bg-color 40%, #e5e5f7 40%);
+            background-position: 0.5rem 0, 0.5rem 0, 0 0, 0 0;
             background-repeat: repeat;
         }
 
@@ -347,17 +381,40 @@ h2 {
     }
 }
 
-.reset-btn {
+.reset-button {
+    --hover-color: red;
+
+    position: relative;
     cursor: pointer;
     width: 50%;
+
+    &:hover{
+        background: var(--alert-color);
+        border: var(--alert-color);
+        color: $text-color;
+    }
 }
 
 .reset {
+
     .presenter {
-        color: orangered;
+        color: var(--alert-color);
     }
+
+    .submit-button{
+        color: $text-color;
+    }
+
     .confirm-reset {
-        background: red;
+        --hover-color: var(--alert-color);
+
+        background: var(--alert-color);
+    }
+
+    .reject-reset{
+        --hover-color: var(--carpet-color);
+
+        background: var(--carpet-color);
     }
 }
 
@@ -377,7 +434,7 @@ h2 {
 //     width: 100vw;
 //     background: black;
 //     transform: translateX(-100vw);
-//     color: orangered;
+//     color: var(--alert-color);
 //     transition: transform .7s ease-in;
 // }
 
@@ -389,6 +446,7 @@ h2 {
 }
 
 .choose-players-qty {
+
     position: relative;
     width: 40vmax;
     cursor: pointer;
@@ -398,30 +456,12 @@ h2 {
     font-size: 1.5rem;
     transition: transform 0.25s ease-in-out;
     line-height: 1.75;
-    color: $carpet-color;
+    color: var(--carpet-color);
 
     .fas {
         font-size: 2.5rem;
     }
-
-    .btn {
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        border-radius: inherit;
-        box-shadow: 0 0 2.5rem 0.5rem var(--hover-color);
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        opacity: 0;
-        transition: opacity 0.25s ease-in;
-    }
-
-    &:hover {
-        .btn {
-            opacity: 1;
-        }
-    }
+    
 }
 
 /* ====== slide 2 ====== */
@@ -441,9 +481,9 @@ h2 {
     }
 
     .choose-box {
-        height: 10vmin;
-        width: 10vmin;
-        font-size: 8vmin;
+        width: min(5rem, 20vw);
+        aspect-ratio: 1;
+        font-size: min(5rem, 20vw);
         color: $text-color;
         border-radius: 2.5vmin;
         cursor: pointer;
@@ -490,25 +530,7 @@ h2 {
     cursor: pointer;
     font-family: $fontfam-2;
     background: whitesmoke;
-    color: $carpet-color;
-
-    &::after {
-        content: "";
-        position: absolute;
-        height: 100%;
-        width: 100%;
-        border-radius: inherit;
-        box-shadow: 0 0 2.5rem 0.5rem var(--hover-color);
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        opacity: 0;
-        transition: opacity 0.25s ease-in;
-    }
-
-    &:hover::after {
-        opacity: 1;
-    }
+    color: var(--carpet-color);
 }
 
 .selection-container {
@@ -648,7 +670,7 @@ h2 {
         color: var(--player2-color);
     }
 
-    .player-avatar {
+    .player-id {
         grid-area: avatar;
         width: 17.5vw;
         height: 25vw;
@@ -673,7 +695,6 @@ h2 {
         flex-direction: column;
         justify-content: space-between;
         color: $text-color;
-
 
         .player-score-wrapper {
             line-height: 2;
@@ -724,7 +745,7 @@ h2 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }
 
 .dice-container {
@@ -757,6 +778,14 @@ h2 {
         font-size: 1.5vmin;
         transform: rotate(-15deg);
     }
+}
+
+.dice-wrapper {
+    height: 60%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .dice {
@@ -840,20 +869,33 @@ h2 {
     right: var(--point-position);
 }
 
-.roll-btn {
+.action-wrapper {
+    // display: grid;
+    // grid-template: 1fr / repeat(2, 1fr);
+    // place-items: center;
+    display: flex;
+    flex-direction: column;
+    gap: 2vmin;
+    align-items: center;
+    width: 100%;
+}
+
+.roll-button {
+    position: relative;
     padding: 1vmin;
     border: none;
     border-radius: 1vmin;
-    cursor: pointer;
+    cursor: pointer;    
+    height: calc(var(--face-size) / 2);
+    aspect-ratio: 3;
 }
 
-.score-container {
-    font-size: 4vmin;
+.score {
+    font-size: $font-size-1;
     font-family: $fontfam-2;
-
-    .score {
-        color: var(--current-player-color);
-    }
+    color: var(--current-player-color);
+    text-align: center;
+    width: min(25vw, 100%);
 }
 
 .message-modal {
@@ -890,7 +932,7 @@ h2 {
         flex-wrap: wrap;
         height: max(50vh, calc(100vh - 75vw));
         background: $text-color;
-        color: $carpet-color;
+        color: var(--carpet-color);
         border-radius: 25px;
         margin: 5vmin;
         padding: 2.5vmin;
@@ -904,9 +946,8 @@ h2 {
             border-left: 2vmax solid transparent;
         }
 
-        .submit-button {
-            background: $carpet-color;
-            color: $text-color;
+        .message{
+            width: 100%;
         }
     }
 }
@@ -972,6 +1013,7 @@ h2 {
 @media (max-width: 1000px) {
     .players-identity {
         grid-template: repeat(4, 1fr) / 1fr;
+        height: 70%;
 
         .submit-button {
             grid-column: 1;
@@ -980,59 +1022,68 @@ h2 {
 }
 
 @media (orientation: portrait) {
-
-.slide-3 {
-    grid-template: 2fr 1fr 2fr / 1fr;
-}
-
-/* === players === */
-
-.player-container {
-    height: 30vh;
-    width: 80vw;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-around;
-
-    .player-avatar {
-        grid-area: avatar;
-        width: 17.5vw;
-        height: 15vw;
-        align-self: center;
-        display: grid;
-        place-content: center;
-        font-size: 10vw;
+    .slide-3 {
+        grid-template: repeat(3, 1fr) / 1fr;
     }
 
-    .player-name {
-        font-size: 2rem;
-        align-self: center;
-        line-height: 1.5;
-    }
+    /* === players === */
 
-    .player-informations {
+    .player-container {
         height: 30vh;
-        width: 50vw;
-        display: flex;
+        width: 80vw;
         flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
 
-
-        .player-score-wrapper {
-            line-height: 2;
+        .player-id {
+            grid-area: avatar;
+            width: 17.5vw;
+            height: 15vw;
+            align-self: center;
+            display: grid;
+            place-content: center;
+            font-size: 10vw;
         }
 
-        .player-total {
-            height: 20vh;
-            flex-direction: row;
+        .player-name {
+            font-size: 2rem;
+            align-self: center;
+            line-height: 1.5;
+        }
+
+        .player-informations {
+            height: 30vh;
+            width: 50vw;
+            flex-direction: column-reverse;
+            align-items: center;
+            padding: 2vh 0;
+
+            .player-score-wrapper {
+                line-height: 2;
+            }
+
+            .player-total {
+                height: 20vh;
+                width: 95%;
+                padding: 1%;
+            }
         }
     }
-}
-/* === dice === */
+    /* === dice === */
 
-.board-container {
-    height: 20vh;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-evenly;
-}
+    .board-container {
+        height: 100%;
+    }
+
+    .dice-wrapper {
+        width: 90%;
+        height: var(--face-size);
+        flex-direction: row;
+    }
+
+    .action-wrapper {
+        flex-direction: row;
+        justify-content: space-evenly;
+    }
+    
 }

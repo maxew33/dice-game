@@ -49,14 +49,12 @@
             <div class="slide slide-1">
 
                 <!-- ====== player quantity ====== -->
-                <button class="choose-players-qty" data-qty="1">
-                    <div class="btn"></div>
+                <button class="choose-players-qty button-hover-shadow" data-qty="1">
                     <i class="fas fa-user"></i>
                     <br />
                     1 player
                 </button>
-                <button class="choose-players-qty" data-qty="2">
-                    <div class="btn"></div>
+                <button class="choose-players-qty button-hover-shadow" data-qty="2">
                     <i class="fas fa-user"></i> <i class="fas fa-user"></i>
                     <br />
                     2 players
@@ -85,7 +83,7 @@
                     <div class="player-option-container">
 
                         <label for="player-name" class="player-option">
-                            Your name : 
+                            Your name :
                         </label>
 
                         <input type="text" class="name-field" id="player-name" value="Foo" maxlength="10">
@@ -103,7 +101,7 @@
 
                     </div>
 
-                    <button type="submit" class="submit-button">
+                    <button type="submit" class="submit-button  button-hover-shadow">
                         OK
                     </button>
 
@@ -114,8 +112,10 @@
             <div class="slide slide-3">
 
                 <div class="player-container player-1">
-                    <div class="player-avatar">
-                        <i class="fas fa-user"></i>
+                    <div class="player-id">
+                        <span class="player-avatar">
+                            <i class="fas fa-user"></i>
+                        </span>
                         <div class="player-name"></div>
                     </div>
                     <div class="player-informations">
@@ -128,202 +128,210 @@
 
                 <div class="board-container">
 
-                    <div class='dice-container'>
-                        <div class='dice'>
-                            <div class='face' data-id='1'>
-                                <div class="point point-middle point-center">
+                    <div class="dice-wrapper">
+                        <div class='dice-container'>
+                            <div class='dice'>
+                                <div class='face' data-id='1'>
+                                    <div class="point point-middle point-center">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='2'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='6'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-top point-left">
+                                    </div>
+                                    <div class="point point-middle point-right">
+                                    </div>
+                                    <div class="point point-middle point-left">
+                                    </div>
+                                    <div class="point point-bottom point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='5'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-top point-left">
+                                    </div>
+                                    <div class="point point-middle point-center">
+                                    </div>
+                                    <div class="point point-bottom point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='3'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-middle point-center">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='4'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-top point-left">
+                                    </div>
+                                    <div class="point point-bottom point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
                                 </div>
                             </div>
-                            <div class='face' data-id='2'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='6'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-top point-left">
-                                </div>
-                                <div class="point point-middle point-right">
-                                </div>
-                                <div class="point point-middle point-left">
-                                </div>
-                                <div class="point point-bottom point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='5'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-top point-left">
-                                </div>
-                                <div class="point point-middle point-center">
-                                </div>
-                                <div class="point point-bottom point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='3'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-middle point-center">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='4'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-top point-left">
-                                </div>
-                                <div class="point point-bottom point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
+                            <div class="padlock">
                             </div>
                         </div>
-                        <div class="padlock">
+
+                        <div class='dice-container'>
+                            <div class='dice'>
+                                <div class='face' data-id='1'>
+                                    <div class="point point-middle point-center">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='2'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='6'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-top point-left">
+                                    </div>
+                                    <div class="point point-middle point-right">
+                                    </div>
+                                    <div class="point point-middle point-left">
+                                    </div>
+                                    <div class="point point-bottom point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='5'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-top point-left">
+                                    </div>
+                                    <div class="point point-middle point-center">
+                                    </div>
+                                    <div class="point point-bottom point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='3'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-middle point-center">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='4'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-top point-left">
+                                    </div>
+                                    <div class="point point-bottom point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="padlock">
+                            </div>
                         </div>
+
+                        <div class='dice-container'>
+                            <div class='dice'>
+                                <div class='face' data-id='1'>
+                                    <div class="point point-middle point-center">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='2'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='6'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-top point-left">
+                                    </div>
+                                    <div class="point point-middle point-right">
+                                    </div>
+                                    <div class="point point-middle point-left">
+                                    </div>
+                                    <div class="point point-bottom point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='5'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-top point-left">
+                                    </div>
+                                    <div class="point point-middle point-center">
+                                    </div>
+                                    <div class="point point-bottom point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='3'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-middle point-center">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                                <div class='face' data-id='4'>
+                                    <div class="point point-top point-right">
+                                    </div>
+                                    <div class="point point-top point-left">
+                                    </div>
+                                    <div class="point point-bottom point-right">
+                                    </div>
+                                    <div class="point point-bottom point-left">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="padlock">
+                            </div>
+                        </div>
+
                     </div>
 
-                    <div class='dice-container'>
-                        <div class='dice'>
-                            <div class='face' data-id='1'>
-                                <div class="point point-middle point-center">
-                                </div>
-                            </div>
-                            <div class='face' data-id='2'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='6'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-top point-left">
-                                </div>
-                                <div class="point point-middle point-right">
-                                </div>
-                                <div class="point point-middle point-left">
-                                </div>
-                                <div class="point point-bottom point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='5'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-top point-left">
-                                </div>
-                                <div class="point point-middle point-center">
-                                </div>
-                                <div class="point point-bottom point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='3'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-middle point-center">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='4'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-top point-left">
-                                </div>
-                                <div class="point point-bottom point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="padlock">
-                        </div>
-                    </div>
+                    <div class="action-wrapper">
 
-                    <div class='dice-container'>
-                        <div class='dice'>
-                            <div class='face' data-id='1'>
-                                <div class="point point-middle point-center">
-                                </div>
-                            </div>
-                            <div class='face' data-id='2'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='6'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-top point-left">
-                                </div>
-                                <div class="point point-middle point-right">
-                                </div>
-                                <div class="point point-middle point-left">
-                                </div>
-                                <div class="point point-bottom point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='5'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-top point-left">
-                                </div>
-                                <div class="point point-middle point-center">
-                                </div>
-                                <div class="point point-bottom point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='3'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-middle point-center">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                            <div class='face' data-id='4'>
-                                <div class="point point-top point-right">
-                                </div>
-                                <div class="point point-top point-left">
-                                </div>
-                                <div class="point point-bottom point-right">
-                                </div>
-                                <div class="point point-bottom point-left">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="padlock">
-                        </div>
-                    </div>
+                        <button class="roll-button button-hover-shadow">ROLL</button>
 
-                    <button class="roll-btn">ROLL</button>
+                        <div class="score">0</span>
+                        </div>
 
-                    <div class="score-container"> Total : <br />
-                        <span class="score">0</span>
                     </div>
 
                 </div>
 
                 <div class="player-container player-2">
-                    <div class="player-avatar">
-                        <i class="fas fa-user"></i>
+                    <div class="player-id">
+                        <span class="player-avatar">
+                            <i class="fas fa-user"></i>
+                        </span>
+                        <div class="player-name"></div>
                     </div>
-                    <div class="player-name"></div>
                     <div class="player-informations">
                         <div class="player-score-wrapper">
                             My score : <span class="player-score"></span>
@@ -331,6 +339,7 @@
                         <div class="player-total"></div>
                     </div>
                 </div>
+
             </div>
 
         </div>
@@ -338,7 +347,7 @@
         <form class="message-modal informations">
             <div class="bubble">
                 <div class="my-message"></div>
-                <button type="submit" class="submit-button">ok</button>
+                <button type="submit" class="submit-button  button-hover-shadow">ok</button>
             </div>
             <div class="presenter">
             </div>
@@ -410,7 +419,7 @@
 
                 </div>
 
-                <button class="reset-btn options-title">
+                <button class="reset-button options-title button-hover-shadow">
                     reset the game
                 </button>
             </div>
@@ -426,9 +435,9 @@
             <div class="message">Are you sure you want to reset the game ? <br />
                 Everything will be lost ! </div>
 
-            <button class="submit-button confirm-reset">yes</button>
+            <button class="submit-button confirm-reset button-hover-shadow">yes</button>
 
-            <button class="submit-button reject-reset">no</button>
+            <button class="submit-button reject-reset button-hover-shadow">no</button>
         </div>
         <div class="presenter">
             <i class="fas fa-flushed"></i>
