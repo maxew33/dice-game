@@ -21,6 +21,7 @@
 }
 
 body {
+  position: fixed;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -185,8 +186,6 @@ h2 {
   height: 5vh;
   width: 50%;
   font-family: "Courgette", cursive;
-  border: 0.5vmin solid whitesmoke;
-  border-radius: 5vmin;
   font-size: min(2rem, 5vw);
 }
 
@@ -287,9 +286,11 @@ h2 {
 .rules #rules-checkbox:checked + .rules-wrapper {
   transform: translateY(0%);
 }
-.rules #rules-checkbox:checked + .toggle-rules::after,
-.rules #rules-checkbox:checked + .toggle-rules::before {
+.rules #rules-checkbox:checked ~ .toggle-rules::before {
   --rotation: -180deg;
+}
+.rules #rules-checkbox:checked ~ .toggle-rules::after {
+  --rotation: 180deg;
 }
 .rules .rules-wrapper {
   position: absolute;
@@ -325,6 +326,8 @@ h2 {
   position: relative;
   cursor: pointer;
   width: 50%;
+  border: none;
+  border-radius: 5vmin;
 }
 .reset-button:hover {
   background: var(--alert-color);
@@ -810,8 +813,12 @@ h2 {
   border-top: 3vmax solid whitesmoke;
   border-left: 2vmax solid transparent;
 }
-.message-modal .bubble .message {
+.message-modal .message {
   width: 100%;
+}
+.message-modal .submit-button {
+  color: whitesmoke;
+  background: var(--carpet-color);
 }
 
 /* signature */

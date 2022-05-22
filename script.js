@@ -1,5 +1,5 @@
 const qsall = document.querySelectorAll.bind(document), //shortcut for document.querySelectorAll
-    qs = document.querySelector.bind(document), //shortcut for document.querySelector,
+    qs = document.querySelector.bind(document), //shortcut for document.querySelector
     
     gameSlides = [...qsall('.slide')],
 
@@ -503,36 +503,6 @@ console.log(playerContainer[index], playerContainer[index].querySelector('.playe
 
 //reset the game
 
-const resetTheGame = () => {
-
-    cleanBoard()
-    
-    optionCheckbox.checked = false
-
-    music.pause()
-    music.currentTime = 0
-
-    players.length = 0
-    setOfdice.length = 0
-
-    playerTurn = 0
-    roundOver = false
-    gameOver = false
-    canRoll = true
-    cpuCanPlay = true
-    rollOfThedice = 0
-
-    gameSlides[1].style.display = 'none'
-    gameSlides[2].style.display = 'none'
-    gameSlides[2].style.opacity = 0
-
-    gameSlides[0].style.opacity = 1
-    gameSlides[0].style.display = "flex"
-
-    currentSlide = 0
-
-}
-
 const displayResetModal = (action) =>{
     resetModal.style.transform = `translate(${action === "hide" ? 100 : 0}vw)`
     resetModal.style.opacity = `${action === "hide" ? 0 : 1}`
@@ -543,10 +513,10 @@ resetBtn.addEventListener('click', () => {
 })
 
 qs('.confirm-reset').addEventListener('click', () => {
-    displayResetModal('hide')
-    resetTheGame()
+    //because there is no prevent default, the page will refresh and so reset the game isn't it clever ;)
 })
 
-qs('.reject-reset').addEventListener('click', () => {
+qs('.reject-reset').addEventListener('click', e => {
+    e.preventDefault
     displayResetModal('hide')
 })
