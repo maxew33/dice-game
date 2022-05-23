@@ -212,6 +212,7 @@ function launchGame() {
 
     music.loop = true
     music.play()
+    resetBtn.classList.add('reset-displayed')
 
     cleanBoard()
 

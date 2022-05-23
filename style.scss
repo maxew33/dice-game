@@ -10,10 +10,11 @@ $fontfam-1: "Courgette", cursive;
 $fontfam-2: arial;
 $text-color: whitesmoke;
 $option-bg-color: hsl(147deg, 50%, 13%);
+$bg-color: radial-gradient(circle, hsl(147deg, 50%, 23%), hsl(147deg, 50%, 13%) 90%);
 $border-color: whitesmoke;
-$font-size-1:  min(2.5rem, 7.5vw);
-$font-size-2:  min(2.15rem, 6.5vw);
-$font-size-3:  min(2rem, 5vw);
+$font-size-1: min(2.5rem, 7.5vw);
+$font-size-2: min(2.15rem, 6.5vw);
+$font-size-3: min(2rem, 5vw);
 
 :root {
     --border-radius: 1vmin;
@@ -49,19 +50,20 @@ body {
 
 h1 {
     font-size: $font-size-1;
-    text-shadow: 1px 1px 0 var(--carpet-color), 1px -1px 0 var(--carpet-color), -1px 1px 0 var(--carpet-color), -1px -1px 0 var(--carpet-color),
-        1px 0px 0 var(--carpet-color), 0px 1px 0 var(--carpet-color), -1px 0px 0 var(--carpet-color), 0px -1px 0 var(--carpet-color);
+    text-shadow: 1px 1px 0 var(--carpet-color), 1px -1px 0 var(--carpet-color), -1px 1px 0 var(--carpet-color),
+        -1px -1px 0 var(--carpet-color), 1px 0px 0 var(--carpet-color), 0px 1px 0 var(--carpet-color),
+        -1px 0px 0 var(--carpet-color), 0px -1px 0 var(--carpet-color);
     width: 100%;
-    z-index: 30;
+    z-index: 20;
 }
 
 h2 {
     font-size: $font-size-2;
 }
 
-.button-hover-shadow{
-    &::after{
-        content: '';
+.button-hover-shadow {
+    &::after {
+        content: "";
         position: absolute;
         height: 100%;
         width: 100%;
@@ -73,9 +75,9 @@ h2 {
         opacity: 0;
         transition: opacity 0.25s ease-in;
     }
-        
+
     &:hover::after {
-            opacity: 1;
+        opacity: 1;
     }
 }
 
@@ -87,7 +89,7 @@ h2 {
     position: absolute;
     height: 100vh;
     width: 100vw;
-    background: hsl(147deg, 50%, 23%);
+    background: $bg-color;
     // z-index: 10;
     transition: transform 0.5s ease-out;
     display: grid;
@@ -108,8 +110,8 @@ h2 {
         position: absolute;
         height: 15vmin;
         width: 15vmin;
-        border: 1vmin solid var(--carpet-color);
-        background: var(--carpet-color);
+        border: 1vmin solid $option-bg-color;
+        background: $option-bg-color;
         border-radius: 100%;
         display: grid;
         place-content: center;
@@ -154,13 +156,6 @@ h2 {
 
 /* ====== options ====== */
 
-.option-container {
-    // position: absolute;
-    // top: 7.5vh;
-    // right: 7.5vw;
-    // z-index: 20;
-}
-
 .option-wrapper {
     position: fixed;
     top: 5vh;
@@ -169,7 +164,7 @@ h2 {
     transition: clip-path 0.75s ease-out;
     background: $option-bg-color;
     border-radius: 5vmin;
-    z-index: 20;
+    z-index: 10;
 
     .title {
         background: $option-bg-color;
@@ -189,7 +184,7 @@ h2 {
     cursor: pointer;
     display: grid;
     place-content: center;
-    z-index: 30;
+    z-index: 20;
 }
 
 #option-checkbox:checked {
@@ -206,15 +201,15 @@ h2 {
     align-items: center;
     justify-content: space-evenly;
     font-family: $fontfam-2;
+}
 
-    .options-title {
-        display: grid;
-        place-content: center;
-        height: 5vh;
-        width: 50%;
-        font-family: $fontfam-1;
-        font-size:$font-size-3;
-    }
+.options-title {
+    display: grid;
+    place-content: center;
+    height: 5vh;
+    width: 50%;
+    font-family: $fontfam-1;
+    font-size: $font-size-3;
 }
 
 .sliders-container {
@@ -294,13 +289,14 @@ h2 {
     overflow: hidden;
     height: 40vh;
     width: 85vw;
+    display: flex;
+    justify-content: center;
 
     #rules-checkbox {
         display: none;
     }
 
     .toggle-rules {
-
         --rotation: 0deg;
 
         position: absolute;
@@ -321,20 +317,20 @@ h2 {
         &::before {
             content: "▽";
             transform: rotate(var(--rotation));
-            transition: transform .5s ease-in-out;
+            transition: transform 0.5s ease-in-out;
         }
     }
 
     #rules-checkbox:checked {
-        +.rules-wrapper {
+        + .rules-wrapper {
             transform: translateY(0%);
         }
 
-        ~.toggle-rules::before {
+        ~ .toggle-rules::before {
             --rotation: -180deg;
         }
-        
-        ~.toggle-rules::after{
+
+        ~ .toggle-rules::after {
             --rotation: 180deg;
         }
     }
@@ -342,11 +338,12 @@ h2 {
     .rules-wrapper {
         position: absolute;
         transform: translateY(-100%);
-        left: 12.5%;
-        width: 75%;
+        // left: 12.5%;
+        top: 5vh;
+        width: 70%;
         max-height: 35vh;
-        padding: 5.5vh 0.75vw 0 0.75vw;
-        transition: transform 1s ease-out;
+        // padding: 5.5vh 0.75vw 0 0.75vw;
+        transition: transform 0.5s ease-out;
         line-height: 1.15;
         overflow-y: scroll;
 
@@ -384,6 +381,8 @@ h2 {
 }
 
 .reset-button {
+    display: none;
+
     --hover-color: red;
 
     position: relative;
@@ -392,21 +391,20 @@ h2 {
     border: none;
     border-radius: 5vmin;
 
-    &:hover{
+    &:hover {
         background: var(--alert-color);
         border: var(--alert-color);
         color: $text-color;
     }
 }
 
-.reset {
+.reset-displayed {
+    display: grid;
+}
 
+.reset {
     .presenter {
         color: var(--alert-color);
-    }
-
-    .submit-button{
-        color: $text-color;
     }
 
     .confirm-reset {
@@ -415,10 +413,13 @@ h2 {
         background: var(--alert-color);
     }
 
-    .reject-reset{
+    .reject-reset {
         --hover-color: var(--carpet-color);
 
         background: var(--carpet-color);
+
+        display: grid;
+        place-content: center;
     }
 }
 
@@ -450,9 +451,13 @@ h2 {
 }
 
 .choose-players-qty {
-
     position: relative;
-    width: 40vmax;
+    width: min(25vmax, 17.5rem);
+    aspect-ratio: 1/0.9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
     cursor: pointer;
     padding: 2vmin;
     border: none;
@@ -462,10 +467,13 @@ h2 {
     line-height: 1.75;
     color: var(--carpet-color);
 
+    span {
+        display: inline-block;
+    }
+
     .fas {
         font-size: 2.5rem;
     }
-    
 }
 
 /* ====== slide 2 ====== */
@@ -519,6 +527,8 @@ h2 {
         grid-column: 1/4;
         justify-self: center;
         margin-top: 5vmin;
+        background: whitesmoke;
+        color: var(--carpet-color);        
     }
 }
 
@@ -533,8 +543,6 @@ h2 {
     font-weight: bolder;
     cursor: pointer;
     font-family: $fontfam-2;
-    background: whitesmoke;
-    color: var(--carpet-color);
 }
 
 .selection-container {
@@ -545,14 +553,14 @@ h2 {
     place-content: center;
     transform: scale(0);
     transition: 0.25s ease-in-out;
-    z-index: 20;
+    z-index: 30;
     backdrop-filter: blur(2.5px);
 }
 
 .avatar-container {
     .item-list {
         .item {
-            background: hsl(0deg, 0%, 90%, 0.5);
+            background: hsl(0deg, 0%, 90%, 0.75);
 
             &.selected {
                 background: hsl(0deg, 0%, 90%, 1);
@@ -714,8 +722,8 @@ h2 {
             line-height: 1.5;
             border: 2px solid green;
             border: 0.5vmin solid whitesmoke;
-            border-radius: 25px;
-            background: hsla(0deg, 0%, 100%, 0.1);
+            // border-radius: 25px;
+            background: hsla(0deg, 0%, 0%, 0.15);
 
             .prev-score,
             .crossed {
@@ -885,11 +893,14 @@ h2 {
 }
 
 .roll-button {
+    font-size: $font-size-2;
+    font-weight: bolder;
+    color: #444;
     position: relative;
     padding: 1vmin;
     border: none;
     border-radius: 1vmin;
-    cursor: pointer;    
+    cursor: pointer;
     height: calc(var(--face-size) / 2);
     aspect-ratio: 3;
 }
@@ -921,7 +932,7 @@ h2 {
     transform: translateX(100vw);
     opacity: 0;
     transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
-    z-index: 50;
+    z-index: 40;
 
     .presenter {
         width: min(50vh, 75vw);
@@ -958,16 +969,15 @@ h2 {
         }
     }
 
-    .message{
+    .message {
         width: 100%;
-    }
-
-    .submit-button{
-        color: whitesmoke;
-        background: var(--carpet-color);
     }
 }
 
+.submit-button {
+    color: whitesmoke;
+    background: var(--carpet-color);
+}
 /* signature */
 
 .link {
@@ -1101,5 +1111,4 @@ h2 {
         flex-direction: row;
         justify-content: space-evenly;
     }
-    
 }

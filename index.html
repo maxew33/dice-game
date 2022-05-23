@@ -50,14 +50,13 @@
 
                 <!-- ====== player quantity ====== -->
                 <button class="choose-players-qty button-hover-shadow" data-qty="1">
-                    <i class="fas fa-user"></i>
-                    <br />
-                    1 player
+                    <span>1 player</span>
+                    <span><i class="fas fa-user"></i> vs <i class="fas fa-desktop"></i></span>                    
+                    
                 </button>
                 <button class="choose-players-qty button-hover-shadow" data-qty="2">
-                    <i class="fas fa-user"></i> <i class="fas fa-user"></i>
-                    <br />
-                    2 players
+                    <span>2 players</span>
+                    <span><i class="fas fa-user"></i> vs <i class="fas fa-user"></i></span>                    
                 </button>
             </div>
 
@@ -367,20 +366,24 @@
 
                     <div class="music-container">
                         <div class="options-title">
-                            music
+                            Music
                         </div>
                         <div class="slider-container">
-                            <span class="music-symbol">🎜</span>
+                            <span class="music-symbol">
+                                <i class="fas fa-music"></i>
+                            </span>
                             <input type="range" min="0" max="100" value="50" class="slider" id="music">
                         </div>
                     </div>
 
                     <div class="sound-container">
                         <div class="options-title">
-                            sound
+                            Sound
                         </div>
                         <div class="slider-container">
-                            <span class="sound-symbol">🕪</span>
+                            <span class="sound-symbol">
+                                <i class="fas fa-volume-up"></i>
+                            </span>
                             <input type="range" min="0" max="100" value="50" class="slider" id="sound">
                         </div>
                     </div>
@@ -414,7 +417,7 @@
 
                     </div>
                     <label for="rules-checkbox" class="toggle-rules">
-                        rules
+                        Rules
                     </label>
 
                 </div>
@@ -437,7 +440,7 @@
 
             <button class="submit-button confirm-reset button-hover-shadow">yes</button>
 
-            <button class="submit-button reject-reset button-hover-shadow">no</button>
+            <div class="submit-button reject-reset button-hover-shadow">no</div>
         </div>
         <div class="presenter">
             <i class="fas fa-flushed"></i>
