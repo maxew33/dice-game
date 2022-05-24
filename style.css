@@ -90,6 +90,7 @@ h2 {
   color: whitesmoke;
 }
 .slide-content::after, .slide-content::before {
+  text-shadow: 1px 1px 0 hsla(0deg, 0%, 100%, 0.1), 1px -1px 0 hsla(0deg, 0%, 100%, 0.1), -1px 1px 0 hsla(0deg, 0%, 100%, 0.1), -1px -1px 0 hsla(0deg, 0%, 100%, 0.1), 1px 0px 0 hsla(0deg, 0%, 100%, 0.1), 0px 1px 0 hsla(0deg, 0%, 100%, 0.1), -1px 0px 0 hsla(0deg, 0%, 100%, 0.1), 0px -1px 0 hsla(0deg, 0%, 100%, 0.1);
   position: absolute;
   height: 15vmin;
   width: 15vmin;
@@ -102,6 +103,7 @@ h2 {
 }
 .slide-content::after {
   content: "♥";
+  color: #E84244;
   top: 0;
   left: 0;
   border-bottom: 1vmin solid whitesmoke;
@@ -109,6 +111,7 @@ h2 {
 }
 .slide-content::before {
   content: "♣";
+  color: #212121;
   bottom: 0;
   right: 0;
   border-top: 1vmin solid whitesmoke;
@@ -299,7 +302,7 @@ h2 {
   position: absolute;
   transform: translateY(-100%);
   top: 5vh;
-  width: 70%;
+  width: calc(75% - 6vmin);
   max-height: 35vh;
   transition: transform 0.5s ease-out;
   line-height: 1.15;
